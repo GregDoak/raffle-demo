@@ -3,6 +3,14 @@ deptrac:
     paths:
         - ./src
     layers:
+        -   name: Foundation
+            collectors:
+                -   type: directory
+                    value: src/Foundation/
+        -   name: FrameworkDomain
+            collectors:
+                -   type: directory
+                    value: src/Framework/Domain/
         -   name: Vendor
             collectors:
                 -   type: composer
@@ -10,4 +18,9 @@ deptrac:
                     composerLockPath: composer.lock
                     packages:
                         - bref/symfony-bridge
+                        - symfony/uid
     ruleset:
+        Foundation:
+            - Vendor
+        FrameworkDomain:
+            - Foundation
