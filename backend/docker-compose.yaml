@@ -1,0 +1,15 @@
+services:
+    backend-php:
+        restart: unless-stopped
+        build:
+            context: ./docker
+            dockerfile: ./php/php.Dockerfile
+        ports: [ '8001:8000' ]
+        volumes:
+            - ./application:/var/task
+            - ./application/var/cache:/tmp/cache
+            - ./application/var/log:/tmp/log
+            - ./docker/php/conf.d:/opt/bref/etc/php/conf.d
+        environment:
+            HANDLER: public/index.php
+            DOCUMENT_ROOT: public
