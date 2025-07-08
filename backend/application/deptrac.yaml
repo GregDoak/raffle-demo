@@ -1,0 +1,13 @@
+deptrac:
+    cache_file: var/static/deptrac/deptrac.cache
+    paths:
+        - ./src
+    layers:
+        -   name: Vendor
+            collectors:
+                -   type: composer
+                    composerPath: composer.json
+                    composerLockPath: composer.lock
+                    packages:
+                        - bref/symfony-bridge
+    ruleset:
