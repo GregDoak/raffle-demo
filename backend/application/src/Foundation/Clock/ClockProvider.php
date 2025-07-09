@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alleava\Foundation\Clock;
+namespace App\Foundation\Clock;
 
 final class ClockProvider
 {
