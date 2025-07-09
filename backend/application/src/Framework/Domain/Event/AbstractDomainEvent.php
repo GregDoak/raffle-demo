@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Mono\Framework\Domain\Event;
+namespace App\Framework\Domain\Event;
 
-use Alleava\Foundation\Clock\Clock;
+use App\Foundation\Clock\Clock;
 use DateTimeInterface;
 
 abstract readonly class AbstractDomainEvent implements DomainEventInterface
