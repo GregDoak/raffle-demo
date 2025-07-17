@@ -17,7 +17,7 @@ test/integration: ## Runs the integration test suite
 
 .PHONY: test/mutation
 test/mutation: ## Runs the mutation test suite
-	# vendor/bin/infection --initial-tests-php-options="-d zend_extension=/opt/bref/extensions/xdebug.so" --threads=max
+	vendor/bin/infection --initial-tests-php-options="-d zend_extension=/opt/bref/extensions/xdebug.so" --threads=max
 
 .PHONY: test/unit
 test/unit: ## Runs the unit test suite

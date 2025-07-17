@@ -13,7 +13,7 @@ final class ClockProvider
         return self::$clock ?? new NativeClock();
     }
 
-    public function set(ClockInterface $clock): void
+    public static function set(ClockInterface $clock): void
     {
         self::$clock = $clock;
     }

@@ -11,9 +11,7 @@ abstract class AbstractAggregate
     protected AggregateEvents $events;
     protected AggregateVersionInterface $version;
 
-    final public function __construct()
-    {
-    }
+    abstract public function __construct();
 
     abstract public function getAggregateName(): AggregateNameInterface;
 
