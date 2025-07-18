@@ -7,10 +7,22 @@ deptrac:
             collectors:
                 -   type: directory
                     value: src/Foundation/
+        -   name: FrameworkApplication
+            collectors:
+                -   type: directory
+                    value: src/Framework/Application/
         -   name: FrameworkDomain
             collectors:
                 -   type: directory
                     value: src/Framework/Domain/
+        -   name: RaffleDemoRaffleApplication
+            collectors:
+                -   type: directory
+                    value: src/Framework/RaffleDemo/Raffle/Application/
+        -   name: RaffleDemoRaffleDomain
+            collectors:
+                -   type: directory
+                    value: src/Framework/RaffleDemo/Raffle/Domain/
         -   name: Vendor
             collectors:
                 -   type: composer
@@ -24,3 +36,8 @@ deptrac:
             - Vendor
         FrameworkDomain:
             - Foundation
+        RaffleDemoRaffleApplication:
+            - FrameworkApplication
+            - RaffleDemoRaffleDomain
+        RaffleDemoRaffleDomain:
+            - FrameworkDomain
