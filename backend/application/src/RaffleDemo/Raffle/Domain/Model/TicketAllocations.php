@@ -58,6 +58,7 @@ final class TicketAllocations
 
     public function drawWinningTicketNumber(): int
     {
+        /* @infection-ignore-all */
         return random_int(1, $this->currentTicketNumber);
     }
 }
