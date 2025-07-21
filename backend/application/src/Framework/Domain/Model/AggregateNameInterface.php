@@ -9,4 +9,6 @@ interface AggregateNameInterface
     public static function fromString(string $name): static;
 
     public function toString(): string;
+
+    public function equals(self $that): bool;
 }

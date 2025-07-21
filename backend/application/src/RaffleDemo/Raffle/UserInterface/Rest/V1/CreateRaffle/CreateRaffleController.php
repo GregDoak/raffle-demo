@@ -6,6 +6,9 @@ namespace App\RaffleDemo\Raffle\UserInterface\Rest\V1\CreateRaffle;
 
 use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommand;
 use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommandHandler;
+use App\RaffleDemo\Raffle\Domain\Repository\RaffleEventStoreRepository;
+use App\Tests\Double\Framework\Domain\Repository\InMemoryEventStore;
+use App\Tests\Double\Framework\Domain\Repository\TransactionBoundarySpy;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -28,7 +31,10 @@ final readonly class CreateRaffleController
         );
 
         /* @infection-ignore-all */
-        new CreateRaffleCommandHandler()->__invoke($command);
+        new CreateRaffleCommandHandler(
+            new TransactionBoundarySpy(),
+            new RaffleEventStoreRepository(new InMemoryEventStore()),
+        )->__invoke($command);
 
         return new JsonResponse(status: Response::HTTP_CREATED);
     }

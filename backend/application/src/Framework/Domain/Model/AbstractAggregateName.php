@@ -27,4 +27,9 @@ abstract readonly class AbstractAggregateName implements AggregateNameInterface
     {
         return $this->name;
     }
+
+    public function equals(AggregateNameInterface $that): bool
+    {
+        return $this->name === $that->toString();
+    }
 }

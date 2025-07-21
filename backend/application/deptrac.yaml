@@ -48,6 +48,7 @@ deptrac:
         RaffleDemoRaffleApplication:
             - Foundation
             - FrameworkApplication
+            - FrameworkDomain
             - RaffleDemoRaffleDomain
         RaffleDemoRaffleDomain:
             - Foundation

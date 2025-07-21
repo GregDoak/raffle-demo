@@ -33,4 +33,9 @@ abstract readonly class AbstractAggregateId implements AggregateIdInterface
     {
         return $this->id;
     }
+
+    public function equals(AggregateIdInterface $that): bool
+    {
+        return $this->id === $that->toString();
+    }
 }

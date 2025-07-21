@@ -11,4 +11,6 @@ interface AggregateIdInterface
     public static function fromString(string $id): static;
 
     public function toString(): string;
+
+    public function equals(self $that): bool;
 }
