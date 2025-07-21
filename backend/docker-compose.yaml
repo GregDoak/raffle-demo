@@ -1,6 +1,17 @@
 services:
+    backend-postgres:
+        image: postgres:16-alpine
+        ports:
+            - '54321:5432'
+        volumes:
+            - postgres:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: password
     backend-php:
         restart: unless-stopped
+        depends_on:
+            - backend-postgres
         build:
             context: ./docker
             dockerfile: ./php/php.Dockerfile
@@ -14,3 +25,7 @@ services:
             HANDLER: public/index.php
             DOCUMENT_ROOT: public
         user: 1000:1000
+
+volumes:
+    postgres:
+        driver: local
