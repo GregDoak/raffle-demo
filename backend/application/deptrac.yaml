@@ -23,6 +23,10 @@ deptrac:
             collectors:
                 -   type: directory
                     value: src/RaffleDemo/Raffle/Domain/
+        -   name: RaffleDemoRaffleInfrastructure
+            collectors:
+                -   type: directory
+                    value: src/RaffleDemo/Raffle/Infrastructure/
         -   name: RaffleDemoRaffleUserInterface
             collectors:
                 -   type: directory
@@ -34,6 +38,8 @@ deptrac:
                     composerLockPath: composer.lock
                     packages:
                         - bref/symfony-bridge
+                        - doctrine/dbal
+                        - doctrine/migrations
                         - symfony/framework-bundle
                         - symfony/http-foundation
                         - symfony/http-kernel
@@ -53,6 +59,8 @@ deptrac:
         RaffleDemoRaffleDomain:
             - Foundation
             - FrameworkDomain
+        RaffleDemoRaffleInfrastructure:
+            - Vendor
         RaffleDemoRaffleUserInterface:
             - Foundation
             - RaffleDemoRaffleApplication

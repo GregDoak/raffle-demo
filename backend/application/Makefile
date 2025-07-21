@@ -9,10 +9,14 @@ test: test/unit test/integration test/functional test/mutation ## Runs the full 
 
 .PHONY: test/functional
 test/functional: ## Runs the functional test suite
+	APP_ENV=test bin/console doctrine:database:create --if-not-exists
+	APP_ENV=test bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --all-or-nothing
 	APP_ENV=test bin/phpunit --testsuite Functional --order-by=random
 
 .PHONY: test/integration
 test/integration: ## Runs the integration test suite
+	APP_ENV=test bin/console doctrine:database:create --if-not-exists
+	APP_ENV=test bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --all-or-nothing
 	APP_ENV=test bin/phpunit --testsuite Integration --order-by=random
 
 .PHONY: test/mutation

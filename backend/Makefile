@@ -9,6 +9,8 @@ can-release: ## Runs all checks required for release
 .PHONY: build
 build: ## Build the local development environment
 	@${DOCKER_COMPOSE} run -it --rm backend-php composer install --no-interaction
+	@${DOCKER_COMPOSE} run -it --rm backend-php bin/console doctrine:database:create --if-not-exists
+	@${DOCKER_COMPOSE} run -it --rm backend-php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --all-or-nothing
 
 .PHONY: start
 start: build ## Starts the development environment
