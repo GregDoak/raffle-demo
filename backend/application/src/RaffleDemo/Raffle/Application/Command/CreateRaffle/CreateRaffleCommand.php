@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\RaffleDemo\Raffle\Application\Command\CreateRaffle;
 
+use App\Foundation\Clock\Clock;
 use App\Framework\Application\CommandInterface;
 use App\RaffleDemo\Raffle\Domain\Model\RaffleAggregateId;
 use App\RaffleDemo\Raffle\Domain\ValueObject\CloseAt;
@@ -30,10 +31,7 @@ final readonly class CreateRaffleCommand implements CommandInterface
     ) {
     }
 
-    /**
-     * @param array{amount: int, currency: string} $ticketPrice
-     * @param array{by: string, at: string}        $created
-     */
+    /** @param array{amount: int, currency: string} $ticketPrice */
     public static function create(
         string $name,
         string $prize,
@@ -42,7 +40,7 @@ final readonly class CreateRaffleCommand implements CommandInterface
         string $drawAt,
         int $totalTickets,
         array $ticketPrice,
-        array $created,
+        string $createdBy,
     ): self {
         return new self(
             RaffleAggregateId::fromNew(),
@@ -53,7 +51,7 @@ final readonly class CreateRaffleCommand implements CommandInterface
             DrawAt::fromString($drawAt),
             TotalTickets::fromInt($totalTickets),
             TicketPrice::fromArray($ticketPrice),
-            Created::fromArray($created),
+            Created::from($createdBy, Clock::now()),
         );
     }
 }

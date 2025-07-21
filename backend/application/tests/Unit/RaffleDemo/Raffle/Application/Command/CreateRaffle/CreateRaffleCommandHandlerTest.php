@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\RaffleDemo\Raffle\Application\Command\CreateRaffle;
 
+use App\Foundation\Clock\ClockProvider;
+use App\Foundation\Clock\MockClock;
 use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommand;
 use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommandHandler;
 use PHPUnit\Framework\Attributes\Test;
@@ -22,6 +24,7 @@ final class CreateRaffleCommandHandlerTest extends TestCase
     public function it_creates_a_raffle(): void
     {
         // Arrange
+        ClockProvider::set(new MockClock('2025-01-01 00:00:00'));
         $command = CreateRaffleCommand::create(
             name: 'raffle-demo',
             prize: 'raffle-prize',
@@ -30,7 +33,7 @@ final class CreateRaffleCommandHandlerTest extends TestCase
             drawAt: '2025-01-03 00:00:00',
             totalTickets: 100,
             ticketPrice: ['amount' => 1000, 'currency' => 'GBP'],
-            created: ['by' => 'user', 'at' => '2025-01-01 00:00:00'],
+            createdBy: 'user',
         );
 
         // Act

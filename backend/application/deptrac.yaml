@@ -18,11 +18,15 @@ deptrac:
         -   name: RaffleDemoRaffleApplication
             collectors:
                 -   type: directory
-                    value: src/Framework/RaffleDemo/Raffle/Application/
+                    value: src/RaffleDemo/Raffle/Application/
         -   name: RaffleDemoRaffleDomain
             collectors:
                 -   type: directory
-                    value: src/Framework/RaffleDemo/Raffle/Domain/
+                    value: src/RaffleDemo/Raffle/Domain/
+        -   name: RaffleDemoRaffleUserInterface
+            collectors:
+                -   type: directory
+                    value: src/RaffleDemo/Raffle/UserInterface/
         -   name: Vendor
             collectors:
                 -   type: composer
@@ -30,6 +34,11 @@ deptrac:
                     composerLockPath: composer.lock
                     packages:
                         - bref/symfony-bridge
+                        - symfony/framework-bundle
+                        - symfony/http-foundation
+                        - symfony/http-kernel
+                        - symfony/routing
+                        - symfony/validator
                         - symfony/uid
     ruleset:
         Foundation:
@@ -37,7 +46,14 @@ deptrac:
         FrameworkDomain:
             - Foundation
         RaffleDemoRaffleApplication:
+            - Foundation
             - FrameworkApplication
             - RaffleDemoRaffleDomain
         RaffleDemoRaffleDomain:
+            - Foundation
             - FrameworkDomain
+        RaffleDemoRaffleUserInterface:
+            - Foundation
+            - RaffleDemoRaffleApplication
+            - RaffleDemoRaffleInfrastructure
+            - Vendor

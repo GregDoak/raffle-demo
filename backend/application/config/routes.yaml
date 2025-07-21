@@ -1,5 +1,9 @@
-controllers:
+rest_v1_raffle:
     resource:
-        path: ../src/Controller/
-        namespace: App\Controller
+        path: ../src/RaffleDemo/Raffle/UserInterface/Rest/V1/
+        namespace: App\RaffleDemo\Raffle\UserInterface\Rest\V1
     type: attribute
+    condition: "request.headers.get('Content-Type') === 'application/json'"
+    stateless: true
+    defaults:
+        _format: json
