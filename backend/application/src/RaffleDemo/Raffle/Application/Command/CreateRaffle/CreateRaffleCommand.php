@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\RaffleDemo\Raffle\Application\Command\CreateRaffle;
 
 use App\Foundation\Clock\Clock;
-use App\Framework\Application\CommandInterface;
+use App\Framework\Application\Command\CommandInterface;
 use App\RaffleDemo\Raffle\Domain\Model\RaffleAggregateId;
 use App\RaffleDemo\Raffle\Domain\ValueObject\CloseAt;
 use App\RaffleDemo\Raffle\Domain\ValueObject\Created;

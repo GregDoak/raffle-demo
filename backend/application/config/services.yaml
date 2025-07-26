@@ -3,10 +3,16 @@ services:
         autowire: true
         autoconfigure: true
 
+    App\Framework\Application\Command\CommandBusInterface: '@App\Framework\Infrastructure\Symfony\Messenger\SymfonyCommandBus'
+
     App\Framework\Domain\Repository\TransactionBoundaryInterface: '@App\Framework\Infrastructure\Doctrine\DbalTransactionBoundary'
 
     App\Framework\Infrastructure\Doctrine\:
         resource: '../src/Framework/Infrastructure/Doctrine'
+
+    App\Framework\Infrastructure\Symfony\Messenger\SymfonyCommandBus:
+        arguments:
+            $commandBus: '@command.bus'
 
     App\RaffleDemo\Raffle\Application\:
         resource: '../src/RaffleDemo/Raffle/Application'
@@ -25,3 +31,7 @@ services:
     App\RaffleDemo\Raffle\UserInterface\Rest\V1\:
         resource: '../src/RaffleDemo/Raffle/UserInterface/Rest/V1'
 
+    _instanceof:
+        App\Framework\Application\Command\CommandHandlerInterface:
+            tags:
+                - { name: messenger.message_handler, bus: command.bus }

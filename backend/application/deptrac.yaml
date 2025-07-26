@@ -47,6 +47,7 @@ deptrac:
                         - symfony/framework-bundle
                         - symfony/http-foundation
                         - symfony/http-kernel
+                        - symfony/messenger
                         - symfony/routing
                         - symfony/validator
                         - symfony/uid
@@ -56,6 +57,7 @@ deptrac:
         FrameworkDomain:
             - Foundation
         FrameworkInfrastructure:
+            - FrameworkApplication
             - FrameworkDomain
             - Vendor
         RaffleDemoRaffleApplication:
@@ -72,6 +74,6 @@ deptrac:
             - Vendor
         RaffleDemoRaffleUserInterface:
             - Foundation
+            - FrameworkApplication
             - RaffleDemoRaffleApplication
-            - RaffleDemoRaffleInfrastructure
             - Vendor

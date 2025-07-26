@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\RaffleDemo\Raffle\UserInterface\Rest\V1\CreateRaffle;
 
+use App\Framework\Application\Command\CommandBusInterface;
 use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommand;
-use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommandHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,8 +14,8 @@ use Symfony\Component\Routing\Attribute\Route;
 final readonly class CreateRaffleController
 {
     public function __invoke(
+        CommandBusInterface $commandBus,
         CreateRaffleInput $input,
-        CreateRaffleCommandHandler $commandHandler,
     ): JsonResponse {
         $command = CreateRaffleCommand::create(
             $input->name,
@@ -29,7 +29,7 @@ final readonly class CreateRaffleController
         );
 
         /* @infection-ignore-all */
-        $commandHandler->__invoke($command);
+        $commandBus->dispatchSync($command);
 
         return new JsonResponse(status: Response::HTTP_CREATED);
     }
