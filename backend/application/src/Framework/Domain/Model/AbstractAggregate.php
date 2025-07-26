@@ -39,6 +39,8 @@ abstract class AbstractAggregate
 
         foreach ($events as $event) {
             $aggregate->apply($event);
+
+            $aggregate->version = $aggregate->version->next();
         }
 
         return $aggregate;

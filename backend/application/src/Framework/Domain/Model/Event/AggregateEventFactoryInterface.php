@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Framework\Domain\Model\Event;
 
+use DomainException;
+
 interface AggregateEventFactoryInterface
 {
-    public static function fromSerialized(string $aggregateName, string $eventName, string $eventPayload): AggregateEventInterface;
+    /** @throws DomainException */
+    public function fromSerialized(string $eventName, string $eventPayload): AggregateEventInterface;
 }
