@@ -10,6 +10,7 @@ use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommand;
 use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommandHandler;
 use App\RaffleDemo\Raffle\Domain\Exception\InvalidCreatedException;
 use App\RaffleDemo\Raffle\Domain\Repository\RaffleEventStoreRepository;
+use App\Tests\Double\Framework\Domain\Model\Event\AggregateEventsBusSpy;
 use App\Tests\Double\Framework\Domain\Repository\InMemoryEventStore;
 use App\Tests\Double\Framework\Domain\Repository\TransactionBoundarySpy;
 use PHPUnit\Framework\Attributes\Test;
@@ -27,6 +28,7 @@ final class CreateRaffleCommandHandlerTest extends TestCase
     {
         $this->repository = new RaffleEventStoreRepository(
             new InMemoryEventStore(),
+            new AggregateEventsBusSpy(),
         );
         $this->transactionBoundary = new TransactionBoundarySpy();
 
