@@ -8,6 +8,8 @@ use App\Framework\Domain\Exception\AggregateNotFoundException;
 use App\Framework\Domain\Repository\TransactionBoundaryInterface;
 use App\RaffleDemo\Raffle\Application\Command\AllocateTicketToParticipant\AllocateTicketToParticipantCommand;
 use App\RaffleDemo\Raffle\Application\Command\AllocateTicketToParticipant\AllocateTicketToParticipantCommandHandler;
+use App\RaffleDemo\Raffle\Application\Command\CloseRaffle\CloseRaffleCommand;
+use App\RaffleDemo\Raffle\Application\Command\CloseRaffle\CloseRaffleCommandHandler;
 use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommand;
 use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommandHandler;
 use App\RaffleDemo\Raffle\Application\Command\StartRaffle\StartRaffleCommand;
@@ -66,6 +68,18 @@ final readonly class RaffleApplicationContext
         return $this->getRaffle($command->id);
     }
 
+    public function close(CloseRaffleCommand $command): Raffle
+    {
+        $handler = new CloseRaffleCommandHandler(
+            $this->transactionBoundary,
+            $this->repository,
+        );
+
+        $handler->__invoke($command);
+
+        return $this->getRaffle($command->id);
+    }
+
     /** @param array{amount: int, currency: string} $ticketPrice */
     public function getCreateRaffleCommand(
         string $name = 'raffle-name',
@@ -112,6 +126,18 @@ final readonly class RaffleApplicationContext
             $ticketAllocatedQuantity,
             $ticketAllocatedTo,
             $ticketAllocatedAt,
+        );
+    }
+
+    public function getCloseRaffleCommand(
+        string $id,
+        DateTimeInterface $closedAt,
+        string $closedBy,
+    ): CloseRaffleCommand {
+        return CloseRaffleCommand::create(
+            $id,
+            $closedAt,
+            $closedBy,
         );
     }
 
