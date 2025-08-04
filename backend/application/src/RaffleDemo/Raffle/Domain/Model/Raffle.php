@@ -88,7 +88,7 @@ final class Raffle extends AbstractAggregate
         TicketPrice $ticketPrice,
         Created $created,
     ): self {
-        if ($created->toDateTime() > $startAt->toDateTime()) {
+        if ($created->at > $startAt->toDateTime()) {
             throw InvalidCreatedException::fromCreatedAtAfterStartAt();
         }
 
@@ -125,7 +125,7 @@ final class Raffle extends AbstractAggregate
     public function start(
         Started $started,
     ): void {
-        if ($started->toDateTime() < $this->startAt->toDateTime()) {
+        if ($started->at < $this->startAt->toDateTime()) {
             throw InvalidStartedException::fromCannotStartBeforeStartAtDate();
         }
 
@@ -146,7 +146,7 @@ final class Raffle extends AbstractAggregate
     public function allocateTicketToParticipant(
         TicketAllocation $ticketAllocation,
     ): void {
-        if ($this->started === null || $this->started->toDateTime() > $ticketAllocation->toDateTime()) {
+        if ($this->started === null || $this->started->at > $ticketAllocation->allocatedAt) {
             throw InvalidTicketAllocationException::fromCannotAllocateBeforeStarted();
         }
 
@@ -158,7 +158,7 @@ final class Raffle extends AbstractAggregate
             throw InvalidTicketAllocationException::fromDuplicateTicketAllocation();
         }
 
-        if (($this->ticketAllocations->numberOfTicketsAllocated + $ticketAllocation->toInt()) > $this->totalTickets->toInt()) {
+        if (($this->ticketAllocations->numberOfTicketsAllocated + $ticketAllocation->quantity) > $this->totalTickets->toInt()) {
             throw InvalidTicketAllocationException::fromOverAllocationOfTickets();
         }
 

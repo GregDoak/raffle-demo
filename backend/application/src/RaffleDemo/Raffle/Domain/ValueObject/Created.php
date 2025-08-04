@@ -11,8 +11,8 @@ use DateTimeInterface;
 final readonly class Created
 {
     private function __construct(
-        private string $by,
-        private DateTimeInterface $at,
+        public string $by,
+        public DateTimeInterface $at,
     ) {
         if ($this->by === '') {
             throw InvalidCreatedException::fromEmptyBy();
@@ -37,10 +37,5 @@ final readonly class Created
             'by' => $this->by,
             'at' => $this->at->format(DATE_ATOM),
         ];
-    }
-
-    public function toDateTime(): DateTimeInterface
-    {
-        return $this->at;
     }
 }

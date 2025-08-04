@@ -9,8 +9,8 @@ use App\RaffleDemo\Raffle\Domain\Exception\InvalidTicketPriceException;
 final readonly class TicketPrice
 {
     private function __construct(
-        private int $amount,
-        private string $currency,
+        public int $amount,
+        public string $currency,
     ) {
         if ($this->amount < 0) {
             throw InvalidTicketPriceException::fromNegativeAmount();

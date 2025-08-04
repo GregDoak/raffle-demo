@@ -398,7 +398,7 @@ final class RaffleTest extends TestCase
 
         // Assert
         self::assertSame($drawn, $raffle->drawn);
-        self::assertSame($ticketAllocation, $raffle->winner?->toTicketAllocation());
+        self::assertSame($ticketAllocation, $raffle->winner?->ticketAllocation);
     }
 
     #[Test]

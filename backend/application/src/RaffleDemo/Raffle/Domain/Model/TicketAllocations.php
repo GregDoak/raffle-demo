@@ -33,16 +33,16 @@ final class TicketAllocations
 
     public function has(TicketAllocation $ticketAllocation): bool
     {
-        return array_key_exists($ticketAllocation->toString(), $this->ticketAllocations);
+        return array_key_exists($ticketAllocation->hash, $this->ticketAllocations);
     }
 
     public function addTicketAllocation(TicketAllocation $ticketAllocation): void
     {
-        $this->ticketAllocations[$ticketAllocation->toString()] = $ticketAllocation;
-        for ($index = 1; $index <= $ticketAllocation->toInt(); ++$index) {
-            $this->tickets[++$this->currentTicketNumber] = $ticketAllocation->toString();
+        $this->ticketAllocations[$ticketAllocation->hash] = $ticketAllocation;
+        for ($index = 1; $index <= $ticketAllocation->quantity; ++$index) {
+            $this->tickets[++$this->currentTicketNumber] = $ticketAllocation->hash;
         }
-        $this->numberOfTicketsAllocated += $ticketAllocation->toInt();
+        $this->numberOfTicketsAllocated += $ticketAllocation->quantity;
     }
 
     public function drawTicketAllocationFromTicketNumber(int $ticketNumber): TicketAllocation

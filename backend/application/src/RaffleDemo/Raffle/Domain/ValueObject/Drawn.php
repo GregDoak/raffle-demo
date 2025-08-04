@@ -11,8 +11,8 @@ use DateTimeInterface;
 final readonly class Drawn
 {
     private function __construct(
-        private string $by,
-        private DateTimeInterface $at,
+        public string $by,
+        public DateTimeInterface $at,
     ) {
         if ($this->by === '') {
             throw InvalidDrawnException::fromEmptyBy();

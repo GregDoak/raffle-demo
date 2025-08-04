@@ -13,12 +13,12 @@ use function strlen;
 
 final readonly class TicketAllocation
 {
-    private string $hash;
+    public string $hash;
 
     private function __construct(
-        private int $quantity,
-        private string $allocatedTo,
-        private DateTimeInterface $allocatedAt,
+        public int $quantity,
+        public string $allocatedTo,
+        public DateTimeInterface $allocatedAt,
     ) {
         $this->hash = $this->generateHash();
 
@@ -61,21 +61,6 @@ final readonly class TicketAllocation
             'allocatedTo' => $this->allocatedTo,
             'allocatedAt' => $this->allocatedAt->format(DATE_ATOM),
         ];
-    }
-
-    public function toDateTime(): DateTimeInterface
-    {
-        return $this->allocatedAt;
-    }
-
-    public function toString(): string
-    {
-        return $this->hash;
-    }
-
-    public function toInt(): int
-    {
-        return $this->quantity;
     }
 
     private function generateHash(): string

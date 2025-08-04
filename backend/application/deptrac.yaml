@@ -71,6 +71,7 @@ deptrac:
         RaffleDemoRaffleInfrastructure:
             - FrameworkDomain
             - FrameworkInfrastructure
+            - RaffleDemoRaffleDomain
             - Vendor
         RaffleDemoRaffleUserInterface:
             - Foundation

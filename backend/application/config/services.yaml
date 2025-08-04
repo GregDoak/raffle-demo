@@ -25,14 +25,20 @@ services:
 
     App\RaffleDemo\Raffle\Domain\Model\Event\RaffleEventFactory: ~
 
+    App\RaffleDemo\Raffle\Domain\Projection\Raffle\RaffleProjector: ~
+
     App\RaffleDemo\Raffle\Domain\Repository\RaffleEventStoreRepository:
         arguments:
             $eventStore: '@App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\PostgresRaffleEventStore'
+
+    App\RaffleDemo\Raffle\Domain\Projection\Raffle\RaffleProjectionRepositoryInterface: '@App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\Projection\PostgresRaffleProjectionRepository'
 
     App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\PostgresRaffleEventStore:
         arguments:
             $aggregateEventFactory: '@App\RaffleDemo\Raffle\Domain\Model\Event\RaffleEventFactory'
             $domain: 'raffle'
+
+    App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\Projection\PostgresRaffleProjectionRepository: ~
 
     App\RaffleDemo\Raffle\UserInterface\Rest\V1\:
         resource: '../src/RaffleDemo/Raffle/UserInterface/Rest/V1'
@@ -41,3 +47,7 @@ services:
         App\Framework\Application\Command\CommandHandlerInterface:
             tags:
                 - { name: messenger.message_handler, bus: command.bus }
+
+        App\Framework\Domain\Projection\AggregateEventsSubscriberInterface:
+            tags:
+                - { name: messenger.message_handler, bus: aggregate_event.bus }

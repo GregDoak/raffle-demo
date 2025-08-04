@@ -11,8 +11,8 @@ use DateTimeInterface;
 final readonly class Closed
 {
     private function __construct(
-        private string $by,
-        private DateTimeInterface $at,
+        public string $by,
+        public DateTimeInterface $at,
     ) {
         if ($this->by === '') {
             throw InvalidClosedException::fromEmptyBy();

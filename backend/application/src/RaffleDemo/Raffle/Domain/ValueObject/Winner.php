@@ -9,8 +9,8 @@ use App\RaffleDemo\Raffle\Domain\Exception\InvalidWinnerException;
 final readonly class Winner
 {
     private function __construct(
-        private TicketAllocation $ticketAllocation,
-        private int $ticketNumber,
+        public TicketAllocation $ticketAllocation,
+        public int $ticketNumber,
     ) {
         if ($this->ticketNumber < 1) {
             throw InvalidWinnerException::fromLessThan1();
@@ -38,10 +38,5 @@ final readonly class Winner
             'ticketAllocation' => $this->ticketAllocation->toArray(),
             'ticketNumber' => $this->ticketNumber,
         ];
-    }
-
-    public function toTicketAllocation(): TicketAllocation
-    {
-        return $this->ticketAllocation;
     }
 }
