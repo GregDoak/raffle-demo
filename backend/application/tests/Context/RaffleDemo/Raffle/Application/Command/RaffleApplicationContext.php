@@ -6,6 +6,8 @@ namespace App\Tests\Context\RaffleDemo\Raffle\Application\Command;
 
 use App\Framework\Domain\Exception\AggregateNotFoundException;
 use App\Framework\Domain\Repository\TransactionBoundaryInterface;
+use App\RaffleDemo\Raffle\Application\Command\AllocateTicketToParticipant\AllocateTicketToParticipantCommand;
+use App\RaffleDemo\Raffle\Application\Command\AllocateTicketToParticipant\AllocateTicketToParticipantCommandHandler;
 use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommand;
 use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommandHandler;
 use App\RaffleDemo\Raffle\Application\Command\StartRaffle\StartRaffleCommand;
@@ -52,6 +54,18 @@ final readonly class RaffleApplicationContext
         return $this->getRaffle($command->id);
     }
 
+    public function allocateTicketToParticipant(AllocateTicketToParticipantCommand $command): Raffle
+    {
+        $handler = new AllocateTicketToParticipantCommandHandler(
+            $this->transactionBoundary,
+            $this->repository,
+        );
+
+        $handler->__invoke($command);
+
+        return $this->getRaffle($command->id);
+    }
+
     /** @param array{amount: int, currency: string} $ticketPrice */
     public function getCreateRaffleCommand(
         string $name = 'raffle-name',
@@ -84,6 +98,20 @@ final readonly class RaffleApplicationContext
             $id,
             $startedAt,
             $startedBy,
+        );
+    }
+
+    public function getAllocateTicketToParticipantCommand(
+        string $id,
+        int $ticketAllocatedQuantity,
+        string $ticketAllocatedTo,
+        DateTimeInterface $ticketAllocatedAt,
+    ): AllocateTicketToParticipantCommand {
+        return AllocateTicketToParticipantCommand::create(
+            $id,
+            $ticketAllocatedQuantity,
+            $ticketAllocatedTo,
+            $ticketAllocatedAt,
         );
     }
 
