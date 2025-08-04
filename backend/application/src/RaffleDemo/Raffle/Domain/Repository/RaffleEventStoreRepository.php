@@ -27,9 +27,13 @@ final readonly class RaffleEventStoreRepository
         $this->aggregateEventsBus->publish($events);
     }
 
-    public function get(RaffleAggregateId $id): Raffle
+    public function get(RaffleAggregateId $id): ?Raffle
     {
         $events = $this->eventStore->get(RaffleAggregateName::fromString(Raffle::AGGREGATE_NAME), $id);
+
+        if ($events->count() === 0) {
+            return null;
+        }
 
         return Raffle::buildFrom($events);
     }
