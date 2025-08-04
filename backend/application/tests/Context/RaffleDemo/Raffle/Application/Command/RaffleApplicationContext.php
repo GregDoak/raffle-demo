@@ -12,6 +12,8 @@ use App\RaffleDemo\Raffle\Application\Command\CloseRaffle\CloseRaffleCommand;
 use App\RaffleDemo\Raffle\Application\Command\CloseRaffle\CloseRaffleCommandHandler;
 use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommand;
 use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommandHandler;
+use App\RaffleDemo\Raffle\Application\Command\DrawPrize\DrawPrizeCommand;
+use App\RaffleDemo\Raffle\Application\Command\DrawPrize\DrawPrizeCommandHandler;
 use App\RaffleDemo\Raffle\Application\Command\StartRaffle\StartRaffleCommand;
 use App\RaffleDemo\Raffle\Application\Command\StartRaffle\StartRaffleCommandHandler;
 use App\RaffleDemo\Raffle\Domain\Model\Raffle;
@@ -80,6 +82,18 @@ final readonly class RaffleApplicationContext
         return $this->getRaffle($command->id);
     }
 
+    public function drawPrize(DrawPrizeCommand $command): Raffle
+    {
+        $handler = new DrawPrizeCommandHandler(
+            $this->transactionBoundary,
+            $this->repository,
+        );
+
+        $handler->__invoke($command);
+
+        return $this->getRaffle($command->id);
+    }
+
     /** @param array{amount: int, currency: string} $ticketPrice */
     public function getCreateRaffleCommand(
         string $name = 'raffle-name',
@@ -138,6 +152,18 @@ final readonly class RaffleApplicationContext
             $id,
             $closedAt,
             $closedBy,
+        );
+    }
+
+    public function getDrawPrizeCommand(
+        string $id,
+        DateTimeInterface $drawnAt,
+        string $drawnBy,
+    ): DrawPrizeCommand {
+        return DrawPrizeCommand::create(
+            $id,
+            $drawnAt,
+            $drawnBy,
         );
     }
 
