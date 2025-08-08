@@ -3,6 +3,8 @@ services:
         autowire: true
         autoconfigure: true
 
+    ### Framework ###
+
     App\Framework\Application\Command\CommandBusInterface: '@App\Framework\Infrastructure\Symfony\Messenger\SymfonyCommandBus'
 
     App\Framework\Application\Exception\ExceptionTransformerInterface: '@App\Framework\Application\Exception\ExceptionTransformer'
@@ -23,6 +25,16 @@ services:
     App\Framework\Infrastructure\Symfony\Messenger\SymfonyCommandBus:
         arguments:
             $commandBus: '@command.bus'
+
+    App\Framework\Infrastructure\Symfony\Router\SymfonyInstanceProvider: ~
+
+    App\Framework\UserInterface\ApiProblem\DebuggableExceptionTransformer: ~
+
+    App\Framework\UserInterface\ApiProblem\ExceptionTransformerInterface: '@App\Framework\UserInterface\ApiProblem\DebuggableExceptionTransformer'
+
+    App\Framework\UserInterface\ApiProblem\InstanceProviderInterface: '@App\Framework\Infrastructure\Symfony\Router\SymfonyInstanceProvider'
+
+    ### RaffleDemo ###
 
     App\RaffleDemo\Raffle\Application\:
         resource: '../src/RaffleDemo/Raffle/Application'
@@ -55,3 +67,11 @@ services:
         App\Framework\Domain\Projection\AggregateEventsSubscriberInterface:
             tags:
                 - { name: messenger.message_handler, bus: aggregate_event.bus }
+
+when@prod:
+    services:
+        App\Framework\UserInterface\ApiProblem\ExceptionTransformer:
+            arguments:
+                $additionalParams: { }
+
+        App\Framework\UserInterface\ApiProblem\ExceptionTransformerInterface: '@App\Framework\UserInterface\ApiProblem\ExceptionTransformer'

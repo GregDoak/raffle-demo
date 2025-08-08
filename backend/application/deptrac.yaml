@@ -19,6 +19,10 @@ deptrac:
             collectors:
                 -   type: directory
                     value: src/Framework/Infrastructure/
+        -   name: FrameworkUserInterface
+            collectors:
+                -   type: directory
+                    value: src/Framework/UserInterface/
         -   name: RaffleDemoRaffleApplication
             collectors:
                 -   type: directory
@@ -61,6 +65,10 @@ deptrac:
         FrameworkInfrastructure:
             - FrameworkApplication
             - FrameworkDomain
+            - FrameworkUserInterface
+            - Vendor
+        FrameworkUserInterface:
+            - FrameworkApplication
             - Vendor
         RaffleDemoRaffleApplication:
             - Foundation
