@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Framework\Domain\ValueObject;
 
 use App\Foundation\Clock\Clock;
+use App\Framework\Domain\Exception\InvalidDateTimeException;
 use DateTimeInterface;
+use Throwable;
 
 /** @phpstan-consistent-constructor */
 abstract readonly class AbstractDateTime
@@ -22,7 +24,15 @@ abstract readonly class AbstractDateTime
 
     public static function fromString(string $value): static
     {
-        return new static(Clock::fromString($value));
+        if ($value === '') {
+            throw InvalidDateTimeException::fromEmptyDateTime();
+        }
+
+        try {
+            return new static(Clock::fromString($value));
+        } catch (Throwable) {
+            throw InvalidDateTimeException::fromInvalidDateTime();
+        }
     }
 
     public function toDateTime(): DateTimeInterface

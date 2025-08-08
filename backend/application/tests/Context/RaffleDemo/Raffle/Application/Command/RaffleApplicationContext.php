@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Context\RaffleDemo\Raffle\Application\Command;
 
+use App\Framework\Application\Exception\ExceptionTransformer;
+use App\Framework\Application\Exception\ExceptionTransformerInterface;
 use App\Framework\Domain\Repository\TransactionBoundaryInterface;
 use App\RaffleDemo\Raffle\Application\Command\AllocateTicketToParticipant\AllocateTicketToParticipantCommand;
 use App\RaffleDemo\Raffle\Application\Command\AllocateTicketToParticipant\AllocateTicketToParticipantCommandHandler;
@@ -22,11 +24,13 @@ use DateTimeInterface;
 
 final readonly class RaffleApplicationContext
 {
+    private ExceptionTransformerInterface $exceptionTransformer;
     private TransactionBoundaryInterface $transactionBoundary;
 
     public function __construct(
         private RaffleEventStoreRepository $repository,
     ) {
+        $this->exceptionTransformer = new ExceptionTransformer();
         $this->transactionBoundary = new TransactionBoundarySpy();
     }
 
@@ -37,6 +41,7 @@ final readonly class RaffleApplicationContext
         $handler = new CreateRaffleCommandHandler(
             $this->transactionBoundary,
             $this->repository,
+            $this->exceptionTransformer,
         );
 
         $handler->__invoke($command);

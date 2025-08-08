@@ -12,9 +12,9 @@ final readonly class ExceptionTransformer implements ExceptionTransformerInterfa
 {
     public function transform(Throwable $exception): Throwable
     {
-        return match ($exception::class) {
-            AbstractInvariantViolationException::class => ValidationException::fromError($exception->getMessage()),
-            AggregateNotFoundException::class => ResourceNotFoundException::fromId($exception->id),
+        return match (true) {
+            $exception instanceof AbstractInvariantViolationException => ValidationException::fromError($exception->getMessage()),
+            $exception instanceof AggregateNotFoundException => ResourceNotFoundException::fromId($exception->id),
             default => $exception,
         };
     }

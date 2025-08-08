@@ -8,6 +8,6 @@ final class InvalidAggregateIdException extends AbstractInvariantViolationExcept
 {
     public static function fromInvalidId(): self
     {
-        return self::fromMessage('The id must is not a valid id.');
+        return self::fromMessage('The id is not a valid id.');
     }
 }

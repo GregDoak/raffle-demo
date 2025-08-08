@@ -6,6 +6,8 @@ namespace App\Tests\Unit\RaffleDemo\Raffle\Application\Command\CreateRaffle;
 
 use App\Foundation\Clock\ClockProvider;
 use App\Foundation\Clock\MockClock;
+use App\Framework\Application\Exception\ExceptionTransformer;
+use App\Framework\Application\Exception\ValidationException;
 use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommand;
 use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommandHandler;
 use App\RaffleDemo\Raffle\Domain\Exception\InvalidCreatedException;
@@ -35,6 +37,7 @@ final class CreateRaffleCommandHandlerTest extends TestCase
         $this->handler = new CreateRaffleCommandHandler(
             $this->transactionBoundary,
             $this->repository,
+            new ExceptionTransformer(),
         );
     }
 
@@ -89,6 +92,7 @@ final class CreateRaffleCommandHandlerTest extends TestCase
             createdBy: 'user',
         );
         $exception = null;
+        $expectedException = ValidationException::fromError(InvalidCreatedException::fromCreatedAtAfterStartAt()->getMessage());
 
         // Act
         try {
@@ -100,6 +104,6 @@ final class CreateRaffleCommandHandlerTest extends TestCase
         self::assertFalse($this->transactionBoundary->hasBegun);
         self::assertFalse($this->transactionBoundary->hasCommitted);
         self::assertTrue($this->transactionBoundary->hasRolledBack);
-        self::assertInstanceOf(InvalidCreatedException::class, $exception);
+        self::assertEquals($expectedException, $exception);
     }
 }

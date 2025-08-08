@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\RaffleDemo\Raffle\Application\Command\CreateRaffle;
 
 use App\Framework\Application\Command\CommandHandlerInterface;
+use App\Framework\Application\Exception\ExceptionTransformerInterface;
 use App\Framework\Domain\Repository\TransactionBoundaryInterface;
 use App\RaffleDemo\Raffle\Domain\Model\Raffle;
 use App\RaffleDemo\Raffle\Domain\Repository\RaffleEventStoreRepository;
@@ -15,6 +16,7 @@ final readonly class CreateRaffleCommandHandler implements CommandHandlerInterfa
     public function __construct(
         private TransactionBoundaryInterface $transactionBoundary,
         private RaffleEventStoreRepository $repository,
+        private ExceptionTransformerInterface $exceptionTransformer,
     ) {
     }
 
@@ -39,7 +41,7 @@ final readonly class CreateRaffleCommandHandler implements CommandHandlerInterfa
         } catch (Throwable $exception) {
             $this->transactionBoundary->rollback();
 
-            throw $exception;
+            throw $this->exceptionTransformer->transform($exception);
         }
     }
 }

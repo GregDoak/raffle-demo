@@ -5,6 +5,10 @@ services:
 
     App\Framework\Application\Command\CommandBusInterface: '@App\Framework\Infrastructure\Symfony\Messenger\SymfonyCommandBus'
 
+    App\Framework\Application\Exception\ExceptionTransformerInterface: '@App\Framework\Application\Exception\ExceptionTransformer'
+
+    App\Framework\Application\Exception\ExceptionTransformer: ~
+
     App\Framework\Domain\Model\Event\AggregateEventsBusInterface: '@App\Framework\Infrastructure\Symfony\Messenger\SymfonyAggregateEventBus'
 
     App\Framework\Domain\Repository\TransactionBoundaryInterface: '@App\Framework\Infrastructure\Doctrine\DbalTransactionBoundary'
