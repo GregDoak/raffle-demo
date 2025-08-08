@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace App\Framework\Domain\Exception;
 
+use App\Framework\Domain\Model\AggregateIdInterface;
 use RuntimeException;
 
 final class AggregateNotFoundException extends RuntimeException
 {
-    public static function fromAggregateId(): self
+    private function __construct(
+        public string $id,
+    ) {
+        parent::__construct('The requested id was not found.');
+    }
+
+    public static function fromAggregateId(AggregateIdInterface $id): self
     {
-        return new self('The requested id was not found.');
+        return new self($id->toString());
     }
 }

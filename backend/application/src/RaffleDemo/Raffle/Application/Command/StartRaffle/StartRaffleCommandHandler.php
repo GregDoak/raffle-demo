@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\RaffleDemo\Raffle\Application\Command\StartRaffle;
 
 use App\Framework\Application\Command\CommandHandlerInterface;
-use App\Framework\Domain\Exception\AggregateNotFoundException;
 use App\Framework\Domain\Repository\TransactionBoundaryInterface;
 use App\RaffleDemo\Raffle\Domain\Repository\RaffleEventStoreRepository;
 use Throwable;
@@ -22,10 +21,6 @@ final readonly class StartRaffleCommandHandler implements CommandHandlerInterfac
     {
         try {
             $raffle = $this->repository->get($command->id);
-            if ($raffle === null) {
-                throw AggregateNotFoundException::fromAggregateId();
-            }
-
             $raffle->start($command->started);
 
             $this->transactionBoundary->begin();

@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Framework\Domain\Model;
 
 use App\Foundation\Uuid\Uuid;
-use DomainException;
-
-use function sprintf;
+use App\Framework\Domain\Exception\InvalidAggregateIdException;
 
 abstract readonly class AbstractAggregateId implements AggregateIdInterface
 {
@@ -15,7 +13,7 @@ abstract readonly class AbstractAggregateId implements AggregateIdInterface
         private string $id,
     ) {
         if (Uuid::isValid($id) === false) {
-            throw new DomainException(sprintf("%s '%s' is not valid", static::class, $id));
+            throw InvalidAggregateIdException::fromInvalidId();
         }
     }
 

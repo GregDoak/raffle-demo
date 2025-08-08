@@ -54,6 +54,8 @@ deptrac:
     ruleset:
         Foundation:
             - Vendor
+        FrameworkApplication:
+            - FrameworkDomain
         FrameworkDomain:
             - Foundation
         FrameworkInfrastructure:

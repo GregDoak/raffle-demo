@@ -89,7 +89,6 @@ final class DrawPrizeCommandHandlerTest extends TestCase
         self::assertTrue($this->transactionBoundary->hasCommitted);
 
         $raffle = $this->repository->get($command->id);
-        self::assertNotNull($raffle);
         self::assertSame($command->drawn->toArray(), $raffle->drawn?->toArray());
         self::assertNotNull($raffle->winner);
     }

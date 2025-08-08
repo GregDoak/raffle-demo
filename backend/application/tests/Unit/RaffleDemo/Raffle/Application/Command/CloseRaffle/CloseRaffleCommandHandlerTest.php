@@ -67,7 +67,6 @@ final class CloseRaffleCommandHandlerTest extends TestCase
         self::assertTrue($this->transactionBoundary->hasCommitted);
 
         $raffle = $this->repository->get($command->id);
-        self::assertNotNull($raffle);
         self::assertSame($command->closed->toArray(), $raffle->closed?->toArray());
     }
 

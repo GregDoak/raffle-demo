@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\RaffleDemo\Raffle\Application\Command\AllocateTicketToParticipant;
 
 use App\Framework\Application\Command\CommandHandlerInterface;
-use App\Framework\Domain\Exception\AggregateNotFoundException;
 use App\Framework\Domain\Repository\TransactionBoundaryInterface;
 use App\RaffleDemo\Raffle\Domain\Repository\RaffleEventStoreRepository;
 use Throwable;
@@ -22,10 +21,6 @@ final readonly class AllocateTicketToParticipantCommandHandler implements Comman
     {
         try {
             $raffle = $this->repository->get($command->id);
-            if ($raffle === null) {
-                throw AggregateNotFoundException::fromAggregateId();
-            }
-
             $raffle->allocateTicketToParticipant($command->ticketAllocation);
 
             $this->transactionBoundary->begin();

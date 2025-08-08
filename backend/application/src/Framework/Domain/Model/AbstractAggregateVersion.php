@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Framework\Domain\Model;
 
-use DomainException;
+use App\Framework\Domain\Exception\InvalidAggregateVersionException;
 
 abstract readonly class AbstractAggregateVersion implements AggregateVersionInterface
 {
@@ -12,7 +12,7 @@ abstract readonly class AbstractAggregateVersion implements AggregateVersionInte
         private int $version,
     ) {
         if ($this->version < 0) {
-            throw new DomainException('Aggregate version must be larger than 0');
+            throw InvalidAggregateVersionException::fromInvalidVersion($this->version, static::class);
         }
     }
 

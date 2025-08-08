@@ -63,7 +63,6 @@ final class CreateRaffleCommandHandlerTest extends TestCase
         self::assertFalse($this->transactionBoundary->hasRolledBack);
 
         $raffle = $this->repository->get($command->id);
-        self::assertNotNull($raffle);
         self::assertSame($command->name->toString(), $raffle->name->toString());
         self::assertSame($command->prize->toString(), $raffle->prize->toString());
         self::assertSame($command->startAt->toString(), $raffle->startAt->toString());

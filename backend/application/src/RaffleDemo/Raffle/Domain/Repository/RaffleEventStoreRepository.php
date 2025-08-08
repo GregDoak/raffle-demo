@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\RaffleDemo\Raffle\Domain\Repository;
 
+use App\Framework\Domain\Exception\AggregateNotFoundException;
 use App\Framework\Domain\Model\Event\AggregateEventsBusInterface;
 use App\Framework\Domain\Repository\EventStoreInterface;
 use App\RaffleDemo\Raffle\Domain\Model\Raffle;
@@ -27,12 +28,12 @@ final readonly class RaffleEventStoreRepository
         $this->aggregateEventsBus->publish($events);
     }
 
-    public function get(RaffleAggregateId $id): ?Raffle
+    public function get(RaffleAggregateId $id): Raffle
     {
         $events = $this->eventStore->get(RaffleAggregateName::fromString(Raffle::AGGREGATE_NAME), $id);
 
         if ($events->count() === 0) {
-            return null;
+            throw AggregateNotFoundException::fromAggregateId($id);
         }
 
         return Raffle::buildFrom($events);

@@ -74,7 +74,6 @@ final class AllocateTicketToParticipantCommandHandlerTest extends TestCase
         self::assertTrue($this->transactionBoundary->hasCommitted);
 
         $raffle = $this->repository->get($command->id);
-        self::assertNotNull($raffle);
         self::assertTrue($raffle->ticketAllocations->has($command->ticketAllocation));
     }
 

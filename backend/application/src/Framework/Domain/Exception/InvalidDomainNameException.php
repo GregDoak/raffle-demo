@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Framework\Domain\Exception;
 
-use DomainException;
+use RuntimeException;
 
 use function sprintf;
 
-final class InvalidDomainNameException extends DomainException
+final class InvalidDomainNameException extends RuntimeException
 {
     public static function fromEmptyName(string $className): self
     {

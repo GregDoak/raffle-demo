@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\RaffleDemo\Raffle\Domain\Model\Event;
 
+use App\Framework\Domain\Exception\AggregateEventNotHandledException;
 use App\Framework\Domain\Model\Event\AggregateEventFactoryInterface;
 use App\Framework\Domain\Model\Event\AggregateEventInterface;
-use DomainException;
-
-use function sprintf;
 
 final readonly class RaffleEventFactory implements AggregateEventFactoryInterface
 {
@@ -22,7 +20,7 @@ final readonly class RaffleEventFactory implements AggregateEventFactoryInterfac
             RaffleCreated::EVENT_NAME => RaffleCreated::deserialize($eventPayload),
             RaffleStarted::EVENT_NAME => RaffleStarted::deserialize($eventPayload),
             TicketAllocatedToParticipant::EVENT_NAME => TicketAllocatedToParticipant::deserialize($eventPayload),
-            default => throw new DomainException(sprintf("Unable to build event '%s'", $eventName)),
+            default => throw throw AggregateEventNotHandledException::notHandledByEventFactory($eventName, self::class)
         };
     }
 }

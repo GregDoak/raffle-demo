@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Context\RaffleDemo\Raffle\Application\Command;
 
-use App\Framework\Domain\Exception\AggregateNotFoundException;
 use App\Framework\Domain\Repository\TransactionBoundaryInterface;
 use App\RaffleDemo\Raffle\Application\Command\AllocateTicketToParticipant\AllocateTicketToParticipantCommand;
 use App\RaffleDemo\Raffle\Application\Command\AllocateTicketToParticipant\AllocateTicketToParticipantCommandHandler;
@@ -17,7 +16,6 @@ use App\RaffleDemo\Raffle\Application\Command\DrawPrize\DrawPrizeCommandHandler;
 use App\RaffleDemo\Raffle\Application\Command\StartRaffle\StartRaffleCommand;
 use App\RaffleDemo\Raffle\Application\Command\StartRaffle\StartRaffleCommandHandler;
 use App\RaffleDemo\Raffle\Domain\Model\Raffle;
-use App\RaffleDemo\Raffle\Domain\Model\RaffleAggregateId;
 use App\RaffleDemo\Raffle\Domain\Repository\RaffleEventStoreRepository;
 use App\Tests\Double\Framework\Domain\Repository\TransactionBoundarySpy;
 use DateTimeInterface;
@@ -43,7 +41,7 @@ final readonly class RaffleApplicationContext
 
         $handler->__invoke($command);
 
-        return $this->getRaffle($command->id);
+        return $this->repository->get($command->id);
     }
 
     public function start(StartRaffleCommand $command): Raffle
@@ -55,7 +53,7 @@ final readonly class RaffleApplicationContext
 
         $handler->__invoke($command);
 
-        return $this->getRaffle($command->id);
+        return $this->repository->get($command->id);
     }
 
     public function allocateTicketToParticipant(AllocateTicketToParticipantCommand $command): Raffle
@@ -67,7 +65,7 @@ final readonly class RaffleApplicationContext
 
         $handler->__invoke($command);
 
-        return $this->getRaffle($command->id);
+        return $this->repository->get($command->id);
     }
 
     public function close(CloseRaffleCommand $command): Raffle
@@ -79,7 +77,7 @@ final readonly class RaffleApplicationContext
 
         $handler->__invoke($command);
 
-        return $this->getRaffle($command->id);
+        return $this->repository->get($command->id);
     }
 
     public function drawPrize(DrawPrizeCommand $command): Raffle
@@ -91,7 +89,7 @@ final readonly class RaffleApplicationContext
 
         $handler->__invoke($command);
 
-        return $this->getRaffle($command->id);
+        return $this->repository->get($command->id);
     }
 
     /** @param array{amount: int, currency: string} $ticketPrice */
@@ -165,10 +163,5 @@ final readonly class RaffleApplicationContext
             $drawnAt,
             $drawnBy,
         );
-    }
-
-    private function getRaffle(RaffleAggregateId $id): Raffle
-    {
-        return $this->repository->get($id) ?? throw AggregateNotFoundException::fromAggregateId();
     }
 }
