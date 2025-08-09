@@ -26,7 +26,7 @@ final readonly class DebuggableExceptionTransformer extends AbstractExceptionTra
             ),
         ];
 
-        return $this->convertExceptionToProblemDetails($exception, $additionalParams);
+        return $this->convertExceptionToProblemDetail($exception, $additionalParams);
     }
 
     /** @return array{type:string, message: string, code: int, line:int, file: string, trace: string[]} */

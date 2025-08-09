@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\RaffleDemo\Raffle\UserInterface\Rest\V1\CreateRaffle;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Validation;
+use Opis\JsonSchema\Helper;
+use Opis\JsonSchema\ValidationResult;
+use Opis\JsonSchema\Validator;
 
 final readonly class CreateRaffleInputValidator
 {
@@ -22,31 +21,44 @@ final readonly class CreateRaffleInputValidator
      *     createdBy?: ?mixed
      * } $input
      */
-    public function validate(array $input): ConstraintViolationListInterface
+    public function validate(array $input): ValidationResult
     {
-        $validator = Validation::createValidator();
+        $json = Helper::toJSON($input);
 
-        /** @infection-ignore-all  */
-        $constraints = new Collection([
-            'name' => [new Assert\Required(), new Assert\Type('string')],
-            'prize' => [new Assert\Required(), new Assert\Type('string')],
-            'startAt' => [new Assert\Required(), new Assert\Type('string')],
-            'closeAt' => [new Assert\Required(), new Assert\Type('string')],
-            'drawAt' => [new Assert\Required(), new Assert\Type('string')],
-            'totalTickets' => [new Assert\Required(), new Assert\Type('int')],
-            'ticketPrice' => new Collection([
-                'amount' => [new Assert\Required(), new Assert\Type('int')],
-                'currency' => [new Assert\Required(), new Assert\Type('string')],
+        return new Validator(
+            max_errors: 100,
+            stop_at_first_error: false,
+        )->validate($json, Helper::toJSON(self::getSchema())); // @phpstan-ignore argument.type
+    }
+
+    private static function getSchema(): array // @phpstan-ignore missingType.iterableValue
+    {
+        return [
+            'type' => 'object',
+            'properties' => [
+                'name' => ['type' => 'string'],
+                'prize' => ['type' => 'string'],
+                'startAt' => ['type' => 'string', 'pattern' => '\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'],
+                'closeAt' => ['type' => 'string', 'pattern' => '\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'],
+                'drawAt' => ['type' => 'string', 'pattern' => '\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'],
+                'totalTickets' => ['type' => 'integer'],
+                'ticketPrice' => [
+                    'type' => 'object',
+                    'properties' => ['amount' => ['type' => 'integer'], 'currency' => ['type' => 'string']],
+                    'required' => ['amount', 'currency'],
+                ],
+                'createdBy' => ['type' => 'string'],
             ],
-                allowExtraFields: false,
-                allowMissingFields: false,
-            ),
-            'createdBy' => [new Assert\Required(), new Assert\Type('string')],
-        ],
-            allowExtraFields: false,
-            allowMissingFields: false,
-        );
-
-        return $validator->validate($input, $constraints);
+            'required' => [
+                'name',
+                'prize',
+                'startAt',
+                'closeAt',
+                'drawAt',
+                'totalTickets',
+                'ticketPrice',
+                'createdBy',
+            ],
+        ];
     }
 }

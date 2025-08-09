@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Framework\UserInterface\ApiProblem;
 
-use App\Framework\Application\Exception\ValidationException;
+use App\Framework\Application\Exception\ValidationException as ApplicationValidationException;
 use App\Framework\UserInterface\ApiProblem\ProblemDetail\InternalServerErrorProblemDetail;
 use App\Framework\UserInterface\ApiProblem\ProblemDetail\MethodNotAllowedProblemDetail;
 use App\Framework\UserInterface\ApiProblem\ProblemDetail\NotFoundProblemDetail;
 use App\Framework\UserInterface\ApiProblem\ProblemDetail\ProblemDetailInterface;
 use App\Framework\UserInterface\ApiProblem\ProblemDetail\ValidationProblemDetail;
+use App\Framework\UserInterface\Exception\ValidationException as UserInterfaceValidationException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -25,12 +26,16 @@ abstract readonly class AbstractExceptionTransformer implements ExceptionTransfo
     }
 
     /** @param array<string, mixed> $additionalParams */
-    protected function convertExceptionToProblemDetails(
+    protected function convertExceptionToProblemDetail(
         Throwable $exception,
         array $additionalParams = [],
     ): ProblemDetailInterface {
         return match ($exception::class) {
-            ValidationException::class => new ValidationProblemDetail(
+            ApplicationValidationException::class => new ValidationProblemDetail(
+                $this->instance,
+                array_merge(['errors' => $exception->errors], $additionalParams),
+            ),
+            UserInterfaceValidationException::class => new ValidationProblemDetail(
                 $this->instance,
                 array_merge(['errors' => $exception->errors], $additionalParams),
             ),

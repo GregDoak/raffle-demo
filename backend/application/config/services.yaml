@@ -56,6 +56,8 @@ services:
 
     App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\Projection\PostgresRaffleProjectionRepository: ~
 
+    App\RaffleDemo\Raffle\UserInterface\Rest\Error\ApiProblemExceptionListener: ~
+
     App\RaffleDemo\Raffle\UserInterface\Rest\V1\:
         resource: '../src/RaffleDemo/Raffle/UserInterface/Rest/V1'
 

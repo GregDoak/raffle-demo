@@ -43,4 +43,34 @@ final class CreateRaffleControllerTest extends AbstractFunctionalTestCase
         // Assert
         self::assertResponseStatusCodeSame(Response::HTTP_CREATED);
     }
+
+    #[Test]
+    public function it_fails_with_http_400_code_when_given_an_invalid_input(): void
+    {
+        $input = [
+            'name' => 1,
+            'prize' => 1,
+            'startAt' => 'INVALID',
+            'closeAt' => 'INVALID',
+            'drawAt' => 'INVALID',
+            'totalTickets' => 'INVALID',
+            'ticketPrice' => [
+                'amount' => 'INVALID',
+                'currency' => 1,
+            ],
+            'createdBy' => 1,
+        ];
+
+        // Act
+        $this->client->request(
+            method: 'POST',
+            uri: '/rest/v1/raffle',
+            server: ['CONTENT_TYPE' => 'application/json'],
+            content: JsonSerializer::serialize($input),
+        );
+
+        // Assert
+        self::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        self::assertResponseHeaderSame('Content-Type', 'application/problem+json');
+    }
 }

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\RaffleDemo\Raffle\UserInterface\Rest\V1\CreateRaffle;
 
 use App\Foundation\Serializer\JsonSerializer;
+use App\Framework\UserInterface\Exception\ValidationException;
+use Opis\JsonSchema\Errors\ErrorFormatter;
+use Opis\JsonSchema\Errors\ValidationError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\Validator\Exception\ValidationFailedException;
-
-use function count;
 
 final readonly class CreateRaffleInputResolver implements ValueResolverInterface
 {
@@ -30,14 +30,13 @@ final readonly class CreateRaffleInputResolver implements ValueResolverInterface
         }
 
         $input = JsonSerializer::deserialize($request->getContent());
+        $result = $this->validator->validate($input); // @phpstan-ignore-line argument.type
 
-        $violations = $this->validator->validate($input); // @phpstan-ignore-line argument.type
-
-        if (count($violations) > 0) {
-            throw new ValidationFailedException($input, $violations);
+        if ($result->isValid() === false && $result->error() instanceof ValidationError) {
+            throw ValidationException::fromErrors(new ErrorFormatter()->format($result->error())); // @phpstan-ignore argument.type
         }
 
-        $input = new CreateRaffleInput(
+        yield new CreateRaffleInput(
             $input['name'], // @phpstan-ignore-line argument.type
             $input['prize'], // @phpstan-ignore-line argument.type
             $input['startAt'], // @phpstan-ignore-line argument.type
@@ -47,7 +46,5 @@ final readonly class CreateRaffleInputResolver implements ValueResolverInterface
             $input['ticketPrice'], // @phpstan-ignore-line argument.type
             $input['createdBy'], // @phpstan-ignore-line argument.type
         );
-
-        return [$input];
     }
 }

@@ -21,11 +21,15 @@ final readonly class DbalTransactionBoundary implements TransactionBoundaryInter
 
     public function commit(): void
     {
-        $this->connection->commit();
+        if ($this->connection->isTransactionActive() === true) {
+            $this->connection->commit();
+        }
     }
 
     public function rollback(): void
     {
-        $this->connection->rollBack();
+        if ($this->connection->isTransactionActive() === true) {
+            $this->connection->rollBack();
+        }
     }
 }

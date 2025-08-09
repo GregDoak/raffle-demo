@@ -19,6 +19,6 @@ final readonly class ExceptionTransformer extends AbstractExceptionTransformer
 
     public function transform(Throwable $exception): ProblemDetailInterface
     {
-        return $this->convertExceptionToProblemDetails($exception, $this->additionalParams);
+        return $this->convertExceptionToProblemDetail($exception, $this->additionalParams);
     }
 }

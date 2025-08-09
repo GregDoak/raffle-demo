@@ -11,7 +11,7 @@ final readonly class JsonSerializer
 {
     public static function deserialize(string $json): mixed
     {
-        return json_decode($json, true, flags: JSON_THROW_ON_ERROR);
+        return json_decode($json, associative: true, flags: JSON_THROW_ON_ERROR);
     }
 
     public static function serialize(mixed $array): string

@@ -17,9 +17,9 @@ final class CreateRaffleInputValidatorTest extends TestCase
         $input = [
             'name' => 'string',
             'prize' => 'string',
-            'startAt' => 'string',
-            'closeAt' => 'string',
-            'drawAt' => 'string',
+            'startAt' => '1970-01-01 00:00:00',
+            'closeAt' => '1970-01-01 00:00:00',
+            'drawAt' => '1970-01-01 00:00:00',
             'totalTickets' => 100,
             'ticketPrice' => [
                 'amount' => 1000,
@@ -30,10 +30,10 @@ final class CreateRaffleInputValidatorTest extends TestCase
         $validator = new CreateRaffleInputValidator();
 
         // Act
-        $violations = $validator->validate($input);
+        $result = $validator->validate($input);
 
         // Assert
-        self::assertEmpty($violations);
+        self::assertTrue($result->isValid());
     }
 
     #[Test]
@@ -56,10 +56,11 @@ final class CreateRaffleInputValidatorTest extends TestCase
         $validator = new CreateRaffleInputValidator();
 
         // Act
-        $violations = $validator->validate($input);
+        $result = $validator->validate($input);
 
         // Assert
-        self::assertCount(9, $violations);
+        self::assertFalse($result->isValid());
+        self::assertCount(8, $result->error()?->subErrors() ?? []);
     }
 
     #[Test]
@@ -83,37 +84,10 @@ final class CreateRaffleInputValidatorTest extends TestCase
         $validator = new CreateRaffleInputValidator();
 
         // Act
-        $violations = $validator->validate($input);
+        $result = $validator->validate($input);
 
         // Assert
-        self::assertCount(2, $violations);
-    }
-
-    #[Test]
-    public function it_fails_when_validating_an_input_with_extra_fields(): void
-    {
-        // Arrange
-        $input = [
-            'name' => 'string',
-            'prize' => 'string',
-            'startAt' => 'string',
-            'closeAt' => 'string',
-            'drawAt' => 'string',
-            'totalTickets' => 100,
-            'ticketPrice' => [
-                'amount' => 1000,
-                'currency' => 'string',
-                'extraField' => 'string',
-            ],
-            'createdBy' => 'string',
-            'extraField' => 'string',
-        ];
-        $validator = new CreateRaffleInputValidator();
-
-        // Act
-        $violations = $validator->validate($input);
-
-        // Assert
-        self::assertCount(2, $violations);
+        self::assertFalse($result->isValid());
+        self::assertCount(2, $result->error()?->subErrors() ?? []);
     }
 }
