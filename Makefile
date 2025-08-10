@@ -14,6 +14,12 @@ start: ## Starts the development environment of the full stack
 backend/shell: ## Shell into the default backend service
 	@cd backend && ${MAKE} shell
 
+records = 1
+state = "all"
+.PHONY: fixture/raffle
+fixture/raffle: ## Creates raffle fixtures with optional arguments, for example: make fixture/raffle records=10 state=draw
+	@cd backend && ${MAKE} fixture/raffle records=$(records) state=$(state)
+
 .PHONY: help
 help:
 	@printf "Available targets:\n"

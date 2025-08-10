@@ -2,7 +2,6 @@ doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
         dbname_suffix: '_%kernel.environment%'
-        profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
 
 when@test:

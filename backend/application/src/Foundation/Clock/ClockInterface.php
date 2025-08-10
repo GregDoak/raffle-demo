@@ -8,7 +8,9 @@ use DateTimeInterface;
 
 interface ClockInterface
 {
-    public function now(): DateTimeInterface;
+    public static function now(): DateTimeInterface;
 
-    public function fromString(string $value): DateTimeInterface;
+    public static function fromString(string $value): DateTimeInterface;
+
+    public static function fromTimestamp(int $value): DateTimeInterface;
 }

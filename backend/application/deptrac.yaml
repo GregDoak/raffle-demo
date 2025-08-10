@@ -49,6 +49,8 @@ deptrac:
                         - doctrine/dbal
                         - doctrine/migrations
                         - psr/log
+                        - symfony/console
+                        - symfony/dependency-injection
                         - symfony/event-dispatcher
                         - symfony/framework-bundle
                         - symfony/http-foundation

@@ -52,6 +52,12 @@ static/deptrac: ## Runs the deptrac static analysis tool
 static/stan: ## Runs the PHPStan static analysis tool
 	@vendor/bin/phpstan
 
+records = 1
+state = "all"
+.PHONY: fixture/raffle
+fixture/raffle: ## Creates raffle fixtures with optional arguments, for example: make fixture/raffle records=10 state=draw
+	bin/console raffle:fixtures:create $(records) --state=$(state)
+
 .PHONY: help
 help:
 	@printf "Available targets:\n"

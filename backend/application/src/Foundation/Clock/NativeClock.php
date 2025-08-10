@@ -9,13 +9,18 @@ use DateTimeInterface;
 
 final readonly class NativeClock implements ClockInterface
 {
-    public function now(): DateTimeInterface
+    public static function now(): DateTimeInterface
     {
         return new DateTimeImmutable();
     }
 
-    public function fromString(string $value): DateTimeInterface
+    public static function fromString(string $value): DateTimeInterface
     {
         return new DateTimeImmutable($value);
+    }
+
+    public static function fromTimestamp(int $value): DateTimeInterface
+    {
+        return DateTimeImmutable::createFromTimestamp($value);
     }
 }

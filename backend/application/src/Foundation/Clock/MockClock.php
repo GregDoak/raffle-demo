@@ -7,22 +7,27 @@ namespace App\Foundation\Clock;
 use DateTimeImmutable;
 use DateTimeInterface;
 
-final readonly class MockClock implements ClockInterface
+final class MockClock implements ClockInterface
 {
-    private DateTimeImmutable $now;
+    private static DateTimeImmutable $now;
 
     public function __construct(string $now = 'now')
     {
-        $this->now = new DateTimeImmutable($now);
+        self::$now = new DateTimeImmutable($now);
     }
 
-    public function now(): DateTimeInterface
+    public static function now(): DateTimeInterface
     {
-        return $this->now;
+        return self::$now;
     }
 
-    public function fromString(string $value): DateTimeInterface
+    public static function fromString(string $value): DateTimeInterface
     {
         return new DateTimeImmutable($value);
+    }
+
+    public static function fromTimestamp(int $value): DateTimeInterface
+    {
+        return DateTimeImmutable::createFromTimestamp($value);
     }
 }

@@ -20,6 +20,10 @@ start: build ## Starts the development environment
 shell: ## Shell into the default service
 	@${DOCKER_COMPOSE} run -it --rm backend-php /bin/bash
 
+.PHONY: fixture/raffle
+fixture/raffle: ## Creates raffle fixtures with required arguments, for example: make fixture/raffle records=10 state=draw
+	@${DOCKER_COMPOSE} run -it --rm backend-php make fixture/raffle records=$(records) state=$(state)
+
 .PHONY: help
 help:
 	@printf "Available targets:\n"
