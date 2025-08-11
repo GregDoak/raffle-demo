@@ -26,6 +26,10 @@ services:
         arguments:
             $commandBus: '@command.bus'
 
+    App\Framework\Infrastructure\Symfony\Messenger\SymfonyQueryBus:
+        arguments:
+            $queryBus: '@query.bus'
+
     App\Framework\Infrastructure\Symfony\Router\SymfonyInstanceProvider: ~
 
     App\Framework\UserInterface\ApiProblem\DebuggableExceptionTransformer: ~
@@ -68,6 +72,10 @@ services:
         App\Framework\Application\Command\CommandHandlerInterface:
             tags:
                 - { name: messenger.message_handler, bus: command.bus }
+
+        App\Framework\Application\Query\QueryHandlerInterface:
+            tags:
+                - { name: messenger.message_handler, bus: query.bus }
 
         App\Framework\Domain\Projection\AggregateEventsSubscriberInterface:
             tags:
