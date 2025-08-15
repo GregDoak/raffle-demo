@@ -24,14 +24,14 @@
     },
     "require-dev": {
         "deptrac/deptrac": "^3.0",
-        "friendsofphp/php-cs-fixer": "^3.85.1",
+        "friendsofphp/php-cs-fixer": "^3.86.0",
         "infection/infection": "^0.30.3",
         "j13k/yaml-lint": "^1.1.6",
         "kubawerlos/php-cs-fixer-custom-fixers": "^3.32.0",
         "phpstan/phpstan": "^2.1.22",
         "phpstan/phpstan-strict-rules": "^2.0.6",
         "phpstan/phpstan-symfony": "^2.0.7",
-        "phpunit/phpunit": "^12.3.1",
+        "phpunit/phpunit": "^12.3.4",
         "roave/security-advisories": "dev-latest",
         "symfony/browser-kit": "7.3.*",
         "symfony/phpunit-bridge": "^7.3.1"
