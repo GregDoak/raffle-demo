@@ -7,8 +7,11 @@ namespace App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\Projection;
 use App\RaffleDemo\Raffle\Domain\Projection\Raffle\Raffle;
 use App\RaffleDemo\Raffle\Domain\Projection\Raffle\RaffleProjectionRepositoryInterface;
 use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
+
+use function array_map;
 
 final readonly class PostgresRaffleProjectionRepository implements RaffleProjectionRepositoryInterface
 {
@@ -120,6 +123,144 @@ final readonly class PostgresRaffleProjectionRepository implements RaffleProject
         }
 
         return self::mapRecordToObject($record); // @phpstan-ignore-line argument.type
+    }
+
+    public function getRafflesDueToBeStarted(DateTimeInterface $now): array
+    {
+        $sql = <<<SQL
+            SELECT
+                projection_raffle.id,
+                projection_raffle.name,
+                projection_raffle.prize,
+                projection_raffle.created_at,
+                projection_raffle.created_by,
+                projection_raffle.start_at,
+                projection_raffle.started_at,
+                projection_raffle.started_by,
+                projection_raffle.total_tickets,
+                projection_raffle.remaining_tickets,
+                projection_raffle.ticket_amount,
+                projection_raffle.ticket_currency,
+                projection_raffle.close_at,
+                projection_raffle.closed_at,
+                projection_raffle.closed_by,
+                projection_raffle.draw_at,
+                projection_raffle.drawn_at,
+                projection_raffle.drawn_by,
+                projection_raffle.winning_allocation,
+                projection_raffle.winning_ticket_number,
+                projection_raffle.won_by,
+                projection_raffle.last_occurred_at
+            FROM
+                raffle.projection_raffle
+            WHERE
+                projection_raffle.started_at IS NULL
+                AND projection_raffle.start_at <= :start_at
+            ORDER BY
+                projection_raffle.start_at ASC
+        SQL;
+
+        $statement = $this->connection->prepare($sql);
+
+        $statement->bindValue('start_at', $now->format('Y-m-d H:i:s.u O'));
+
+        return array_map(
+            self::mapRecordToObject(...), // @phpstan-ignore-line argument.type
+            $statement->executeQuery()->fetchAllAssociative(),
+        );
+    }
+
+    public function getRafflesDueToBeClosed(DateTimeInterface $now): array
+    {
+        $sql = <<<SQL
+            SELECT
+                projection_raffle.id,
+                projection_raffle.name,
+                projection_raffle.prize,
+                projection_raffle.created_at,
+                projection_raffle.created_by,
+                projection_raffle.start_at,
+                projection_raffle.started_at,
+                projection_raffle.started_by,
+                projection_raffle.total_tickets,
+                projection_raffle.remaining_tickets,
+                projection_raffle.ticket_amount,
+                projection_raffle.ticket_currency,
+                projection_raffle.close_at,
+                projection_raffle.closed_at,
+                projection_raffle.closed_by,
+                projection_raffle.draw_at,
+                projection_raffle.drawn_at,
+                projection_raffle.drawn_by,
+                projection_raffle.winning_allocation,
+                projection_raffle.winning_ticket_number,
+                projection_raffle.won_by,
+                projection_raffle.last_occurred_at
+            FROM
+                raffle.projection_raffle
+            WHERE
+                projection_raffle.started_at IS NOT NULL
+                AND projection_raffle.closed_at IS NULL
+                AND projection_raffle.close_at <= :close_at
+            ORDER BY
+                projection_raffle.close_at ASC
+        SQL;
+
+        $statement = $this->connection->prepare($sql);
+
+        $statement->bindValue('close_at', $now->format('Y-m-d H:i:s.u O'));
+
+        return array_map(
+            self::mapRecordToObject(...), // @phpstan-ignore-line argument.type
+            $statement->executeQuery()->fetchAllAssociative(),
+        );
+    }
+
+    public function getRafflesDueToBeDrawn(DateTimeInterface $now): array
+    {
+        $sql = <<<SQL
+            SELECT
+                projection_raffle.id,
+                projection_raffle.name,
+                projection_raffle.prize,
+                projection_raffle.created_at,
+                projection_raffle.created_by,
+                projection_raffle.start_at,
+                projection_raffle.started_at,
+                projection_raffle.started_by,
+                projection_raffle.total_tickets,
+                projection_raffle.remaining_tickets,
+                projection_raffle.ticket_amount,
+                projection_raffle.ticket_currency,
+                projection_raffle.close_at,
+                projection_raffle.closed_at,
+                projection_raffle.closed_by,
+                projection_raffle.draw_at,
+                projection_raffle.drawn_at,
+                projection_raffle.drawn_by,
+                projection_raffle.winning_allocation,
+                projection_raffle.winning_ticket_number,
+                projection_raffle.won_by,
+                projection_raffle.last_occurred_at
+            FROM
+                raffle.projection_raffle
+            WHERE
+                projection_raffle.started_at IS NOT NULL
+                AND projection_raffle.closed_at IS NOT NULL
+                AND projection_raffle.drawn_at IS NULL
+                AND projection_raffle.draw_at <= :draw_at
+            ORDER BY
+                projection_raffle.draw_at ASC
+        SQL;
+
+        $statement = $this->connection->prepare($sql);
+
+        $statement->bindValue('draw_at', $now->format('Y-m-d H:i:s.u O'));
+
+        return array_map(
+            self::mapRecordToObject(...), // @phpstan-ignore-line argument.type
+            $statement->executeQuery()->fetchAllAssociative(),
+        );
     }
 
     /** @param array{
