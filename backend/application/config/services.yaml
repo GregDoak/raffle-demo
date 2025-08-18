@@ -11,6 +11,8 @@ services:
 
     App\Framework\Application\Exception\ExceptionTransformer: ~
 
+    App\Framework\Application\Query\QueryBusInterface: '@App\Framework\Infrastructure\Symfony\Messenger\SymfonyQueryBus'
+
     App\Framework\Domain\Model\Event\AggregateEventsBusInterface: '@App\Framework\Infrastructure\Symfony\Messenger\SymfonyAggregateEventBus'
 
     App\Framework\Domain\Repository\TransactionBoundaryInterface: '@App\Framework\Infrastructure\Doctrine\DbalTransactionBoundary'

@@ -36,7 +36,7 @@ final readonly class RaffleApplicationContext
 
     public function create(?CreateRaffleCommand $command = null): Raffle
     {
-        $command = $command ?? $this->getCreateRaffleCommand();
+        $command = $command ?? self::getCreateRaffleCommand();
 
         $handler = new CreateRaffleCommandHandler(
             $this->transactionBoundary,
@@ -98,7 +98,7 @@ final readonly class RaffleApplicationContext
     }
 
     /** @param array{amount: int, currency: string} $ticketPrice */
-    public function getCreateRaffleCommand(
+    public static function getCreateRaffleCommand(
         string $name = 'raffle-name',
         string $prize = 'raffle-prize',
         string $startAt = '2025-01-02 00:00:00',
