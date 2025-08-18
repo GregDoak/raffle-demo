@@ -59,6 +59,8 @@ final readonly class CreateRaffleFixturesCommand
             return Command::FAILURE;
         }
 
+        $io->progressStart($records);
+
         for ($index = 0; $index < $records; ++$index) {
             switch ($state) {
                 case 'create':
@@ -85,9 +87,13 @@ final readonly class CreateRaffleFixturesCommand
                     break;
             }
 
+            $io->progressAdvance();
+
             // Force object cleanup after each iteration
             gc_collect_cycles();
         }
+
+        $io->progressFinish();
 
         $io->success(sprintf('Created %d records for state "%s"', $records, $state));
 
