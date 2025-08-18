@@ -11,6 +11,7 @@
         "bref/symfony-bridge": ">=1.1",
         "doctrine/dbal": "^4.3.2",
         "doctrine/doctrine-migrations-bundle": ">=3.4.2",
+        "dragonmantank/cron-expression": "^3.4",
         "opis/json-schema": "^2.4.1",
         "symfony/console": "7.3.*",
         "symfony/dotenv": "7.3.*",
@@ -19,6 +20,7 @@
         "symfony/framework-bundle": "7.3.*",
         "symfony/messenger": "7.3.*",
         "symfony/runtime": "7.3.*",
+        "symfony/scheduler": "7.3.*",
         "symfony/uid": "7.3.*",
         "symfony/yaml": "7.3.*"
     },

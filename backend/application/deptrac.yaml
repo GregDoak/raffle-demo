@@ -57,6 +57,7 @@ deptrac:
                         - symfony/http-kernel
                         - symfony/messenger
                         - symfony/routing
+                        - symfony/scheduler
                         - symfony/uid
     ruleset:
         Foundation:
