@@ -120,7 +120,7 @@ final readonly class RaffleApplicationContext
         );
     }
 
-    public function getStartRaffleCommand(
+    public static function getStartRaffleCommand(
         string $id,
         DateTimeInterface $startedAt,
         string $startedBy,

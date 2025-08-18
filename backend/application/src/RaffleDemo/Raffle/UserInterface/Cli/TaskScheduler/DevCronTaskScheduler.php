@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\RaffleDemo\Raffle\UserInterface\Cli\TaskScheduler;
 
+use App\RaffleDemo\Raffle\UserInterface\Cli\CloseRafflesDueToBeClosedCommand;
 use App\RaffleDemo\Raffle\UserInterface\Cli\StartRafflesDueToBeStartedCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -18,6 +19,7 @@ final readonly class DevCronTaskScheduler
 {
     public function __construct(
         private StartRafflesDueToBeStartedCommand $startRafflesDueToBeStartedCommand,
+        private CloseRafflesDueToBeClosedCommand $closeRafflesDueToBeClosedCommand,
     ) {
     }
 
@@ -26,5 +28,6 @@ final readonly class DevCronTaskScheduler
         $io = new SymfonyStyle(new ArrayInput([]), new ConsoleOutput());
 
         $this->startRafflesDueToBeStartedCommand->__invoke($io);
+        $this->closeRafflesDueToBeClosedCommand->__invoke($io);
     }
 }

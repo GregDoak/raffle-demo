@@ -53,7 +53,7 @@ final class AllocateTicketToParticipantCommandHandlerTest extends TestCase
         ClockProvider::set(new MockClock('2025-01-01 00:00:00'));
         $raffle = $this->context->create();
         $raffle = $this->context->start(
-            $this->context->getStartRaffleCommand(
+            RaffleApplicationContext::getStartRaffleCommand(
                 id: $raffle->getAggregateId()->toString(),
                 startedAt: Clock::fromString('2025-01-02 00:00:01'),
                 startedBy: 'system',
@@ -104,7 +104,7 @@ final class AllocateTicketToParticipantCommandHandlerTest extends TestCase
         ClockProvider::set(new MockClock('2025-01-01 00:00:00'));
         $raffle = $this->context->create();
         $raffle = $this->context->start(
-            $this->context->getStartRaffleCommand(
+            RaffleApplicationContext::getStartRaffleCommand(
                 id: $raffle->getAggregateId()->toString(),
                 startedAt: Clock::fromString('2025-01-02 00:00:01'),
                 startedBy: 'system',
