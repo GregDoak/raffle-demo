@@ -163,6 +163,7 @@ final readonly class PostgresRaffleProjectionRepository implements RaffleProject
             WHERE
                 projection_raffle.started_at IS NOT NULL
                 AND projection_raffle.closed_at IS NOT NULL
+                AND projection_raffle.total_tickets != projection_raffle.remaining_tickets
                 AND projection_raffle.drawn_at IS NULL
                 AND projection_raffle.draw_at <= :draw_at
             ORDER BY

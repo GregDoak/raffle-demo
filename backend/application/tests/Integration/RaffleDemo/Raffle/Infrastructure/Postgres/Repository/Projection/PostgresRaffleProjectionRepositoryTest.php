@@ -462,6 +462,44 @@ final class PostgresRaffleProjectionRepositoryTest extends AbstractIntegrationTe
     }
 
     #[Test]
+    public function it_does_not_retrieve_a_raffle_that_has_no_allocations(): void
+    {
+        // Arrange
+        $now = Clock::now();
+        $raffle = new Raffle(
+            id: RaffleAggregateId::fromNew()->toString(),
+            name: 'raffle-name',
+            prize: 'raffle-prize',
+            createdAt: Clock::now(),
+            createdBy: 'created_by',
+            startAt: Clock::now(),
+            startedAt: Clock::now(),
+            startedBy: 'started_by',
+            totalTickets: 123,
+            remainingTickets: 123,
+            ticketAmount: 100,
+            ticketCurrency: 'GBP',
+            closeAt: Clock::now(),
+            closedAt: Clock::now(),
+            closedBy: 'closed_by',
+            drawAt: $now,
+            drawnAt: null,
+            drawnBy: null,
+            winningAllocation: null,
+            winningTicketNumber: null,
+            wonBy: null,
+            lastOccurredAt: Clock::now(),
+        );
+
+        //  Act
+        $this->repository->store($raffle);
+        $raffles = $this->repository->getRafflesDueToBeDrawn($now);
+
+        // Assert
+        self::assertCount(0, $raffles);
+    }
+
+    #[Test]
     public function it_does_not_retrieve_a_raffle_due_to_be_drawn_before_a_given_date(): void
     {
         // Arrange
