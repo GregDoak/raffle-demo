@@ -12,5 +12,7 @@ interface ClockInterface
 
     public static function fromString(string $value): DateTimeInterface;
 
+    public static function fromNullableString(?string $value): ?DateTimeInterface;
+
     public static function fromTimestamp(int $value): DateTimeInterface;
 }

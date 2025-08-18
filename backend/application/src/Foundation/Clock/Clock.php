@@ -18,6 +18,15 @@ final readonly class Clock implements ClockInterface
         return ClockProvider::get()::fromString($value);
     }
 
+    public static function fromNullableString(?string $value): ?DateTimeInterface
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return ClockProvider::get()::fromString($value);
+    }
+
     public static function fromTimestamp(int $value): DateTimeInterface
     {
         return ClockProvider::get()::fromTimestamp($value);

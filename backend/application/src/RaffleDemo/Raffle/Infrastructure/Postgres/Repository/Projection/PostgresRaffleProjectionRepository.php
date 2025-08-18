@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\Projection;
 
+use App\Foundation\Clock\Clock;
 use App\RaffleDemo\Raffle\Domain\Projection\Raffle\Raffle;
 use App\RaffleDemo\Raffle\Domain\Projection\Raffle\RaffleProjectionRepositoryInterface;
-use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
@@ -84,28 +84,7 @@ final readonly class PostgresRaffleProjectionRepository implements RaffleProject
     {
         $sql = <<<SQL
             SELECT
-                projection_raffle.id,
-                projection_raffle.name,
-                projection_raffle.prize,
-                projection_raffle.created_at,
-                projection_raffle.created_by,
-                projection_raffle.start_at,
-                projection_raffle.started_at,
-                projection_raffle.started_by,
-                projection_raffle.total_tickets,
-                projection_raffle.remaining_tickets,
-                projection_raffle.ticket_amount,
-                projection_raffle.ticket_currency,
-                projection_raffle.close_at,
-                projection_raffle.closed_at,
-                projection_raffle.closed_by,
-                projection_raffle.draw_at,
-                projection_raffle.drawn_at,
-                projection_raffle.drawn_by,
-                projection_raffle.winning_allocation,
-                projection_raffle.winning_ticket_number,
-                projection_raffle.won_by,
-                projection_raffle.last_occurred_at
+                *
             FROM
                 raffle.projection_raffle
             WHERE
@@ -129,28 +108,7 @@ final readonly class PostgresRaffleProjectionRepository implements RaffleProject
     {
         $sql = <<<SQL
             SELECT
-                projection_raffle.id,
-                projection_raffle.name,
-                projection_raffle.prize,
-                projection_raffle.created_at,
-                projection_raffle.created_by,
-                projection_raffle.start_at,
-                projection_raffle.started_at,
-                projection_raffle.started_by,
-                projection_raffle.total_tickets,
-                projection_raffle.remaining_tickets,
-                projection_raffle.ticket_amount,
-                projection_raffle.ticket_currency,
-                projection_raffle.close_at,
-                projection_raffle.closed_at,
-                projection_raffle.closed_by,
-                projection_raffle.draw_at,
-                projection_raffle.drawn_at,
-                projection_raffle.drawn_by,
-                projection_raffle.winning_allocation,
-                projection_raffle.winning_ticket_number,
-                projection_raffle.won_by,
-                projection_raffle.last_occurred_at
+                *
             FROM
                 raffle.projection_raffle
             WHERE
@@ -174,28 +132,7 @@ final readonly class PostgresRaffleProjectionRepository implements RaffleProject
     {
         $sql = <<<SQL
             SELECT
-                projection_raffle.id,
-                projection_raffle.name,
-                projection_raffle.prize,
-                projection_raffle.created_at,
-                projection_raffle.created_by,
-                projection_raffle.start_at,
-                projection_raffle.started_at,
-                projection_raffle.started_by,
-                projection_raffle.total_tickets,
-                projection_raffle.remaining_tickets,
-                projection_raffle.ticket_amount,
-                projection_raffle.ticket_currency,
-                projection_raffle.close_at,
-                projection_raffle.closed_at,
-                projection_raffle.closed_by,
-                projection_raffle.draw_at,
-                projection_raffle.drawn_at,
-                projection_raffle.drawn_by,
-                projection_raffle.winning_allocation,
-                projection_raffle.winning_ticket_number,
-                projection_raffle.won_by,
-                projection_raffle.last_occurred_at
+                *
             FROM
                 raffle.projection_raffle
             WHERE
@@ -220,28 +157,7 @@ final readonly class PostgresRaffleProjectionRepository implements RaffleProject
     {
         $sql = <<<SQL
             SELECT
-                projection_raffle.id,
-                projection_raffle.name,
-                projection_raffle.prize,
-                projection_raffle.created_at,
-                projection_raffle.created_by,
-                projection_raffle.start_at,
-                projection_raffle.started_at,
-                projection_raffle.started_by,
-                projection_raffle.total_tickets,
-                projection_raffle.remaining_tickets,
-                projection_raffle.ticket_amount,
-                projection_raffle.ticket_currency,
-                projection_raffle.close_at,
-                projection_raffle.closed_at,
-                projection_raffle.closed_by,
-                projection_raffle.draw_at,
-                projection_raffle.drawn_at,
-                projection_raffle.drawn_by,
-                projection_raffle.winning_allocation,
-                projection_raffle.winning_ticket_number,
-                projection_raffle.won_by,
-                projection_raffle.last_occurred_at
+                *
             FROM
                 raffle.projection_raffle
             WHERE
@@ -291,28 +207,28 @@ final readonly class PostgresRaffleProjectionRepository implements RaffleProject
     private static function mapRecordToObject(array $record): Raffle
     {
         return new Raffle(
-            $record['id'],
-            $record['name'],
-            $record['prize'],
-            new DateTimeImmutable($record['created_at']),
-            $record['created_by'],
-            new DateTimeImmutable($record['start_at']),
-            $record['started_at'] !== null ? new DateTimeImmutable($record['started_at']) : null,
-            $record['started_by'],
-            $record['total_tickets'],
-            $record['remaining_tickets'],
-            $record['ticket_amount'],
-            $record['ticket_currency'],
-            new DateTimeImmutable($record['close_at']),
-            $record['closed_at'] !== null ? new DateTimeImmutable($record['closed_at']) : null,
-            $record['closed_by'],
-            new DateTimeImmutable($record['draw_at']),
-            $record['drawn_at'] !== null ? new DateTimeImmutable($record['drawn_at']) : null,
-            $record['drawn_by'],
-            $record['winning_allocation'],
-            $record['winning_ticket_number'],
-            $record['won_by'],
-            new DateTimeImmutable($record['last_occurred_at']),
+            id: $record['id'],
+            name: $record['name'],
+            prize: $record['prize'],
+            createdAt: Clock::fromString($record['created_at']),
+            createdBy: $record['created_by'],
+            startAt: Clock::fromString($record['start_at']),
+            startedAt: Clock::fromNullableString($record['started_at']),
+            startedBy: $record['started_by'],
+            totalTickets: $record['total_tickets'],
+            remainingTickets: $record['remaining_tickets'],
+            ticketAmount: $record['ticket_amount'],
+            ticketCurrency: $record['ticket_currency'],
+            closeAt: Clock::fromString($record['close_at']),
+            closedAt: Clock::fromNullableString($record['closed_at']),
+            closedBy: $record['closed_by'],
+            drawAt: Clock::fromString($record['draw_at']),
+            drawnAt: Clock::fromNullableString($record['drawn_at']),
+            drawnBy: $record['drawn_by'],
+            winningAllocation: $record['winning_allocation'],
+            winningTicketNumber: $record['winning_ticket_number'],
+            wonBy: $record['won_by'],
+            lastOccurredAt: Clock::fromString($record['last_occurred_at']),
         );
     }
 }

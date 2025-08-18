@@ -26,6 +26,15 @@ final class MockClock implements ClockInterface
         return new DateTimeImmutable($value);
     }
 
+    public static function fromNullableString(?string $value): ?DateTimeInterface
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return new DateTimeImmutable($value);
+    }
+
     public static function fromTimestamp(int $value): DateTimeInterface
     {
         return DateTimeImmutable::createFromTimestamp($value);

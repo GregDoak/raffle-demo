@@ -82,6 +82,7 @@ deptrac:
             - Foundation
             - FrameworkDomain
         RaffleDemoRaffleInfrastructure:
+            - Foundation
             - FrameworkDomain
             - FrameworkInfrastructure
             - RaffleDemoRaffleDomain
