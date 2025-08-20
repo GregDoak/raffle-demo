@@ -96,7 +96,7 @@ final class CloseRaffleCommandHandlerTest extends TestCase
         ClockProvider::set(new MockClock('2025-01-01 00:00:00'));
         $raffle = $this->context->create();
         $raffle = $this->context->close(
-            $this->context->getCloseRaffleCommand(
+            RaffleApplicationContext::getCloseRaffleCommand(
                 id: $raffle->getAggregateId()->toString(),
                 closedAt: Clock::fromString('2025-01-02 00:00:01'),
                 closedBy: 'system',

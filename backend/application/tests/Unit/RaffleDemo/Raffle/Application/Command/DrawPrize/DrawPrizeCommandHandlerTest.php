@@ -61,7 +61,7 @@ final class DrawPrizeCommandHandlerTest extends TestCase
             ),
         );
         $raffle = $this->context->allocateTicketToParticipant(
-            $this->context->getAllocateTicketToParticipantCommand(
+            RaffleApplicationContext::getAllocateTicketToParticipantCommand(
                 id: $raffle->getAggregateId()->toString(),
                 ticketAllocatedQuantity: 20,
                 ticketAllocatedTo: 'participant',
@@ -69,7 +69,7 @@ final class DrawPrizeCommandHandlerTest extends TestCase
             ),
         );
         $raffle = $this->context->close(
-            $this->context->getCloseRaffleCommand(
+            RaffleApplicationContext::getCloseRaffleCommand(
                 id: $raffle->getAggregateId()->toString(),
                 closedAt: Clock::fromString('2025-01-02 02:00:00'),
                 closedBy: 'user',

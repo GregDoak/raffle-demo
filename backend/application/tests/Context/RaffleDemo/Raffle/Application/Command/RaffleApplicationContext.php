@@ -132,7 +132,7 @@ final readonly class RaffleApplicationContext
         );
     }
 
-    public function getAllocateTicketToParticipantCommand(
+    public static function getAllocateTicketToParticipantCommand(
         string $id,
         int $ticketAllocatedQuantity,
         string $ticketAllocatedTo,
@@ -146,7 +146,7 @@ final readonly class RaffleApplicationContext
         );
     }
 
-    public function getCloseRaffleCommand(
+    public static function getCloseRaffleCommand(
         string $id,
         DateTimeInterface $closedAt,
         string $closedBy,
