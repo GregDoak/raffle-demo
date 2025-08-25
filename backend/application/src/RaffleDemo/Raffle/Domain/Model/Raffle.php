@@ -150,7 +150,7 @@ final class Raffle extends AbstractAggregate
             throw InvalidTicketAllocationException::fromCannotAllocateBeforeStarted();
         }
 
-        if ($this->closed !== null) {
+        if ($this->closed !== null || $this->closeAt->toDateTime() < $ticketAllocation->allocatedAt) {
             throw InvalidTicketAllocationException::fromCannotAllocateAfterClosed();
         }
 
