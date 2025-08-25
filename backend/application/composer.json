@@ -16,7 +16,7 @@
         "symfony/console": "7.3.*",
         "symfony/dotenv": "7.3.*",
         "symfony/expression-language": "7.3.*",
-        "symfony/flex": "^2.8.1",
+        "symfony/flex": "^2.8.2",
         "symfony/framework-bundle": "7.3.*",
         "symfony/messenger": "7.3.*",
         "symfony/runtime": "7.3.*",
@@ -33,7 +33,7 @@
         "phpstan/phpstan": "^2.1.22",
         "phpstan/phpstan-strict-rules": "^2.0.6",
         "phpstan/phpstan-symfony": "^2.0.7",
-        "phpunit/phpunit": "^12.3.4",
+        "phpunit/phpunit": "^12.3.6",
         "roave/security-advisories": "dev-latest",
         "symfony/browser-kit": "7.3.*",
         "symfony/phpunit-bridge": "^7.3.1"
