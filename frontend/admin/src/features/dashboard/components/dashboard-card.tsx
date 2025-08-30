@@ -1,6 +1,6 @@
 import { Card, CardHeader } from "@mui/material";
 
-export const Dashboard = () => (
+export const DashboardCard = () => (
   <Card>
     <CardHeader title="Welcome to the Raffle Demo Admin" />
   </Card>

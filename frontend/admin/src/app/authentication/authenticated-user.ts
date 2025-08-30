@@ -1,6 +1,6 @@
-import { UserIdentity } from "ra-core/src/types.ts";
+import { UserIdentity } from "ra-core/src/types";
 
-export default class AuthenticatedUser implements UserIdentity {
+export class AuthenticatedUser implements UserIdentity {
   readonly fullName: string;
   constructor(readonly id: string) {
     this.fullName = id;

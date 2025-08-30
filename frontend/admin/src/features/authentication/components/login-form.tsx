@@ -1,8 +1,14 @@
-import { Login, LoginForm, TextInput, email, required } from "react-admin";
+import {
+  Login,
+  LoginForm as BaseLoginForm,
+  TextInput,
+  email,
+  required,
+} from "react-admin";
 
-export const LoginComponent = () => (
+export const LoginForm = () => (
   <Login>
-    <LoginForm>
+    <BaseLoginForm>
       <TextInput
         name="username"
         autoFocus
@@ -12,6 +18,6 @@ export const LoginComponent = () => (
         type="email"
         validate={[email(), required()]}
       />
-    </LoginForm>
+    </BaseLoginForm>
   </Login>
 );

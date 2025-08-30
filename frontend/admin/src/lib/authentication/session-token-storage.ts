@@ -1,8 +1,6 @@
-import { AuthTokenStorageInterface } from "./AuthTokenStorageInterface.ts";
+import { TokenStorageInterface } from "./token-storage-interface";
 
-export default class SessionAuthTokenStorage
-  implements AuthTokenStorageInterface
-{
+export class SessionTokenStorage implements TokenStorageInterface {
   private readonly tokenKey = "raffle-demo-admin-token";
 
   public clear() {

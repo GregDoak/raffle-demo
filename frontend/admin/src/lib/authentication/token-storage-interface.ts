@@ -1,4 +1,4 @@
-export interface AuthTokenStorageInterface {
+export interface TokenStorageInterface {
   clear(): void;
 
   has(): boolean;
