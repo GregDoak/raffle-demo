@@ -10,7 +10,7 @@ test: ## Runs the full test suite
 
 .PHONY: lint
 lint: ## Enforces the code standards checks using preconfigured rules
-	@npm run lint
+	@npm run format && npm run lint
 
 .PHONY: lint/fix
 lint/fix: ## Fixes all linter errors
