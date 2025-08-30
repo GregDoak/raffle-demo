@@ -1,5 +1,5 @@
 services:
-    backend-postgres:
+    postgres:
         image: postgres:16-alpine
         ports:
             - '54321:5432'
@@ -8,10 +8,10 @@ services:
         environment:
             POSTGRES_USER: user
             POSTGRES_PASSWORD: password
-    backend-php:
+    php:
         restart: unless-stopped
         depends_on:
-            - backend-postgres
+            - postgres
         build:
             context: ./docker
             dockerfile: ./php/php.Dockerfile
@@ -25,13 +25,13 @@ services:
             HANDLER: public/index.php
             DOCUMENT_ROOT: public
         user: 1000:1000
-    backend-php-consumer:
+    php-consumer:
         restart: unless-stopped
         build:
             context: ./docker
             dockerfile: ./php/php.Dockerfile
         depends_on:
-            - backend-php
+            - php
         volumes:
             - ./application:/var/task
             - ./docker/php/conf.d:/opt/bref/etc/php/conf.d

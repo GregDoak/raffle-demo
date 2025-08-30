@@ -5,14 +5,27 @@ MAKE := make --no-print-directory
 .PHONY: can-release
 can-release: ## Runs all checks required for release
 	@cd backend && ${MAKE} can-release
+	@cd frontend && ${MAKE} can-release
 
 .PHONY: start
 start: ## Starts the development environment of the full stack
-	@cd backend && ${MAKE} start
+	${MAKE} -j2 backend/start frontend/start
 
 .PHONY: backend/shell
 backend/shell: ## Shell into the default backend service
 	@cd backend && ${MAKE} shell
+
+.PHONY: backend/start
+backend/start: ## Starts the development environment of the backend service
+	@cd backend && ${MAKE} start
+
+.PHONY: frontend/shell
+frontend/shell: ## Shell into the default backend service
+	@cd frontend && ${MAKE} shell
+
+.PHONY: frontend/start
+frontend/start: ## Starts the development environment of the frontend service
+	@cd frontend && ${MAKE} start
 
 records = 1
 state = "all"

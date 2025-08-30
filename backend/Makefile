@@ -1,16 +1,16 @@
 default: help
 SHELL := /bin/bash
-DOCKER_COMPOSE := docker compose --project-name "raffle-demo" --file "docker-compose.yaml"
+DOCKER_COMPOSE := docker compose --project-name "raffle-demo-backend" --file "docker-compose.yaml"
 
 .PHONY: can-release
 can-release: ## Runs all checks required for release
-	@${DOCKER_COMPOSE} run -it --rm backend-php make can-release
+	@${DOCKER_COMPOSE} run -it --rm php make can-release
 
 .PHONY: build
 build: ## Build the local development environment
-	@${DOCKER_COMPOSE} run -it --rm backend-php composer install --no-interaction
-	@${DOCKER_COMPOSE} run -it --rm backend-php bin/console doctrine:database:create --if-not-exists
-	@${DOCKER_COMPOSE} run -it --rm backend-php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --all-or-nothing
+	@${DOCKER_COMPOSE} run -it --rm php composer install --no-interaction
+	@${DOCKER_COMPOSE} run -it --rm php bin/console doctrine:database:create --if-not-exists
+	@${DOCKER_COMPOSE} run -it --rm php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --all-or-nothing
 
 .PHONY: start
 start: build ## Starts the development environment
@@ -18,11 +18,11 @@ start: build ## Starts the development environment
 
 .PHONY: shell
 shell: ## Shell into the default service
-	@${DOCKER_COMPOSE} run -it --rm backend-php /bin/bash
+	@${DOCKER_COMPOSE} run -it --rm php /bin/bash
 
 .PHONY: fixture/raffle
 fixture/raffle: ## Creates raffle fixtures with required arguments, for example: make fixture/raffle records=10 state=draw
-	@${DOCKER_COMPOSE} run -it --rm backend-php make fixture/raffle records=$(records) state=$(state)
+	@${DOCKER_COMPOSE} run -it --rm php make fixture/raffle records=$(records) state=$(state)
 
 .PHONY: help
 help:
