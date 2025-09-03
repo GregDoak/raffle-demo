@@ -31,6 +31,14 @@ export const AuthenticationProvider: AuthProvider = {
     return Promise.resolve(new AuthenticatedUser(tokenStorage.get()));
   },
 
+  getToken(): string {
+    try {
+      return btoa(tokenStorage.get());
+    } catch {
+      return "";
+    }
+  },
+
   async login({ username }): Promise<void> {
     tokenStorage.set(username);
   },

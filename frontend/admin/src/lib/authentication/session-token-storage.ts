@@ -23,6 +23,5 @@ export class SessionTokenStorage implements TokenStorageInterface {
 
   public set(token: string): void {
     sessionStorage.setItem(this.tokenKey, token);
-    console.log("set", token);
   }
 }
