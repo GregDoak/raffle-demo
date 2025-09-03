@@ -30,8 +30,6 @@ const httpClient: HttpClientInterface = new FetchJsonHttpClient(
   import.meta.env.VITE_API_BASE_URL,
 );
 
-console.log(getHeaders());
-
 function getHeaders(): Headers {
   const headers = new Headers();
   headers.set("Authorization", "Bearer " + AuthenticationProvider.getToken());
@@ -40,11 +38,17 @@ function getHeaders(): Headers {
 }
 
 export const DataProvider: DataProvider = {
-  create<RecordType, ResultRecordType>(
+  async create<RecordType, ResultRecordType>(
     resource: string,
     params: CreateParams,
   ): Promise<CreateResult<ResultRecordType>> {
-    return Promise.resolve(undefined);
+    const { json } = await httpClient.post(
+      "/" + resource,
+      params,
+      getHeaders(),
+    );
+
+    return json;
   },
   delete<RecordType>(
     resource: string,
@@ -62,7 +66,7 @@ export const DataProvider: DataProvider = {
     resource: string,
     params: GetListParams & QueryFunctionContext,
   ): Promise<GetListResult<RecordType>> {
-    return Promise.resolve(undefined);
+    return Promise.resolve({ data: [], total: 0 });
   },
   getMany<RecordType>(
     resource: string,

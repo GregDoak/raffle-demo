@@ -21,7 +21,7 @@ export class FetchJsonHttpClient implements HttpClientInterface {
       this.baseUrl + path + new URLSearchParams(params).toString(),
       {
         method: "GET",
-        headers: { ...this.headers, ...headers },
+        headers: new Headers([...this.headers.entries(), ...headers.entries()]),
       },
     );
   }
@@ -34,7 +34,7 @@ export class FetchJsonHttpClient implements HttpClientInterface {
     return fetchUtils.fetchJson(this.baseUrl + path, {
       method: "POST",
       body: JSON.stringify(params),
-      headers: { ...this.headers, ...headers },
+      headers: new Headers([...this.headers.entries(), ...headers.entries()]),
     });
   }
 }
