@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/rest/v1/raffle/{id}/allocate', methods: ['POST'])]
+#[Route('/rest/v1/raffles/{id}/allocate', methods: ['POST'])]
 final readonly class AllocateTicketToParticipantController
 {
     public function __invoke(

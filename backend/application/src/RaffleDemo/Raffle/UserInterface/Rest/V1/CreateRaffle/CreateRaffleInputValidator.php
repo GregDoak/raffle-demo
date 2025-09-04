@@ -38,9 +38,9 @@ final readonly class CreateRaffleInputValidator
             'properties' => [
                 'name' => ['type' => 'string'],
                 'prize' => ['type' => 'string'],
-                'startAt' => ['type' => 'string', 'pattern' => '\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'],
-                'closeAt' => ['type' => 'string', 'pattern' => '\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'],
-                'drawAt' => ['type' => 'string', 'pattern' => '\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'],
+                'startAt' => ['type' => 'string', 'format' => 'date-time'],
+                'closeAt' => ['type' => 'string', 'format' => 'date-time'],
+                'drawAt' => ['type' => 'string', 'format' => 'date-time'],
                 'totalTickets' => ['type' => 'integer'],
                 'ticketPrice' => [
                     'type' => 'object',

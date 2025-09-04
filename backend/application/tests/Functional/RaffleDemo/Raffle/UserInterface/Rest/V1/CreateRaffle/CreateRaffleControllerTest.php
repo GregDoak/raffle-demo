@@ -21,9 +21,9 @@ final class CreateRaffleControllerTest extends AbstractFunctionalTestCase
         $input = [
             'name' => 'raffle-name',
             'prize' => 'raffle-prize',
-            'startAt' => '2025-01-01 00:00:00',
-            'closeAt' => '2025-01-02 00:00:00',
-            'drawAt' => '2025-01-02 00:00:00',
+            'startAt' => '2025-01-01T00:00:00Z',
+            'closeAt' => '2025-01-02T00:00:00Z',
+            'drawAt' => '2025-01-02T00:00:00Z',
             'totalTickets' => 100,
             'ticketPrice' => [
                 'amount' => 1000,
@@ -35,7 +35,7 @@ final class CreateRaffleControllerTest extends AbstractFunctionalTestCase
         // Act
         $this->client->request(
             method: 'POST',
-            uri: '/rest/v1/raffle',
+            uri: '/rest/v1/raffles',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: JsonSerializer::serialize($input),
         );
@@ -64,7 +64,7 @@ final class CreateRaffleControllerTest extends AbstractFunctionalTestCase
         // Act
         $this->client->request(
             method: 'POST',
-            uri: '/rest/v1/raffle',
+            uri: '/rest/v1/raffles',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: JsonSerializer::serialize($input),
         );

@@ -18,7 +18,7 @@ final class AllocateTicketToParticipantValidatorTest extends TestCase
             'id' => 'string',
             'quantity' => 1,
             'allocatedTo' => 'string',
-            'allocatedAt' => '1970-01-01 00:00:00',
+            'allocatedAt' => '1970-01-01T00:00:00Z',
         ];
         $validator = new AllocateTicketToParticipantValidator();
 
@@ -57,7 +57,7 @@ final class AllocateTicketToParticipantValidatorTest extends TestCase
             'id' => 'string',
             'quantity' => 1,
             'allocatedTo' => 'string',
-            'allocatedAt' => '1970-01-01 00:00:00',
+            'allocatedAt' => '1970-01-01T00:00:00Z',
         ];
         unset($input['allocatedAt']);
         $validator = new AllocateTicketToParticipantValidator();

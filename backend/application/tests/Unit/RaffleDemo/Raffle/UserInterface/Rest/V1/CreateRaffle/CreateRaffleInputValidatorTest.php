@@ -17,9 +17,9 @@ final class CreateRaffleInputValidatorTest extends TestCase
         $input = [
             'name' => 'string',
             'prize' => 'string',
-            'startAt' => '1970-01-01 00:00:00',
-            'closeAt' => '1970-01-01 00:00:00',
-            'drawAt' => '1970-01-01 00:00:00',
+            'startAt' => '1970-01-01T00:00:00Z',
+            'closeAt' => '1970-01-01T00:00:00Z',
+            'drawAt' => '1970-01-01T00:00:00Z',
             'totalTickets' => 100,
             'ticketPrice' => [
                 'amount' => 1000,

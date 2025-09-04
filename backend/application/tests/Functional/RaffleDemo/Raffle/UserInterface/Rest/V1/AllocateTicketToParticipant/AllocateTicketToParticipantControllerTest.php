@@ -35,13 +35,13 @@ final class AllocateTicketToParticipantControllerTest extends AbstractFunctional
         $input = [
             'quantity' => 1,
             'allocatedTo' => 'participant',
-            'allocatedAt' => '2025-01-02 12:00:00',
+            'allocatedAt' => '2025-01-02T12:00:00Z',
         ];
 
         // Act
         $this->client->request(
             method: 'POST',
-            uri: sprintf('/rest/v1/raffle/%s/allocate', $command->id->toString()),
+            uri: sprintf('/rest/v1/raffles/%s/allocate', $command->id->toString()),
             server: ['CONTENT_TYPE' => 'application/json'],
             content: JsonSerializer::serialize($input),
         );
@@ -62,7 +62,7 @@ final class AllocateTicketToParticipantControllerTest extends AbstractFunctional
         // Act
         $this->client->request(
             method: 'POST',
-            uri: sprintf('/rest/v1/raffle/%s/allocate', 'INVALID'),
+            uri: sprintf('/rest/v1/raffles/%s/allocate', 'INVALID'),
             server: ['CONTENT_TYPE' => 'application/json'],
             content: JsonSerializer::serialize($input),
         );
@@ -78,13 +78,13 @@ final class AllocateTicketToParticipantControllerTest extends AbstractFunctional
         $input = [
             'quantity' => 1,
             'allocatedTo' => 'participant',
-            'allocatedAt' => '2025-01-02 12:00:00',
+            'allocatedAt' => '2025-01-02T12:00:00Z',
         ];
 
         // Act
         $this->client->request(
             method: 'POST',
-            uri: sprintf('/rest/v1/raffle/%s/allocate', 'MISSING'),
+            uri: sprintf('/rest/v1/raffles/%s/allocate', 'MISSING'),
             server: ['CONTENT_TYPE' => 'application/json'],
             content: JsonSerializer::serialize($input),
         );
