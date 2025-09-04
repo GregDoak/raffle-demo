@@ -31,6 +31,6 @@ final readonly class CreateRaffleController
         /* @infection-ignore-all */
         $commandBus->dispatchSync($command);
 
-        return new JsonResponse(status: Response::HTTP_CREATED);
+        return new JsonResponse(data: ['id' => $command->id->toString()], status: Response::HTTP_CREATED);
     }
 }

@@ -27,6 +27,6 @@ final readonly class AllocateTicketToParticipantController
         /* @infection-ignore-all */
         $commandBus->dispatchSync($command);
 
-        return new JsonResponse(status: Response::HTTP_OK);
+        return new JsonResponse(data: ['id' => $command->id->toString()], status: Response::HTTP_OK);
     }
 }
