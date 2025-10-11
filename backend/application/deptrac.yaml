@@ -48,6 +48,7 @@ deptrac:
                         - bref/symfony-bridge
                         - doctrine/dbal
                         - doctrine/migrations
+                        - opis/json-schema
                         - psr/log
                         - symfony/console
                         - symfony/dependency-injection

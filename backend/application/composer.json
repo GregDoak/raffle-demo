@@ -7,13 +7,13 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "bref/bref": ">=2.4.10",
+        "bref/bref": ">=2.4.14",
         "bref/symfony-bridge": ">=1.1",
-        "doctrine/dbal": "^4.3.2",
+        "doctrine/dbal": "^4.3.4",
         "doctrine/doctrine-migrations-bundle": ">=3.4.2",
         "dragonmantank/cron-expression": "^3.4",
         "nelmio/cors-bundle": "^2.5",
-        "opis/json-schema": "^2.4.1",
+        "opis/json-schema": "^2.5.0",
         "symfony/console": "7.3.*",
         "symfony/dotenv": "7.3.*",
         "symfony/expression-language": "7.3.*",
@@ -26,18 +26,18 @@
         "symfony/yaml": "7.3.*"
     },
     "require-dev": {
-        "deptrac/deptrac": "^3.0",
-        "friendsofphp/php-cs-fixer": "^3.86.0",
+        "deptrac/deptrac": "^4.2.1",
+        "friendsofphp/php-cs-fixer": "^3.88.2",
         "infection/infection": "^0.30.3",
         "j13k/yaml-lint": "^1.1.6",
-        "kubawerlos/php-cs-fixer-custom-fixers": "^3.32.0",
-        "phpstan/phpstan": "^2.1.22",
-        "phpstan/phpstan-strict-rules": "^2.0.6",
-        "phpstan/phpstan-symfony": "^2.0.7",
-        "phpunit/phpunit": "^12.3.6",
+        "kubawerlos/php-cs-fixer-custom-fixers": "^3.35.1",
+        "phpstan/phpstan": "^2.1.31",
+        "phpstan/phpstan-strict-rules": "^2.0.7",
+        "phpstan/phpstan-symfony": "^2.0.8",
+        "phpunit/phpunit": "^12.4.1",
         "roave/security-advisories": "dev-latest",
         "symfony/browser-kit": "7.3.*",
-        "symfony/phpunit-bridge": "^7.3.1"
+        "symfony/phpunit-bridge": "^7.3.4"
     },
     "config": {
         "allow-plugins": {

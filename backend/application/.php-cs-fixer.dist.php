@@ -31,7 +31,7 @@ return new PhpCsFixer\Config()
         'yoda_style' => ['equal' => false, 'identical' => false, 'less_and_greater' => false],
         'line_ending' => true,
         'global_namespace_import' => ['import_classes' => true, 'import_constants' => true, 'import_functions' => true],
-        'visibility_required' => true,
+        'modifier_keywords' => true,
         'phpdoc_separation' =>['skip_unlisted_annotations' => true],
         'phpdoc_line_span' => ['method' => 'single', 'property' => 'single'],
         'php_unit_method_casing' => ['case' => 'snake_case'],
