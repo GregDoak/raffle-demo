@@ -42,13 +42,20 @@ export const DataProvider: DataProvider = {
     resource: string,
     params: CreateParams,
   ): Promise<CreateResult<ResultRecordType>> {
-    const { json } = await httpClient.post(
-      "/" + resource,
-      params,
-      getHeaders(),
-    );
-
-    return json;
+    return new Promise((resolve, reject) => {
+      httpClient
+        .post("/" + resource, params.data, getHeaders())
+        .then((result) => {
+          if (result.isSuccess) {
+            return resolve({ data: result });
+          } else {
+            throw new Error(result.message ?? "An unknown error occurred.");
+          }
+        })
+        .catch((error) => {
+          return reject(error);
+        });
+    });
   },
   delete<RecordType>(
     resource: string,
