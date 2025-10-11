@@ -1,0 +1,8 @@
+security:
+    firewalls:
+        admin:
+            stateless: true
+            access_token:
+                token_handler: App\Framework\Infrastructure\Symfony\Security\Admin\AdminAccessTokenHandler
+    access_control:
+        - { path: ^/, roles: ROLE_ADMIN }

@@ -59,6 +59,8 @@ deptrac:
                         - symfony/messenger
                         - symfony/routing
                         - symfony/scheduler
+                        - symfony/security-core
+                        - symfony/security-http
                         - symfony/uid
     ruleset:
         Foundation:
@@ -92,6 +94,7 @@ deptrac:
         RaffleDemoRaffleUserInterface:
             - Foundation
             - FrameworkApplication
+            - FrameworkInfrastructure
             - FrameworkUserInterface
             - RaffleDemoRaffleApplication
             - Vendor

@@ -42,7 +42,7 @@ final class AllocateTicketToParticipantControllerTest extends AbstractFunctional
         $this->client->request(
             method: 'POST',
             uri: sprintf('/rest/v1/raffles/%s/allocate', $command->id->toString()),
-            server: ['CONTENT_TYPE' => 'application/json'],
+            server: ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => $this->getAdminUserToken()],
             content: JsonSerializer::serialize($input),
         );
 
@@ -53,6 +53,7 @@ final class AllocateTicketToParticipantControllerTest extends AbstractFunctional
     #[Test]
     public function it_fails_with_http_400_code_when_given_an_invalid_input(): void
     {
+        // Arrange
         $input = [
             'quantity' => 'INVALID',
             'allocatedTo' => 1,
@@ -63,7 +64,7 @@ final class AllocateTicketToParticipantControllerTest extends AbstractFunctional
         $this->client->request(
             method: 'POST',
             uri: sprintf('/rest/v1/raffles/%s/allocate', 'INVALID'),
-            server: ['CONTENT_TYPE' => 'application/json'],
+            server: ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => $this->getAdminUserToken()],
             content: JsonSerializer::serialize($input),
         );
 
@@ -73,8 +74,42 @@ final class AllocateTicketToParticipantControllerTest extends AbstractFunctional
     }
 
     #[Test]
+    public function it_fails_with_http_401_code_when_given_an_input_with_missing_credentials(): void
+    {
+        // Arrange
+        ClockProvider::set(new MockClock('2025-01-01 00:00:00'));
+        $commandBus = self::getContainer()->get(CommandBusInterface::class);
+        $commandBus->dispatchSync($command = RaffleApplicationContext::getCreateRaffleCommand());
+        $commandBus->dispatchSync(
+            RaffleApplicationContext::getStartRaffleCommand(
+                id: $command->id->toString(),
+                startedAt: $command->startAt->toDateTime(),
+                startedBy: 'system',
+            ),
+        );
+
+        $input = [
+            'quantity' => 1,
+            'allocatedTo' => 'participant',
+            'allocatedAt' => '2025-01-02T12:00:00Z',
+        ];
+
+        // Act
+        $this->client->request(
+            method: 'POST',
+            uri: sprintf('/rest/v1/raffles/%s/allocate', $command->id->toString()),
+            server: ['CONTENT_TYPE' => 'application/json'],
+            content: JsonSerializer::serialize($input),
+        );
+
+        // Assert
+        self::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+    }
+
+    #[Test]
     public function it_fails_with_http_404_code_when_given_an_unknown_id(): void
     {
+        // Arrange
         $input = [
             'quantity' => 1,
             'allocatedTo' => 'participant',
@@ -85,7 +120,7 @@ final class AllocateTicketToParticipantControllerTest extends AbstractFunctional
         $this->client->request(
             method: 'POST',
             uri: sprintf('/rest/v1/raffles/%s/allocate', 'MISSING'),
-            server: ['CONTENT_TYPE' => 'application/json'],
+            server: ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => $this->getAdminUserToken()],
             content: JsonSerializer::serialize($input),
         );
 

@@ -34,6 +34,8 @@ services:
 
     App\Framework\Infrastructure\Symfony\Router\SymfonyInstanceProvider: ~
 
+    App\Framework\Infrastructure\Symfony\Security\Admin\AdminAccessTokenHandler: ~
+
     App\Framework\UserInterface\ApiProblem\DebuggableExceptionTransformer: ~
 
     App\Framework\UserInterface\ApiProblem\ExceptionTransformerInterface: '@App\Framework\UserInterface\ApiProblem\DebuggableExceptionTransformer'
