@@ -29,7 +29,6 @@ final class CreateRaffleControllerTest extends AbstractFunctionalTestCase
                 'amount' => 1000,
                 'currency' => 'GBP',
             ],
-            'createdBy' => 'user',
         ];
 
         // Act
@@ -59,7 +58,6 @@ final class CreateRaffleControllerTest extends AbstractFunctionalTestCase
                 'amount' => 'INVALID',
                 'currency' => 1,
             ],
-            'createdBy' => 1,
         ];
 
         // Act
@@ -90,7 +88,6 @@ final class CreateRaffleControllerTest extends AbstractFunctionalTestCase
                 'amount' => 1000,
                 'currency' => 'GBP',
             ],
-            'createdBy' => 'user',
         ];
 
         // Act

@@ -44,7 +44,6 @@ final readonly class CreateRaffleInputResolver implements ValueResolverInterface
             $input['drawAt'], // @phpstan-ignore-line argument.type
             $input['totalTickets'], // @phpstan-ignore-line argument.type
             $input['ticketPrice'], // @phpstan-ignore-line argument.type
-            $input['createdBy'], // @phpstan-ignore-line argument.type
         );
     }
 }

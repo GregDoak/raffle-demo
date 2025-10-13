@@ -18,7 +18,6 @@ final readonly class CreateRaffleInputValidator
      *     drawAt?: ?mixed,
      *     totalTickets?: ?mixed,
      *     ticketPrice?: array{amount?: ?mixed, currency?: mixed},
-     *     createdBy?: ?mixed
      * } $input
      */
     public function validate(array $input): ValidationResult
@@ -47,7 +46,6 @@ final readonly class CreateRaffleInputValidator
                     'properties' => ['amount' => ['type' => 'integer'], 'currency' => ['type' => 'string']],
                     'required' => ['amount', 'currency'],
                 ],
-                'createdBy' => ['type' => 'string'],
             ],
             'required' => [
                 'name',
@@ -57,7 +55,6 @@ final readonly class CreateRaffleInputValidator
                 'drawAt',
                 'totalTickets',
                 'ticketPrice',
-                'createdBy',
             ],
         ];
     }

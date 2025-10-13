@@ -28,7 +28,7 @@ final readonly class CreateRaffleController
             $input->drawAt,
             $input->totalTickets,
             $input->ticketPrice,
-            $input->createdBy,
+            $user->getUserIdentifier(),
         );
 
         /* @infection-ignore-all */

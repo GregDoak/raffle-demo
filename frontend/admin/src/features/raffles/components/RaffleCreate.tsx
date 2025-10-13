@@ -123,12 +123,6 @@ export const RaffleCreate = () => {
             />
           </Stack>
         </Box>
-        <TextInput
-          name="createdBy"
-          source="createdBy"
-          validate={[required()]}
-          defaultValue="REMOVE THIS AFTER ADDING AUTH"
-        />
       </SimpleForm>
     </Create>
   );

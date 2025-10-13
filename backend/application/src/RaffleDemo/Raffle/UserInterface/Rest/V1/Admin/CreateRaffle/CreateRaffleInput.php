@@ -15,7 +15,6 @@ final readonly class CreateRaffleInput
         public string $drawAt,
         public int $totalTickets,
         public array $ticketPrice,
-        public string $createdBy,
     ) {
     }
 }

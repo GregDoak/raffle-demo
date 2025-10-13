@@ -25,7 +25,6 @@ final class CreateRaffleInputValidatorTest extends TestCase
                 'amount' => 1000,
                 'currency' => 'string',
             ],
-            'createdBy' => 'string',
         ];
         $validator = new CreateRaffleInputValidator();
 
@@ -51,7 +50,6 @@ final class CreateRaffleInputValidatorTest extends TestCase
                 'amount' => 'string',
                 'currency' => 1,
             ],
-            'createdBy' => 1,
         ];
         $validator = new CreateRaffleInputValidator();
 
@@ -60,7 +58,7 @@ final class CreateRaffleInputValidatorTest extends TestCase
 
         // Assert
         self::assertFalse($result->isValid());
-        self::assertCount(8, $result->error()?->subErrors() ?? []);
+        self::assertCount(7, $result->error()?->subErrors() ?? []);
     }
 
     #[Test]
@@ -78,9 +76,8 @@ final class CreateRaffleInputValidatorTest extends TestCase
                 'amount' => 1000,
                 'currency' => 'string',
             ],
-            'createdBy' => 'string',
         ];
-        unset($input['ticketPrice']['currency'], $input['createdBy']);
+        unset($input['name'], $input['ticketPrice']['currency']);
         $validator = new CreateRaffleInputValidator();
 
         // Act
