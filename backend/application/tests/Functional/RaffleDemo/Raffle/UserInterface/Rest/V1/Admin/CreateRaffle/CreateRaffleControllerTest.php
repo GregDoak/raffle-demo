@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Functional\RaffleDemo\Raffle\UserInterface\Rest\V1\CreateRaffle;
+namespace App\Tests\Functional\RaffleDemo\Raffle\UserInterface\Rest\V1\Admin\CreateRaffle;
 
 use App\Foundation\Clock\ClockProvider;
 use App\Foundation\Clock\MockClock;
@@ -35,7 +35,7 @@ final class CreateRaffleControllerTest extends AbstractFunctionalTestCase
         // Act
         $this->client->request(
             method: 'POST',
-            uri: '/rest/v1/raffles',
+            uri: '/rest/v1/admin/raffles',
             server: ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => $this->getAdminUserToken()],
             content: JsonSerializer::serialize($input),
         );
@@ -65,7 +65,7 @@ final class CreateRaffleControllerTest extends AbstractFunctionalTestCase
         // Act
         $this->client->request(
             method: 'POST',
-            uri: '/rest/v1/raffles',
+            uri: '/rest/v1/admin/raffles',
             server: ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => $this->getAdminUserToken()],
             content: JsonSerializer::serialize($input),
         );
@@ -96,7 +96,7 @@ final class CreateRaffleControllerTest extends AbstractFunctionalTestCase
         // Act
         $this->client->request(
             method: 'POST',
-            uri: '/rest/v1/raffles',
+            uri: '/rest/v1/admin/raffles',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: JsonSerializer::serialize($input),
         );

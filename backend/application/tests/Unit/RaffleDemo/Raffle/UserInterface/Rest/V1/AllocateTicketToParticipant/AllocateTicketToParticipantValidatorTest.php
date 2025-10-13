@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\RaffleDemo\Raffle\UserInterface\Rest\V1\AllocateTicketToParticipant;
 
-use App\RaffleDemo\Raffle\UserInterface\Rest\V1\AllocateTicketToParticipant\AllocateTicketToParticipantValidator;
+use App\RaffleDemo\Raffle\UserInterface\Rest\V1\Admin\AllocateTicketToParticipant\AllocateTicketToParticipantValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

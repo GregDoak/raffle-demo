@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\RaffleDemo\Raffle\UserInterface\Rest\V1\AllocateTicketToParticipant;
+namespace App\RaffleDemo\Raffle\UserInterface\Rest\V1\Admin\AllocateTicketToParticipant;
 
 use DateTimeInterface;
 

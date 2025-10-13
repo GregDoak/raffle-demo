@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\RaffleDemo\Raffle\UserInterface\Rest\V1\CreateRaffle;
+namespace App\RaffleDemo\Raffle\UserInterface\Rest\V1\Admin\CreateRaffle;
 
 final readonly class CreateRaffleInput
 {

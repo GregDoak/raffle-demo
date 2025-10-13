@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\RaffleDemo\Raffle\UserInterface\Rest\V1\CreateRaffle;
 
-use App\RaffleDemo\Raffle\UserInterface\Rest\V1\CreateRaffle\CreateRaffleInputValidator;
+use App\RaffleDemo\Raffle\UserInterface\Rest\V1\Admin\CreateRaffle\CreateRaffleInputValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Functional\RaffleDemo\Raffle\UserInterface\Rest\V1\AllocateTicketToParticipant;
+namespace App\Tests\Functional\RaffleDemo\Raffle\UserInterface\Rest\V1\Admin\AllocateTicketToParticipant;
 
 use App\Foundation\Clock\ClockProvider;
 use App\Foundation\Clock\MockClock;
@@ -41,7 +41,7 @@ final class AllocateTicketToParticipantControllerTest extends AbstractFunctional
         // Act
         $this->client->request(
             method: 'POST',
-            uri: sprintf('/rest/v1/raffles/%s/allocate', $command->id->toString()),
+            uri: sprintf('/rest/v1/admin/raffles/%s/allocate', $command->id->toString()),
             server: ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => $this->getAdminUserToken()],
             content: JsonSerializer::serialize($input),
         );
@@ -63,7 +63,7 @@ final class AllocateTicketToParticipantControllerTest extends AbstractFunctional
         // Act
         $this->client->request(
             method: 'POST',
-            uri: sprintf('/rest/v1/raffles/%s/allocate', 'INVALID'),
+            uri: sprintf('/rest/v1/admin/raffles/%s/allocate', 'INVALID'),
             server: ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => $this->getAdminUserToken()],
             content: JsonSerializer::serialize($input),
         );
@@ -97,7 +97,7 @@ final class AllocateTicketToParticipantControllerTest extends AbstractFunctional
         // Act
         $this->client->request(
             method: 'POST',
-            uri: sprintf('/rest/v1/raffles/%s/allocate', $command->id->toString()),
+            uri: sprintf('/rest/v1/admin/raffles/%s/allocate', $command->id->toString()),
             server: ['CONTENT_TYPE' => 'application/json'],
             content: JsonSerializer::serialize($input),
         );
@@ -119,7 +119,7 @@ final class AllocateTicketToParticipantControllerTest extends AbstractFunctional
         // Act
         $this->client->request(
             method: 'POST',
-            uri: sprintf('/rest/v1/raffles/%s/allocate', 'MISSING'),
+            uri: sprintf('/rest/v1/admin/raffles/%s/allocate', 'MISSING'),
             server: ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => $this->getAdminUserToken()],
             content: JsonSerializer::serialize($input),
         );

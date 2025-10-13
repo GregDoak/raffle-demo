@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\RaffleDemo\Raffle\UserInterface\Rest\V1\CreateRaffle;
+namespace App\RaffleDemo\Raffle\UserInterface\Rest\V1\Admin\CreateRaffle;
 
 use App\Framework\Application\Command\CommandBusInterface;
 use App\Framework\Infrastructure\Symfony\Security\Admin\AdminUser;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
-#[Route('/rest/v1/raffles', methods: ['POST'])]
+#[Route('/rest/v1/admin/raffles', methods: ['POST'])]
 final readonly class CreateRaffleController
 {
     public function __invoke(
