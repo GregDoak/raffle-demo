@@ -1,7 +1,7 @@
 import { List, Datagrid, TextField } from "react-admin";
 
 export const RaffleList = () => (
-  <List>
+  <List empty={false} exporter={false}>
     <Datagrid>
       <TextField source="id" />
       <TextField source="name" />

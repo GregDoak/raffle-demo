@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { AuthenticationProvider } from "@/app/authentication/authentication-provider.ts";
-import { HttpClientInterface } from "@/lib/http-client/http-client-interface.ts";
+import {
+  HttpClientInterface,
+  ResultInterface,
+} from "@/lib/http-client/http-client-interface.ts";
 import { FetchJsonHttpClient } from "@/lib/http-client/fetch-json-http-client.ts";
 import {
   CreateParams,
@@ -30,12 +33,20 @@ const httpClient: HttpClientInterface = new FetchJsonHttpClient(
   import.meta.env.VITE_API_BASE_URL,
 );
 
-function getHeaders(): Headers {
+const getHeaders = (): Headers => {
   const headers = new Headers();
   headers.set("Authorization", "Bearer " + AuthenticationProvider.getToken());
 
   return headers;
-}
+};
+
+const transformProblemToMessage = (problem: ResultInterface): string => {
+  if (problem.json.detail && problem.json.errors) {
+    return problem.json.detail + "\n" + problem.json.errors.join("\n");
+  }
+
+  return "An unknown error occurred.";
+};
 
 export const DataProvider: DataProvider = {
   async create<RecordType, ResultRecordType>(
@@ -45,15 +56,11 @@ export const DataProvider: DataProvider = {
     return new Promise((resolve, reject) => {
       httpClient
         .post("/" + resource, params.data, getHeaders())
-        .then((result) => {
-          if (result.isSuccess) {
-            return resolve({ data: result });
-          } else {
-            throw new Error(result.message ?? "An unknown error occurred.");
-          }
+        .then((result: ResultInterface) => {
+          return resolve({ data: result.json });
         })
-        .catch((error) => {
-          return reject(error);
+        .catch((result: ResultInterface) => {
+          return reject({ message: transformProblemToMessage(result) });
         });
     });
   },
@@ -73,7 +80,16 @@ export const DataProvider: DataProvider = {
     resource: string,
     params: GetListParams & QueryFunctionContext,
   ): Promise<GetListResult<RecordType>> {
-    return Promise.resolve({ data: [], total: 0 });
+    return new Promise((resolve, reject) => {
+      httpClient
+        .get("/" + resource, {}, getHeaders())
+        .then((result: ResultInterface) => {
+          return resolve(result.json);
+        })
+        .catch((result: ResultInterface) => {
+          return reject({ message: transformProblemToMessage(result) });
+        });
+    });
   },
   getMany<RecordType>(
     resource: string,

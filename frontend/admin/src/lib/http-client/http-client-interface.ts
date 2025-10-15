@@ -1,7 +1,7 @@
 export interface ResultInterface {
   isSuccess: boolean;
-  id?: string;
-  message?: string;
+  code: number;
+  json: object;
 }
 
 export interface HttpClientInterface {
@@ -9,10 +9,7 @@ export interface HttpClientInterface {
     path: string,
     params: object = {},
     headers: Headers = new Headers(),
-  ): Promise<{
-    status: number;
-    body: string;
-  }>;
+  ): Promise<ResultInterface>;
 
   post(
     path: string,

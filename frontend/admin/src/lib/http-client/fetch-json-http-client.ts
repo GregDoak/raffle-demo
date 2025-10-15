@@ -19,14 +19,26 @@ export class FetchJsonHttpClient implements HttpClientInterface {
     path: string,
     params: object = {},
     headers: Headers = new Headers(),
-  ): Promise<{ status: number; body: string }> {
-    return fetchUtils.fetchJson(
-      this.baseUrl + path + new URLSearchParams(params).toString(),
-      {
-        method: "GET",
-        headers: new Headers([...this.headers.entries(), ...headers.entries()]),
-      },
-    );
+  ): Promise<ResultInterface> {
+    return new Promise((resolve, reject) => {
+      fetchUtils
+        .fetchJson(
+          this.baseUrl + path + "?" + new URLSearchParams(params).toString(),
+          {
+            method: "GET",
+            headers: new Headers([
+              ...this.headers.entries(),
+              ...headers.entries(),
+            ]),
+          },
+        )
+        .then((success) => {
+          return resolve(this.handleSuccess(success));
+        })
+        .catch((problem: HttpError) => {
+          return reject(this.handleProblem(problem));
+        });
+    });
   }
 
   async post(
@@ -44,36 +56,28 @@ export class FetchJsonHttpClient implements HttpClientInterface {
             ...headers.entries(),
           ]),
         })
-        .then((response) => {
-          const result: ResultInterface = {
-            isSuccess: true,
-            id: response.json.id,
-          };
-          return resolve(result);
+        .then((success) => {
+          return resolve(this.handleSuccess(success));
         })
-        .catch((error) => {
-          return reject(this.transformErrorToResult(error));
+        .catch((problem: HttpError) => {
+          return reject(this.handleProblem(problem));
         });
     });
   }
 
-  private transformErrorToResult(error): ResultInterface {
-    if (error instanceof HttpError) {
-      if (error.body.detail && error.body.errors) {
-        return {
-          isSuccess: false,
-          message: error.body.detail + "\n" + error.body.errors.join("\n"),
-        };
-      }
-      return {
-        isSuccess: false,
-        message: error.message,
-      };
-    }
-
+  private handleSuccess(success): ResultInterface {
     return {
-      isSuccess: false,
-      message: "An unknown error occurred.",
+      isSuccess: true,
+      code: success.status,
+      json: success.json,
+    };
+  }
+
+  private handleProblem(problem: HttpError): ResultInterface {
+    return {
+      isSuccess: true,
+      code: problem.status,
+      json: problem.body,
     };
   }
 }
