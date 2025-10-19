@@ -11,6 +11,7 @@ use App\RaffleDemo\Raffle\Domain\Exception\InvalidClosedAtException;
 use App\RaffleDemo\Raffle\Domain\Exception\InvalidClosedException;
 use App\RaffleDemo\Raffle\Domain\Exception\InvalidCreatedException;
 use App\RaffleDemo\Raffle\Domain\Exception\InvalidDrawnException;
+use App\RaffleDemo\Raffle\Domain\Exception\InvalidEndedException;
 use App\RaffleDemo\Raffle\Domain\Exception\InvalidStartAtException;
 use App\RaffleDemo\Raffle\Domain\Exception\InvalidStartedException;
 use App\RaffleDemo\Raffle\Domain\Exception\InvalidTicketAllocationException;
@@ -21,6 +22,7 @@ use App\RaffleDemo\Raffle\Domain\ValueObject\Closed;
 use App\RaffleDemo\Raffle\Domain\ValueObject\Created;
 use App\RaffleDemo\Raffle\Domain\ValueObject\DrawAt;
 use App\RaffleDemo\Raffle\Domain\ValueObject\Drawn;
+use App\RaffleDemo\Raffle\Domain\ValueObject\Ended;
 use App\RaffleDemo\Raffle\Domain\ValueObject\Name;
 use App\RaffleDemo\Raffle\Domain\ValueObject\Prize;
 use App\RaffleDemo\Raffle\Domain\ValueObject\StartAt;
@@ -362,6 +364,43 @@ final class RaffleTest extends TestCase
     }
 
     #[Test]
+    public function it_automatically_ends_a_raffle_when_closing_a_raffle_with_no_allocations(): void
+    {
+        // Arrange
+        $raffle = RaffleDomainContext::create();
+        $closed = Closed::from(by: 'test-user', at: Clock::fromString('2025-01-03 00:00:00'));
+
+        // Act
+        $raffle->close($closed);
+
+        // Assert
+        self::assertSame($closed, $raffle->closed);
+        self::assertNotNull($raffle->ended);
+    }
+
+    #[Test]
+    public function it_can_close_a_raffle_without_ending_when_there_are_ticket_allocations_to_be_drawn(): void
+    {
+        // Arrange
+        $raffle = RaffleDomainContext::create();
+        $raffle = RaffleDomainContext::start($raffle);
+        $ticketAllocation = TicketAllocation::from(
+            quantity: 2,
+            allocatedTo: 'test-participant',
+            allocatedAt: Clock::fromString('2025-01-02 00:00:01'),
+        );
+        $raffle->allocateTicketToParticipant($ticketAllocation);
+        $closed = Closed::from(by: 'test-user', at: Clock::fromString('2025-01-03 00:00:00'));
+
+        // Act
+        $raffle->close($closed);
+
+        // Assert
+        self::assertSame($closed, $raffle->closed);
+        self::assertNull($raffle->ended);
+    }
+
+    #[Test]
     public function it_fails_to_close_a_raffle_when_the_raffle_is_already_closed(): void
     {
         // Arrange
@@ -399,6 +438,30 @@ final class RaffleTest extends TestCase
         // Assert
         self::assertSame($drawn, $raffle->drawn);
         self::assertSame($ticketAllocation, $raffle->winner?->ticketAllocation);
+    }
+
+    #[Test]
+    public function it_automatically_ends_a_raffle_after_drawing_a_raffle(): void
+    {
+        // Arrange
+        $raffle = RaffleDomainContext::create();
+        $raffle = RaffleDomainContext::start($raffle);
+        $ticketAllocation = TicketAllocation::from(
+            quantity: 1,
+            allocatedTo: 'test-participant',
+            allocatedAt: Clock::fromString('2025-01-02 00:00:01'),
+        );
+        $raffle = RaffleDomainContext::allocateTicketToParticipant($raffle, $ticketAllocation);
+        $raffle = RaffleDomainContext::close($raffle);
+        $drawn = Drawn::from(by: 'test-user', at: Clock::fromString('2025-01-03 00:00:00'));
+
+        // Act
+        $raffle->drawPrize($drawn);
+
+        // Assert
+        self::assertSame($drawn, $raffle->drawn);
+        self::assertSame($ticketAllocation, $raffle->winner?->ticketAllocation);
+        self::assertNotNull($raffle->ended);
     }
 
     #[Test]
@@ -474,6 +537,65 @@ final class RaffleTest extends TestCase
         self::assertNotNull($raffle->closed);
         self::assertNotNull($raffle->drawn);
         self::assertNotNull($raffle->winner);
+    }
+
+    public function it_can_end_a_raffle(): void
+    {
+        // Arrange
+        $raffle = RaffleDomainContext::create();
+        $raffle = RaffleDomainContext::start($raffle);
+        $ticketAllocation = TicketAllocation::from(
+            quantity: 1,
+            allocatedTo: 'test-participant',
+            allocatedAt: Clock::fromString('2025-01-02 00:00:01'),
+        );
+        $raffle = RaffleDomainContext::allocateTicketToParticipant($raffle, $ticketAllocation);
+        $raffle = RaffleDomainContext::close($raffle);
+        $ended = Ended::from(by: 'test-user', at: Clock::fromString('2025-01-03 00:00:00'), reason: 'reason');
+
+        // Act
+        $raffle->end($ended);
+
+        // Assert
+        self::assertSame($ended, $raffle->ended);
+    }
+
+    #[Test]
+    public function it_fails_to_end_a_raffle_when_the_raffle_is_not_closed(): void
+    {
+        // Arrange
+        $raffle = RaffleDomainContext::create();
+        $raffle = RaffleDomainContext::start($raffle);
+        $raffle = RaffleDomainContext::allocateTicketToParticipant($raffle);
+        $ended = Ended::from(by: 'test-user', at: Clock::fromString('2025-01-03 00:00:00'), reason: 'reason');
+
+        // Act
+        self::expectExceptionMessage(InvalidEndedException::fromCannotEndBeforeClosed()->getMessage());
+
+        $raffle->end($ended);
+
+        // Assert
+        self::fail();
+    }
+
+    #[Test]
+    public function it_fails_to_end_a_raffle_when_the_raffle_is_already_ended(): void
+    {
+        // Arrange
+        $raffle = RaffleDomainContext::create();
+        $raffle = RaffleDomainContext::start($raffle);
+        $raffle = RaffleDomainContext::allocateTicketToParticipant($raffle);
+        $raffle = RaffleDomainContext::close($raffle);
+        $ended = Ended::from(by: 'test-user', at: Clock::fromString('2025-01-03 00:00:00'), reason: 'reason');
+        $raffle->end($ended);
+
+        // Act
+        self::expectExceptionMessage(InvalidEndedException::fromAlreadyEnded()->getMessage());
+
+        $raffle->end($ended);
+
+        // Assert
+        self::fail();
     }
 
     #[Test]

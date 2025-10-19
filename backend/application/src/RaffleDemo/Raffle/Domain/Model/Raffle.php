@@ -12,6 +12,7 @@ use App\RaffleDemo\Raffle\Domain\Exception\InvalidClosedAtException;
 use App\RaffleDemo\Raffle\Domain\Exception\InvalidClosedException;
 use App\RaffleDemo\Raffle\Domain\Exception\InvalidCreatedException;
 use App\RaffleDemo\Raffle\Domain\Exception\InvalidDrawnException;
+use App\RaffleDemo\Raffle\Domain\Exception\InvalidEndedException;
 use App\RaffleDemo\Raffle\Domain\Exception\InvalidStartAtException;
 use App\RaffleDemo\Raffle\Domain\Exception\InvalidStartedException;
 use App\RaffleDemo\Raffle\Domain\Exception\InvalidTicketAllocationException;
@@ -20,6 +21,7 @@ use App\RaffleDemo\Raffle\Domain\ValueObject\Closed;
 use App\RaffleDemo\Raffle\Domain\ValueObject\Created;
 use App\RaffleDemo\Raffle\Domain\ValueObject\DrawAt;
 use App\RaffleDemo\Raffle\Domain\ValueObject\Drawn;
+use App\RaffleDemo\Raffle\Domain\ValueObject\Ended;
 use App\RaffleDemo\Raffle\Domain\ValueObject\Name;
 use App\RaffleDemo\Raffle\Domain\ValueObject\OccurredAt;
 use App\RaffleDemo\Raffle\Domain\ValueObject\Prize;
@@ -54,6 +56,8 @@ final class Raffle extends AbstractAggregate
     public ?Closed $closed = null;
     public ?Drawn $drawn = null;
     public ?Winner $winner = null;
+
+    public ?Ended $ended = null;
 
     public function __construct()
     {
@@ -187,6 +191,16 @@ final class Raffle extends AbstractAggregate
                 occurredAt: OccurredAt::fromNow(),
             ),
         );
+
+        if ($this->ticketAllocations->numberOfTicketsAllocated === 0) {
+            $this->end(
+                Ended::from(
+                    by: $closed->by,
+                    at: $closed->at,
+                    reason: 'Automatically ended due to closed raffle without any ticket allocations',
+                ),
+            );
+        }
     }
 
     public function drawPrize(
@@ -217,6 +231,34 @@ final class Raffle extends AbstractAggregate
                 occurredAt: OccurredAt::fromNow(),
             ),
         );
+
+        $this->end(
+            Ended::from(
+                by: $drawn->by,
+                at: $drawn->at,
+                reason: 'Automatically ended due to drawn raffle and winner selected',
+            ),
+        );
+    }
+
+    public function end(Ended $ended): void
+    {
+        if ($this->closed === null) {
+            throw InvalidEndedException::fromCannotEndBeforeClosed();
+        }
+
+        if ($this->ended !== null) {
+            throw InvalidEndedException::fromAlreadyEnded();
+        }
+
+        $this->raise(
+            new Event\RaffleEnded(
+                aggregateVersion: $this->getAggregateVersion(),
+                aggregateId: $this->id,
+                ended: $ended,
+                occurredAt: OccurredAt::fromNow(),
+            ),
+        );
     }
 
     public function apply(AggregateEventInterface $event): void
@@ -227,6 +269,7 @@ final class Raffle extends AbstractAggregate
             Event\TicketAllocatedToParticipant::class => $this->applyTicketAllocatedToParticipant($event),
             Event\RaffleClosed::class => $this->applyRaffleClosed($event),
             Event\PrizeDrawn::class => $this->applyPrizeDrawn($event),
+            Event\RaffleEnded::class => $this->applyRaffleEnded($event),
             default => throw AggregateEventNotHandledException::notHandledByAggregate($event::class, self::class)
         };
     }
@@ -263,5 +306,10 @@ final class Raffle extends AbstractAggregate
     {
         $this->drawn = $event->drawn;
         $this->winner = $event->winner;
+    }
+
+    private function applyRaffleEnded(Event\RaffleEnded $event): void
+    {
+        $this->ended = $event->ended;
     }
 }
