@@ -12,6 +12,7 @@ use App\RaffleDemo\Raffle\Domain\ValueObject\Closed;
 use App\RaffleDemo\Raffle\Domain\ValueObject\Created;
 use App\RaffleDemo\Raffle\Domain\ValueObject\DrawAt;
 use App\RaffleDemo\Raffle\Domain\ValueObject\Drawn;
+use App\RaffleDemo\Raffle\Domain\ValueObject\Ended;
 use App\RaffleDemo\Raffle\Domain\ValueObject\Name;
 use App\RaffleDemo\Raffle\Domain\ValueObject\Prize;
 use App\RaffleDemo\Raffle\Domain\ValueObject\StartAt;
@@ -78,6 +79,13 @@ final readonly class RaffleDomainContext
     public static function drawPrize(Raffle $raffle, ?Drawn $drawn = null): Raffle
     {
         $raffle->drawPrize($drawn ?? Drawn::from(by: 'user', at: Clock::fromString('2025-01-03 00:00:00')));
+
+        return $raffle;
+    }
+
+    public static function end(Raffle $raffle, ?Ended $ended = null): Raffle
+    {
+        $raffle->end($ended ?? Ended::from(by: 'user', at: Clock::fromString('2025-01-03 00:00:00'), reason: 'reason'));
 
         return $raffle;
     }
