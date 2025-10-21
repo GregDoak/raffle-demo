@@ -55,6 +55,10 @@ services:
 
     App\RaffleDemo\Raffle\Domain\Projection\Raffle\V1\RaffleProjectionRepositoryInterface: '@App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\Projection\Raffle\V1\PostgresRaffleProjectionRepository'
 
+    App\RaffleDemo\Raffle\Domain\Projection\RaffleAllocation\V1\RaffleAllocationProjector: ~
+
+    App\RaffleDemo\Raffle\Domain\Projection\RaffleAllocation\V1\RaffleAllocationProjectionRepositoryInterface: '@App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\Projection\RaffleAllocation\V1\PostgresRaffleAllocationProjectionRepository'
+
     App\RaffleDemo\Raffle\Domain\Repository\RaffleEventStoreRepository:
         arguments:
             $eventStore: '@App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\PostgresRaffleEventStore'
@@ -69,6 +73,8 @@ services:
     App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\Projection\PostgresRaffleProjectionRepository: ~
 
     App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\Projection\Raffle\V1\PostgresRaffleProjectionRepository: ~
+
+    App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\Projection\RaffleAllocation\V1\PostgresRaffleAllocationProjectionRepository: ~
 
     App\RaffleDemo\Raffle\UserInterface\Cli\:
         resource: '../src/RaffleDemo/Raffle/UserInterface/Cli'
