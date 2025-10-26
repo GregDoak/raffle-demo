@@ -34,7 +34,7 @@ test/%: ## Runs the unit test suite can filter using test/some-filter
 .PHONY: lint
 lint: ## Enforces the code standards checks using preconfigured rules
 	@PHP_CS_FIXER_FUTURE_MODE=1 vendor/bin/php-cs-fixer check -v
-	@vendor/bin/yaml-lint . --parse-tags
+	@vendor/bin/yaml-lint $(shell find . -type f -regex ".*\.ya?ml" -not -path "./vendor/*") --parse-tags
 
 .PHONY: lint/fix
 lint/fix: ## Fixes all linter errors
