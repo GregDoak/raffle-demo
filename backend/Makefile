@@ -6,6 +6,13 @@ DOCKER_COMPOSE := docker compose --project-name "raffle-demo-backend" --file "do
 can-release: ## Runs all checks required for release
 	@${DOCKER_COMPOSE} run -it --rm php make can-release
 
+.PHONY: destroy
+destroy: ## Destroys the development environment
+	@${DOCKER_COMPOSE} down --volumes
+
+.PHONY: restart
+restart: stop start ## Restarts the development environment
+
 .PHONY: build
 build: ## Build the local development environment
 	@${DOCKER_COMPOSE} run -it --rm php composer install --no-interaction
@@ -15,6 +22,10 @@ build: ## Build the local development environment
 .PHONY: start
 start: build ## Starts the development environment
 	@${DOCKER_COMPOSE} up --build --remove-orphans
+
+.PHONY: stop
+stop: ## Stops the development environment
+	@${DOCKER_COMPOSE} stop
 
 .PHONY: shell
 shell: ## Shell into the default service
