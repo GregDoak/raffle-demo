@@ -49,8 +49,6 @@ services:
 
     App\RaffleDemo\Raffle\Domain\Model\Event\RaffleEventFactory: ~
 
-    App\RaffleDemo\Raffle\Domain\Projection\Raffle\RaffleProjector: ~
-
     App\RaffleDemo\Raffle\Domain\Projection\Raffle\V1\RaffleProjector: ~
 
     App\RaffleDemo\Raffle\Domain\Projection\Raffle\V1\RaffleProjectionRepositoryInterface: '@App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\Projection\Raffle\V1\PostgresRaffleProjectionRepository'
@@ -67,14 +65,10 @@ services:
         arguments:
             $eventStore: '@App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\PostgresRaffleEventStore'
 
-    App\RaffleDemo\Raffle\Domain\Projection\Raffle\RaffleProjectionRepositoryInterface: '@App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\Projection\PostgresRaffleProjectionRepository'
-
     App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\PostgresRaffleEventStore:
         arguments:
             $aggregateEventFactory: '@App\RaffleDemo\Raffle\Domain\Model\Event\RaffleEventFactory'
             $domain: 'raffle'
-
-    App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\Projection\PostgresRaffleProjectionRepository: ~
 
     App\RaffleDemo\Raffle\Infrastructure\Postgres\Repository\Projection\Raffle\V1\PostgresRaffleProjectionRepository: ~
 
