@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\RaffleDemo\Raffle\Application\Query\GetRaffleIdsDueToBeDrawn;
 
 use App\Framework\Application\Query\ResultInterface;
-use App\RaffleDemo\Raffle\Domain\Projection\Raffle\Raffle;
+use App\RaffleDemo\Raffle\Domain\Projection\Raffle\V1\Raffle;
 
 use function array_key_exists;
 

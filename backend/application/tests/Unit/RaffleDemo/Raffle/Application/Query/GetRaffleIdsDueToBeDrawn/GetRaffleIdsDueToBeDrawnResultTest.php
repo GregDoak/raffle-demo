@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit\RaffleDemo\Raffle\Application\Query\GetRaffleIdsDueToBeDrawn;
 
 use App\RaffleDemo\Raffle\Application\Query\GetRaffleIdsDueToBeDrawn\GetRaffleIdsDueToBeDrawnResult;
-use App\Tests\Context\RaffleDemo\Raffle\Domain\Projection\Raffle\RaffleProjectionDomainContext;
+use App\Tests\Context\RaffleDemo\Raffle\Domain\Projection\Raffle\V1\RaffleProjectionDomainContext;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -16,9 +16,9 @@ final class GetRaffleIdsDueToBeDrawnResultTest extends TestCase
     {
         // Arrange
         $raffles = [
-            RaffleProjectionDomainContext::create(id: 'id-1'),
-            RaffleProjectionDomainContext::create(id: 'id-1'),
-            RaffleProjectionDomainContext::create(id: 'id-2'),
+            RaffleProjectionDomainContext::create(id: 'id-1', status: 'closed'),
+            RaffleProjectionDomainContext::create(id: 'id-1', status: 'closed'),
+            RaffleProjectionDomainContext::create(id: 'id-2', status: 'closed'),
         ];
 
         // Act
@@ -33,9 +33,9 @@ final class GetRaffleIdsDueToBeDrawnResultTest extends TestCase
     {
         // Arrange
         $raffles = [
-            RaffleProjectionDomainContext::create(id: 'id-1'),
-            RaffleProjectionDomainContext::create(id: 'id-2'),
-            RaffleProjectionDomainContext::create(id: 'id-3'),
+            RaffleProjectionDomainContext::create(id: 'id-1', status: 'closed'),
+            RaffleProjectionDomainContext::create(id: 'id-2', status: 'closed'),
+            RaffleProjectionDomainContext::create(id: 'id-3', status: 'closed'),
         ];
 
         // Act

@@ -7,7 +7,7 @@ namespace App\Tests\Unit\RaffleDemo\Raffle\UserInterface\Cli;
 use App\Foundation\Uuid\Uuid;
 use App\RaffleDemo\Raffle\Application\Query\GetRaffleIdsDueToBeDrawn\GetRaffleIdsDueToBeDrawnResult;
 use App\RaffleDemo\Raffle\UserInterface\Cli\DrawRafflesDueToBeDrawnCommand;
-use App\Tests\Context\RaffleDemo\Raffle\Domain\Projection\Raffle\RaffleProjectionDomainContext;
+use App\Tests\Context\RaffleDemo\Raffle\Domain\Projection\Raffle\V1\RaffleProjectionDomainContext;
 use App\Tests\Double\Framework\Application\Command\CommandBusSpy;
 use App\Tests\Double\Framework\Application\Query\QueryBusDummy;
 use PHPUnit\Framework\Attributes\Test;
@@ -39,9 +39,9 @@ final class DrawRafflesDueToBeDrawnCommandTest extends TestCase
     {
         // Arrange
         $raffles = [
-            RaffleProjectionDomainContext::create(id: Uuid::v7()),
-            RaffleProjectionDomainContext::create(id: Uuid::v7()),
-            RaffleProjectionDomainContext::create(id: Uuid::v7()),
+            RaffleProjectionDomainContext::create(id: Uuid::v7(), status: 'closed'),
+            RaffleProjectionDomainContext::create(id: Uuid::v7(), status: 'closed'),
+            RaffleProjectionDomainContext::create(id: Uuid::v7(), status: 'closed'),
         ];
         $commandBus = new CommandBusSpy();
         $queryBus = new QueryBusDummy(GetRaffleIdsDueToBeDrawnResult::fromRaffles(...$raffles));
