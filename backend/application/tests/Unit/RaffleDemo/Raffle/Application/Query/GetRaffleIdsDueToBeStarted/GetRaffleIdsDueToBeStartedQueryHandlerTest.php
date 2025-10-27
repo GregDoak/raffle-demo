@@ -8,10 +8,10 @@ use App\Foundation\Clock\Clock;
 use App\RaffleDemo\Raffle\Application\Query\GetRaffleIdsDueToBeStarted\GetRaffleIdsDueToBeStartedQuery;
 use App\RaffleDemo\Raffle\Application\Query\GetRaffleIdsDueToBeStarted\GetRaffleIdsDueToBeStartedQueryHandler;
 use App\RaffleDemo\Raffle\Application\Query\GetRaffleIdsDueToBeStarted\GetRaffleIdsDueToBeStartedResult;
-use App\RaffleDemo\Raffle\Domain\Projection\Raffle\Raffle;
-use App\RaffleDemo\Raffle\Domain\Projection\Raffle\RaffleProjectionRepositoryInterface;
-use App\Tests\Context\RaffleDemo\Raffle\Domain\Projection\Raffle\RaffleProjectionDomainContext;
-use App\Tests\Double\RaffleDemo\Raffle\Infrastructure\Repository\Projection\InMemoryRaffleProjectionRepository;
+use App\RaffleDemo\Raffle\Domain\Projection\Raffle\V1\Raffle;
+use App\RaffleDemo\Raffle\Domain\Projection\Raffle\V1\RaffleProjectionRepositoryInterface;
+use App\Tests\Context\RaffleDemo\Raffle\Domain\Projection\Raffle\V1\RaffleProjectionDomainContext;
+use App\Tests\Double\RaffleDemo\Raffle\Infrastructure\Repository\Projection\Raffle\V1\InMemoryRaffleProjectionRepository;
 use DateTimeInterface;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -64,6 +64,7 @@ final class GetRaffleIdsDueToBeStartedQueryHandlerTest extends TestCase
             'raffles' => [
                 RaffleProjectionDomainContext::create(
                     id: 'id-1',
+                    status: 'created',
                     startAt: $startAt = Clock::fromString(
                         '2025-01-01 00:00:00',
                     ),
@@ -71,7 +72,7 @@ final class GetRaffleIdsDueToBeStartedQueryHandlerTest extends TestCase
             ],
             'startAt' => $startAt,
             'expectedResult' => GetRaffleIdsDueToBeStartedResult::fromRaffles(
-                RaffleProjectionDomainContext::create(id: 'id-1', startAt: $startAt),
+                RaffleProjectionDomainContext::create(id: 'id-1', status: 'created', startAt: $startAt),
             ),
         ];
 
@@ -79,18 +80,19 @@ final class GetRaffleIdsDueToBeStartedQueryHandlerTest extends TestCase
             'raffles' => [
                 RaffleProjectionDomainContext::create(
                     id: 'id-1',
+                    status: 'created',
                     startAt: $startAt = Clock::fromString(
                         '2025-01-01 00:00:00',
                     ),
                 ),
-                RaffleProjectionDomainContext::create(id: 'id-2', startAt: $startAt),
-                RaffleProjectionDomainContext::create(id: 'id-3', startAt: $startAt),
+                RaffleProjectionDomainContext::create(id: 'id-2', status: 'created', startAt: $startAt),
+                RaffleProjectionDomainContext::create(id: 'id-3', status: 'created', startAt: $startAt),
             ],
             'startAt' => $startAt,
             'expectedResult' => GetRaffleIdsDueToBeStartedResult::fromRaffles(
-                RaffleProjectionDomainContext::create(id: 'id-1', startAt: $startAt),
-                RaffleProjectionDomainContext::create(id: 'id-2', startAt: $startAt),
-                RaffleProjectionDomainContext::create(id: 'id-3', startAt: $startAt),
+                RaffleProjectionDomainContext::create(id: 'id-1', status: 'created', startAt: $startAt),
+                RaffleProjectionDomainContext::create(id: 'id-2', status: 'created', startAt: $startAt),
+                RaffleProjectionDomainContext::create(id: 'id-3', status: 'created', startAt: $startAt),
             ),
         ];
     }
