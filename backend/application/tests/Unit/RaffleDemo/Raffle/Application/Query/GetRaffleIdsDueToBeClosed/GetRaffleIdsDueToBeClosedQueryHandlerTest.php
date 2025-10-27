@@ -8,10 +8,10 @@ use App\Foundation\Clock\Clock;
 use App\RaffleDemo\Raffle\Application\Query\GetRaffleIdsDueToBeClosed\GetRaffleIdsDueToBeClosedQuery;
 use App\RaffleDemo\Raffle\Application\Query\GetRaffleIdsDueToBeClosed\GetRaffleIdsDueToBeClosedQueryHandler;
 use App\RaffleDemo\Raffle\Application\Query\GetRaffleIdsDueToBeClosed\GetRaffleIdsDueToBeClosedResult;
-use App\RaffleDemo\Raffle\Domain\Projection\Raffle\Raffle;
-use App\RaffleDemo\Raffle\Domain\Projection\Raffle\RaffleProjectionRepositoryInterface;
-use App\Tests\Context\RaffleDemo\Raffle\Domain\Projection\Raffle\RaffleProjectionDomainContext;
-use App\Tests\Double\RaffleDemo\Raffle\Infrastructure\Repository\Projection\InMemoryRaffleProjectionRepository;
+use App\RaffleDemo\Raffle\Domain\Projection\Raffle\V1\Raffle;
+use App\RaffleDemo\Raffle\Domain\Projection\Raffle\V1\RaffleProjectionRepositoryInterface;
+use App\Tests\Context\RaffleDemo\Raffle\Domain\Projection\Raffle\V1\RaffleProjectionDomainContext;
+use App\Tests\Double\RaffleDemo\Raffle\Infrastructure\Repository\Projection\Raffle\V1\InMemoryRaffleProjectionRepository;
 use DateTimeInterface;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -64,6 +64,7 @@ final class GetRaffleIdsDueToBeClosedQueryHandlerTest extends TestCase
             'raffles' => [
                 RaffleProjectionDomainContext::create(
                     id: 'id-1',
+                    status: 'started',
                     closeAt: $closeAt = Clock::fromString(
                         '2025-01-01 00:00:00',
                     ),
@@ -71,7 +72,7 @@ final class GetRaffleIdsDueToBeClosedQueryHandlerTest extends TestCase
             ],
             'closeAt' => $closeAt,
             'expectedResult' => GetRaffleIdsDueToBeClosedResult::fromRaffles(
-                RaffleProjectionDomainContext::create(id: 'id-1', closeAt: $closeAt),
+                RaffleProjectionDomainContext::create(id: 'id-1', status: 'started', closeAt: $closeAt),
             ),
         ];
 
@@ -79,18 +80,19 @@ final class GetRaffleIdsDueToBeClosedQueryHandlerTest extends TestCase
             'raffles' => [
                 RaffleProjectionDomainContext::create(
                     id: 'id-1',
+                    status: 'started',
                     closeAt: $closeAt = Clock::fromString(
                         '2025-01-01 00:00:00',
                     ),
                 ),
-                RaffleProjectionDomainContext::create(id: 'id-2', closeAt: $closeAt),
-                RaffleProjectionDomainContext::create(id: 'id-3', closeAt: $closeAt),
+                RaffleProjectionDomainContext::create(id: 'id-2', status: 'started', closeAt: $closeAt),
+                RaffleProjectionDomainContext::create(id: 'id-3', status: 'started', closeAt: $closeAt),
             ],
             'closeAt' => $closeAt,
             'expectedResult' => GetRaffleIdsDueToBeClosedResult::fromRaffles(
-                RaffleProjectionDomainContext::create(id: 'id-1', closeAt: $closeAt),
-                RaffleProjectionDomainContext::create(id: 'id-2', closeAt: $closeAt),
-                RaffleProjectionDomainContext::create(id: 'id-3', closeAt: $closeAt),
+                RaffleProjectionDomainContext::create(id: 'id-1', status: 'started', closeAt: $closeAt),
+                RaffleProjectionDomainContext::create(id: 'id-2', status: 'started', closeAt: $closeAt),
+                RaffleProjectionDomainContext::create(id: 'id-3', status: 'started', closeAt: $closeAt),
             ),
         ];
     }
