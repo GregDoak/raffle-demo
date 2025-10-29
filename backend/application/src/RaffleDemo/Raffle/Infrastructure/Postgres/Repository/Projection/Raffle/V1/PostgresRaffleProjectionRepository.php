@@ -119,17 +119,17 @@ final readonly class PostgresRaffleProjectionRepository implements RaffleProject
         $params = [];
 
         if ($query->name !== null) {
-            $sql .= ' AND projection_raffles_v1.name LIKE :name';
+            $sql .= ' AND LOWER(projection_raffles_v1.name) LIKE LOWER(:name)';
             $params['name'] = '%'.$query->name.'%';
         }
 
         if ($query->prize !== null) {
-            $sql .= ' AND projection_raffles_v1.prize LIKE :prize';
+            $sql .= ' AND LOWER(projection_raffles_v1.prize) LIKE LOWER(:prize)';
             $params['prize'] = '%'.$query->prize.'%';
         }
 
         if ($query->status !== null) {
-            $sql .= ' AND projection_raffles_v1.status LIKE :status';
+            $sql .= ' AND LOWER(projection_raffles_v1.status) LIKE LOWER(:status)';
             $params['status'] = '%'.$query->status.'%';
         }
 
