@@ -6,12 +6,15 @@ namespace App\RaffleDemo\Raffle\Domain\Projection\RaffleWinner\V1;
 
 use DateTimeInterface;
 
+use function in_array;
+
 final readonly class RaffleWinnerQuery
 {
     private const ?int DEFAULT_LIMIT = null;
     private const int DEFAULT_OFFSET = 0;
     private const ?string DEFAULT_SORT_FIELD = null;
     private const string DEFAULT_SORT_ORDER = 'ASC';
+    private const array ALLOWED_SORT_ORDERS = ['ASC', 'DESC'];
 
     public function __construct(
         public ?string $raffleId = null,
@@ -62,6 +65,10 @@ final readonly class RaffleWinnerQuery
     public function sortBy(string $sortField, string $sortOrder = self::DEFAULT_SORT_ORDER): self
     {
         if (property_exists($this, $sortField) === false) {
+            return $this;
+        }
+
+        if (in_array($sortOrder, self::ALLOWED_SORT_ORDERS, true) === false) {
             return $this;
         }
 
