@@ -59,6 +59,8 @@ final readonly class PostgresRaffleWinnerProjectionRepository implements RaffleW
 
         if ($query->sortField !== null) {
             $sql .= ' ORDER BY '.$this->convertToSnakeCase($query->sortField).' '.$query->sortOrder;
+        } else {
+            $sql .= ' ORDER BY raffle_id, drawn_at';
         }
 
         if ($query->limit !== null) {

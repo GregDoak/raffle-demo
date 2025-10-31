@@ -150,6 +150,8 @@ final readonly class PostgresRaffleProjectionRepository implements RaffleProject
 
         if ($query->sortField !== null) {
             $sql .= ' ORDER BY '.$this->convertToSnakeCase($query->sortField).' '.$query->sortOrder;
+        } else {
+            $sql .= ' ORDER BY created_at';
         }
 
         if ($query->limit !== null) {

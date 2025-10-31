@@ -54,6 +54,8 @@ final readonly class PostgresRaffleAllocationProjectionRepository implements Raf
 
         if ($query->sortField !== null) {
             $sql .= ' ORDER BY '.$this->convertToSnakeCase($query->sortField).' '.$query->sortOrder;
+        } else {
+            $sql .= ' ORDER BY raffle_id, allocated_at';
         }
 
         if ($query->limit !== null) {

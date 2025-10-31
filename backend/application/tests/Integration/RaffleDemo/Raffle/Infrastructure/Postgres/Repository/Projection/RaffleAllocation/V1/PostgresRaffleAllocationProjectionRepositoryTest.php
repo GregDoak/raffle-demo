@@ -145,7 +145,7 @@ final class PostgresRaffleAllocationProjectionRepositoryTest extends AbstractInt
         // Arrange
         // Arrange
         $raffleAllocation1 = new RaffleAllocation(
-            raffleId: 'b6e795d4-fd02-40ce-bbf8-f001ef87ed70',
+            raffleId: '50c9519f-64b6-4de1-9a36-e9dd44e7d878',
             hash: 'hash-1',
             allocatedAt: Clock::now(),
             allocatedTo: 'allocatedTo-1',
@@ -154,7 +154,7 @@ final class PostgresRaffleAllocationProjectionRepositoryTest extends AbstractInt
         );
 
         $raffleAllocation2 = new RaffleAllocation(
-            raffleId: '50c9519f-64b6-4de1-9a36-e9dd44e7d878',
+            raffleId: 'b6e795d4-fd02-40ce-bbf8-f001ef87ed70',
             hash: 'hash-2',
             allocatedAt: Clock::now(),
             allocatedTo: 'allocatedTo-1',
@@ -173,7 +173,7 @@ final class PostgresRaffleAllocationProjectionRepositoryTest extends AbstractInt
 
     public static function it_can_query_with_a_given_pagination_data_provider(): Generator
     {
-        yield 'paginate first record' => ['query' => new RaffleAllocationQuery()->paginate(1), 'expectedFirstId' => 'b6e795d4-fd02-40ce-bbf8-f001ef87ed70'];
-        yield 'paginate second record' => ['query' => new RaffleAllocationQuery()->paginate(1, 1), 'expectedFirstId' => '50c9519f-64b6-4de1-9a36-e9dd44e7d878'];
+        yield 'paginate first record' => ['query' => new RaffleAllocationQuery()->paginate(1), 'expectedFirstId' => '50c9519f-64b6-4de1-9a36-e9dd44e7d878'];
+        yield 'paginate second record' => ['query' => new RaffleAllocationQuery()->paginate(1, 1), 'expectedFirstId' => 'b6e795d4-fd02-40ce-bbf8-f001ef87ed70'];
     }
 }
