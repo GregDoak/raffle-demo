@@ -46,4 +46,17 @@ final class RaffleAllocationQueryTest extends TestCase
         // Assert
         self::assertNull($query->sortField);
     }
+
+    #[Test]
+    public function it_cannot_set_the_sort_order_with_an_invalid_value(): void
+    {
+        // Arrange
+        $query = new RaffleAllocationQuery();
+
+        // Act
+        $query = $query->sortBy('raffleId', 'INVALID');
+
+        // Assert
+        self::assertSame('ASC', $query->sortOrder);
+    }
 }
