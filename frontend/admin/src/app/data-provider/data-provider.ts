@@ -80,9 +80,20 @@ export const DataProvider: DataProvider = {
     resource: string,
     params: GetListParams & QueryFunctionContext,
   ): Promise<GetListResult<RecordType>> {
+    const { page, perPage } = params.pagination;
+    const { field, order } = params.sort;
+
+    const query = {
+      page: page,
+      limit: perPage,
+      sort: field,
+      order: order,
+      ...params.filter,
+    };
+
     return new Promise((resolve, reject) => {
       httpClient
-        .get("/" + resource, {}, getHeaders())
+        .get("/" + resource, query, getHeaders())
         .then((result: ResultInterface) => {
           return resolve(result.json);
         })
