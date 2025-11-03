@@ -28,9 +28,9 @@ export const RaffleCreate = () => {
   const notify = useNotify();
   const redirect = useRedirect();
 
-  const onSuccess = () => {
+  const onSuccess = (data) => {
     notify("Raffle created successfully.", { type: "success" });
-    redirect("/raffles");
+    redirect("show", "raffles", data.id);
   };
 
   const onError = (error) => {
