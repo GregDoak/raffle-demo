@@ -7,6 +7,7 @@ import { Layout } from "@/app/layout";
 import {
   RaffleCreate,
   RaffleList,
+  RaffleShow,
 } from "@/features/raffles/components/index.ts";
 
 BaseUrlVerifier(import.meta.env.VITE_ADMIN_BASE_URL);
@@ -20,6 +21,11 @@ export const App = () => (
     loginPage={LoginForm}
     requireAuth
   >
-    <Resource name="raffles" create={RaffleCreate} list={RaffleList} />
+    <Resource
+      name="raffles"
+      create={RaffleCreate}
+      list={RaffleList}
+      show={RaffleShow}
+    />
   </Admin>
 );

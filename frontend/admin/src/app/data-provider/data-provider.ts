@@ -118,7 +118,16 @@ export const DataProvider: DataProvider = {
     resource: string,
     params: GetOneParams<RecordType> & QueryFunctionContext,
   ): Promise<GetOneResult<RecordType>> {
-    return Promise.resolve(undefined);
+    return new Promise((resolve, reject) => {
+      httpClient
+        .get("/" + resource + "/" + params.id, {}, getHeaders())
+        .then((result: ResultInterface) => {
+          return resolve(result.json);
+        })
+        .catch((result: ResultInterface) => {
+          return reject({ message: transformProblemToMessage(result) });
+        });
+    });
   },
   update<RecordType>(
     resource: string,
