@@ -36,6 +36,17 @@ services:
             - ./application:/var/task
             - ./docker/php/conf.d:/opt/bref/etc/php/conf.d
         command: ["bin/console", "messenger:consume", "scheduler_default", "--time-limit=300"]
+    php-domain-event-subscriber:
+        restart: unless-stopped
+        build:
+            context: ./docker
+            dockerfile: ./php/php.Dockerfile
+        depends_on:
+            - php
+        volumes:
+            - ./application:/var/task
+            - ./docker/php/conf.d:/opt/bref/etc/php/conf.d
+        command: ["bin/console", "messenger:consume", "domain_event_subscriber", "--time-limit=300"]
 
 volumes:
     postgres:
