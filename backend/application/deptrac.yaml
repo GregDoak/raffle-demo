@@ -46,6 +46,7 @@ deptrac:
                     composerLockPath: composer.lock
                     packages:
                         - bref/symfony-bridge
+                        - cloudevents/sdk-php
                         - doctrine/dbal
                         - doctrine/migrations
                         - opis/json-schema
@@ -70,6 +71,7 @@ deptrac:
         FrameworkDomain:
             - Foundation
         FrameworkInfrastructure:
+            - Foundation
             - FrameworkApplication
             - FrameworkDomain
             - FrameworkUserInterface
