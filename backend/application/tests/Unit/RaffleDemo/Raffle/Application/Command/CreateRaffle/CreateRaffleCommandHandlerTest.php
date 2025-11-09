@@ -6,12 +6,14 @@ namespace App\Tests\Unit\RaffleDemo\Raffle\Application\Command\CreateRaffle;
 
 use App\Foundation\Clock\ClockProvider;
 use App\Foundation\Clock\MockClock;
+use App\Foundation\DomainEventRegistry\Raffle\RaffleCreatedV1Event;
 use App\Framework\Application\Exception\ExceptionTransformer;
 use App\Framework\Application\Exception\ValidationException;
 use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommand;
 use App\RaffleDemo\Raffle\Application\Command\CreateRaffle\CreateRaffleCommandHandler;
 use App\RaffleDemo\Raffle\Domain\Exception\InvalidCreatedException;
 use App\RaffleDemo\Raffle\Domain\Repository\RaffleEventStoreRepository;
+use App\Tests\Double\Framework\Domain\Event\DomainEventBusSpy;
 use App\Tests\Double\Framework\Domain\Model\Event\AggregateEventsBusSpy;
 use App\Tests\Double\Framework\Domain\Repository\InMemoryEventStore;
 use App\Tests\Double\Framework\Domain\Repository\TransactionBoundarySpy;
@@ -23,8 +25,8 @@ final class CreateRaffleCommandHandlerTest extends TestCase
 {
     private CreateRaffleCommandHandler $handler;
     private RaffleEventStoreRepository $repository;
-
     private TransactionBoundarySpy $transactionBoundary;
+    private DomainEventBusSpy $domainEventBus;
 
     protected function setUp(): void
     {
@@ -33,16 +35,18 @@ final class CreateRaffleCommandHandlerTest extends TestCase
             new AggregateEventsBusSpy(),
         );
         $this->transactionBoundary = new TransactionBoundarySpy();
+        $this->domainEventBus = new DomainEventBusSpy();
 
         $this->handler = new CreateRaffleCommandHandler(
             $this->transactionBoundary,
             $this->repository,
             new ExceptionTransformer(),
+            $this->domainEventBus,
         );
     }
 
     #[Test]
-    public function it_creates_a_raffle(): void
+    public function it_creates_a_raffle_and_publishes_a_raffle_created_domain_event(): void
     {
         // Arrange
         ClockProvider::set(new MockClock('2025-01-01 00:00:00'));
@@ -74,6 +78,9 @@ final class CreateRaffleCommandHandlerTest extends TestCase
         self::assertSame($command->totalTickets->toInt(), $raffle->totalTickets->toInt());
         self::assertSame($command->ticketPrice->toArray(), $raffle->ticketPrice->toArray());
         self::assertSame($command->created->toArray(), $raffle->created->toArray());
+
+        self::assertCount(1, $this->domainEventBus->getEvents());
+        self::assertInstanceOf(RaffleCreatedV1Event::class, $this->domainEventBus->getEvents()[0]);
     }
 
     #[Test]

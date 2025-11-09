@@ -19,6 +19,7 @@ use App\RaffleDemo\Raffle\Application\Command\StartRaffle\StartRaffleCommand;
 use App\RaffleDemo\Raffle\Application\Command\StartRaffle\StartRaffleCommandHandler;
 use App\RaffleDemo\Raffle\Domain\Model\Raffle;
 use App\RaffleDemo\Raffle\Domain\Repository\RaffleEventStoreRepository;
+use App\Tests\Double\Framework\Domain\Event\DomainEventBusSpy;
 use App\Tests\Double\Framework\Domain\Repository\TransactionBoundarySpy;
 use DateTimeInterface;
 
@@ -26,12 +27,14 @@ final readonly class RaffleApplicationContext
 {
     private ExceptionTransformerInterface $exceptionTransformer;
     private TransactionBoundaryInterface $transactionBoundary;
+    private DomainEventBusSpy $domainEventBus;
 
     public function __construct(
         private RaffleEventStoreRepository $repository,
     ) {
         $this->exceptionTransformer = new ExceptionTransformer();
         $this->transactionBoundary = new TransactionBoundarySpy();
+        $this->domainEventBus = new DomainEventBusSpy();
     }
 
     public function create(?CreateRaffleCommand $command = null): Raffle
@@ -42,6 +45,7 @@ final readonly class RaffleApplicationContext
             $this->transactionBoundary,
             $this->repository,
             $this->exceptionTransformer,
+            $this->domainEventBus,
         );
 
         $handler->__invoke($command);
