@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
+use App\RaffleDemo\Notification\Application\Service\Notifier\Notifier;
+use App\RaffleDemo\Notification\Application\Service\Notifier\NotifierInterface;
+use App\Tests\Double\RaffleDemo\Notification\Infrastructure\Sender\NullSender;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -28,6 +31,8 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
         $this->connection = self::getContainer()->get(Connection::class);
 
         $this->connection->beginTransaction();
+
+        self::getContainer()->set(NotifierInterface::class, new Notifier([new NullSender()]));
     }
 
     public function getAdminUserToken(): string

@@ -54,6 +54,25 @@ services:
 
     ### RaffleDemo ###
 
+    App\RaffleDemo\Notification\Application\:
+        resource: '../src/RaffleDemo/Notification/Application'
+
+    App\RaffleDemo\Notification\Application\Service\Notifier\NotifierInterface: '@App\RaffleDemo\Notification\Application\Service\Notifier\Notifier'
+
+    App\RaffleDemo\Notification\Application\Service\Notifier\Notifier:
+        arguments:
+            $senders: !tagged_iterator notification.sender
+
+    App\RaffleDemo\Notification\Domain\Repository\NotificationRepositoryInterface: '@App\RaffleDemo\Notification\Infrastructure\Repository\PostgresNotificationRepository'
+
+    App\RaffleDemo\Notification\Infrastructure\Repository\PostgresNotificationRepository: ~
+
+    App\RaffleDemo\Notification\Infrastructure\Sender\:
+        resource: '../src/RaffleDemo/Notification/Infrastructure/Sender'
+
+    App\RaffleDemo\Notification\UserInterface\Event\:
+        resource: '../src/RaffleDemo/Notification/UserInterface/Event'
+
     App\RaffleDemo\Raffle\Application\:
         resource: '../src/RaffleDemo/Raffle/Application'
 
@@ -94,12 +113,6 @@ services:
     App\RaffleDemo\Raffle\UserInterface\Rest\V1\:
         resource: '../src/RaffleDemo/Raffle/UserInterface/Rest/V1'
 
-    App\RaffleDemo\Raffle\UserInterface\Event\:
-        resource: '../src/RaffleDemo/Raffle/UserInterface/Event'
-
-    App\RaffleDemo\Store\UserInterface\Event\:
-        resource: '../src/RaffleDemo/Store/UserInterface/Event'
-
     _instanceof:
         App\Framework\Application\Command\CommandHandlerInterface:
             tags:
@@ -109,13 +122,17 @@ services:
             tags:
                 - { name: messenger.message_handler, bus: query.bus }
 
-        App\Framework\Domain\Event\DomainEventSubscriberInterface:
-            tags:
-                - { name: messenger.message_handler, bus: domain_event.bus }
-
         App\Framework\Domain\Projection\AggregateEventsSubscriberInterface:
             tags:
                 - { name: messenger.message_handler, bus: aggregate_event.bus }
+
+        App\Framework\UserInterface\Event\DomainEventSubscriberInterface:
+            tags:
+                - { name: messenger.message_handler, bus: domain_event.bus }
+
+        App\RaffleDemo\Notification\Application\Service\Sender\SenderInterface:
+            tags:
+                - { name: notification.sender }
 
 when@prod:
     services:

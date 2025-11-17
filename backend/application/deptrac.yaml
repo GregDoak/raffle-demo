@@ -23,6 +23,22 @@ deptrac:
             collectors:
                 -   type: directory
                     value: src/Framework/UserInterface/
+        -   name: RaffleDemoNotificationApplication
+            collectors:
+                -   type: directory
+                    value: src/RaffleDemo/Notification/Application/
+        -   name: RaffleDemoNotificationDomain
+            collectors:
+                -   type: directory
+                    value: src/RaffleDemo/Notification/Domain/
+        -   name: RaffleDemoNotificationInfrastructure
+            collectors:
+                -   type: directory
+                    value: src/RaffleDemo/Notification/Infrastructure/
+        -   name: RaffleDemoNotificationUserInterface
+            collectors:
+                -   type: directory
+                    value: src/RaffleDemo/Notification/UserInterface/
         -   name: RaffleDemoRaffleApplication
             collectors:
                 -   type: directory
@@ -78,6 +94,25 @@ deptrac:
             - Vendor
         FrameworkUserInterface:
             - FrameworkApplication
+            - Vendor
+        RaffleDemoNotificationApplication:
+            - Foundation
+            - FrameworkApplication
+            - FrameworkDomain
+            - RaffleDemoNotificationDomain
+        RaffleDemoNotificationDomain:
+            - Foundation
+            - FrameworkDomain
+        RaffleDemoNotificationInfrastructure:
+            - Foundation
+            - RaffleDemoNotificationApplication
+            - RaffleDemoNotificationDomain
+            - Vendor
+        RaffleDemoNotificationUserInterface:
+            - Foundation
+            - FrameworkApplication
+            - FrameworkUserInterface
+            - RaffleDemoNotificationApplication
             - Vendor
         RaffleDemoRaffleApplication:
             - Foundation

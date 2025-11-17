@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Double\RaffleDemo\Raffle\Infrastructure\Logger;
+namespace App\Tests\Double\Framework\Infrastructure\Logger;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;

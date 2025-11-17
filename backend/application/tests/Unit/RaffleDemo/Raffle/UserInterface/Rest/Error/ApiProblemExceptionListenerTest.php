@@ -6,8 +6,8 @@ namespace App\Tests\Unit\RaffleDemo\Raffle\UserInterface\Rest\Error;
 
 use App\Framework\UserInterface\ApiProblem\ExceptionTransformer;
 use App\RaffleDemo\Raffle\UserInterface\Rest\Error\ApiProblemExceptionListener;
+use App\Tests\Double\Framework\Infrastructure\Logger\InMemoryLogger;
 use App\Tests\Double\Framework\UserInterface\ApiProblem\DummyInstanceProvider;
-use App\Tests\Double\RaffleDemo\Raffle\Infrastructure\Logger\InMemoryLogger;
 use Exception;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

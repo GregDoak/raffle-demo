@@ -26,4 +26,11 @@ final class TransactionBoundarySpy implements TransactionBoundaryInterface
     {
         $this->hasRolledBack = true;
     }
+
+    public function reset(): void
+    {
+        $this->hasBegun = false;
+        $this->hasCommitted = false;
+        $this->hasRolledBack = false;
+    }
 }
