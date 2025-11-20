@@ -1,6 +1,6 @@
 default: help
 SHELL := /bin/bash
-DOCKER_COMPOSE := docker compose --project-name "raffle-demo-backend" --file "docker-compose.yaml"
+DOCKER_COMPOSE := docker compose --project-name "raffle-demo-backend" --file "docker-compose.yaml" --env-file=./../.env
 
 .PHONY: can-release
 can-release: ## Runs all checks required for release

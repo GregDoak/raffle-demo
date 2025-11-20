@@ -2,7 +2,7 @@ services:
     postgres:
         image: postgres:16-alpine
         ports:
-            - '54321:5432'
+            - ${HOST_DATABASE_PORT}:5432
         volumes:
             - postgres:/var/lib/postgresql/data
         environment:
@@ -15,7 +15,8 @@ services:
         build:
             context: ./docker
             dockerfile: ./php/php.Dockerfile
-        ports: [ '8001:8000' ]
+        ports:
+            - ${HOST_BACKEND_PORT}:8000
         volumes:
             - ./application:/var/task
             - ./application/var/cache:/tmp/cache
@@ -24,8 +25,10 @@ services:
         environment:
             HANDLER: public/index.php
             DOCUMENT_ROOT: public
+            CORS_ALLOW_ORIGIN: ${BASE_ADMIN_URL}
         user: 1000:1000
     php-consumer:
+        scale: ${BACKEND_CONSUMER_SCALE}
         restart: unless-stopped
         build:
             context: ./docker
@@ -37,6 +40,7 @@ services:
             - ./docker/php/conf.d:/opt/bref/etc/php/conf.d
         command: ["bin/console", "messenger:consume", "scheduler_default", "--time-limit=300"]
     php-domain-event-subscriber:
+        scale: ${BACKEND_DOMAIN_SUBSCRIBER_SCALE}
         restart: unless-stopped
         build:
             context: ./docker

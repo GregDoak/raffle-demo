@@ -2,6 +2,10 @@ default: help
 SHELL := /bin/bash
 MAKE := make --no-print-directory
 
+ifeq (,$(wildcard .env))
+$(shell cp .env.template .env)
+endif
+
 .PHONY: can-release
 can-release: ## Runs all checks required for release
 	@cd backend && ${MAKE} can-release
