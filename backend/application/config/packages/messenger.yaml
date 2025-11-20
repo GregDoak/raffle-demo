@@ -7,15 +7,13 @@ framework:
             aggregate_event.bus:
                 default_middleware: allow_no_handlers
             domain_event.bus:
-                default_middleware:
-                    enabled: true
-                    allow_no_handlers: true
+                default_middleware: allow_no_handlers
                 middleware:
                     - 'send_domain_event_to_subscriber_middleware'
                     - 'send_domain_event_to_publisher_middleware'
         transports:
             sync: 'sync://'
-            failed: 'doctrine://default?queue_name=failed&auto_setup=false'
+            domain_event_failed: 'doctrine://default?queue_name=domain_event_failed&auto_setup=false'
             domain_event_outbox: 'doctrine://default?queue_name=domain_event_outbox&check_delayed_interval=1000&auto_setup=false'
 
             domain_event_publisher:
@@ -26,11 +24,11 @@ framework:
                 dsn: '%env(DOMAIN_EVENT_TRANSPORT_DSN)%'
                 serializer: App\Framework\Infrastructure\Symfony\Messenger\Serializer\DomainEventSerializerInterface
                 retry_strategy:
-                    max_retries: 1
+                    max_retries: 3
                     delay: 5000
                     multiplier: 2
                     max_delay: 0
-                failure_transport: failed
+                failure_transport: domain_event_failed
 
         routing:
             App\Foundation\DomainEventRegistry\DomainEventInterface: domain_event_outbox
@@ -43,3 +41,5 @@ services:
             $transport: '@messenger.transport.domain_event_publisher'
     send_domain_event_to_subscriber_middleware:
         class: App\Framework\Infrastructure\Symfony\Messenger\Middleware\SendToSubscriberMiddleware
+        arguments:
+            $failedTransport: '@messenger.transport.domain_event_failed'
