@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Functional\RaffleDemo\Notfication\UserInterface\Event\RaffleCreatedV1;
+namespace App\Tests\Functional\RaffleDemo\Notification\UserInterface\Event\RaffleCreatedV1;
 
 use App\Foundation\Clock\Clock;
 use App\Foundation\DomainEventRegistry\Raffle\RaffleCreatedV1Event;
