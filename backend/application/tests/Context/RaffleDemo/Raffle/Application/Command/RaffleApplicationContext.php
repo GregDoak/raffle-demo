@@ -58,6 +58,7 @@ final readonly class RaffleApplicationContext
         $handler = new StartRaffleCommandHandler(
             $this->transactionBoundary,
             $this->repository,
+            $this->domainEventBus,
         );
 
         $handler->__invoke($command);
