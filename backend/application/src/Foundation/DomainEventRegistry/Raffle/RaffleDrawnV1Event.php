@@ -28,7 +28,7 @@ final readonly class RaffleDrawnV1Event implements DomainEventInterface
         public string $drawnBy,
         public int $totalTickets,
         public int $winningTicketNumber,
-        public string $winningAllocationBy,
+        public string $winningAllocationTo,
         public int $ticketAmount,
         public string $ticketCurrency,
     ) {
@@ -47,7 +47,7 @@ final readonly class RaffleDrawnV1Event implements DomainEventInterface
         string $drawnBy,
         int $totalTickets,
         int $winningTicketNumber,
-        string $winningAllocationBy,
+        string $winningAllocationTo,
         int $ticketAmount,
         string $ticketCurrency,
     ): self {
@@ -66,7 +66,7 @@ final readonly class RaffleDrawnV1Event implements DomainEventInterface
             drawnBy: $drawnBy,
             totalTickets: $totalTickets,
             winningTicketNumber: $winningTicketNumber,
-            winningAllocationBy: $winningAllocationBy,
+            winningAllocationTo: $winningAllocationTo,
             ticketAmount: $ticketAmount,
             ticketCurrency: $ticketCurrency,
         );
@@ -85,7 +85,7 @@ final readonly class RaffleDrawnV1Event implements DomainEventInterface
      *     drawnBy: string,
      *     totalTickets: int,
      *     winningTicketNumber: int,
-     *     winningAllocationBy: string,
+     *     winningAllocationTo: string,
      *     ticketAmount: int,
      *     ticketCurrency: string
      * } $payload
@@ -107,7 +107,7 @@ final readonly class RaffleDrawnV1Event implements DomainEventInterface
             drawnBy: $payload['drawnBy'],
             totalTickets: $payload['totalTickets'],
             winningTicketNumber: $payload['winningTicketNumber'],
-            winningAllocationBy: $payload['winningAllocationBy'],
+            winningAllocationTo: $payload['winningAllocationTo'],
             ticketAmount: $payload['ticketAmount'],
             ticketCurrency: $payload['ticketCurrency'],
         );
@@ -145,7 +145,7 @@ final readonly class RaffleDrawnV1Event implements DomainEventInterface
             'drawnBy' => $this->drawnBy,
             'totalTickets' => $this->totalTickets,
             'winningTicketNumber' => $this->winningTicketNumber,
-            'winningAllocationBy' => $this->winningAllocationBy,
+            'winningAllocationTo' => $this->winningAllocationTo,
             'ticketAmount' => $this->ticketAmount,
             'ticketCurrency' => $this->ticketCurrency,
         ];

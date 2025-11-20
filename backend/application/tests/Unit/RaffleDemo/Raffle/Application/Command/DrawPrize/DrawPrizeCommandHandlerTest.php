@@ -7,6 +7,8 @@ namespace App\Tests\Unit\RaffleDemo\Raffle\Application\Command\DrawPrize;
 use App\Foundation\Clock\Clock;
 use App\Foundation\Clock\ClockProvider;
 use App\Foundation\Clock\MockClock;
+use App\Foundation\DomainEventRegistry\Raffle\RaffleDrawnV1Event;
+use App\Foundation\DomainEventRegistry\Raffle\RaffleEndedV1Event;
 use App\Framework\Domain\Exception\AggregateNotFoundException;
 use App\RaffleDemo\Raffle\Application\Command\DrawPrize\DrawPrizeCommand;
 use App\RaffleDemo\Raffle\Application\Command\DrawPrize\DrawPrizeCommandHandler;
@@ -14,6 +16,7 @@ use App\RaffleDemo\Raffle\Domain\Exception\InvalidDrawnException;
 use App\RaffleDemo\Raffle\Domain\Model\RaffleAggregateId;
 use App\RaffleDemo\Raffle\Domain\Repository\RaffleEventStoreRepository;
 use App\Tests\Context\RaffleDemo\Raffle\Application\Command\RaffleApplicationContext;
+use App\Tests\Double\Framework\Domain\Event\DomainEventBusSpy;
 use App\Tests\Double\Framework\Domain\Model\Event\AggregateEventsBusSpy;
 use App\Tests\Double\Framework\Domain\Repository\InMemoryEventStore;
 use App\Tests\Double\Framework\Domain\Repository\TransactionBoundarySpy;
@@ -26,8 +29,8 @@ final class DrawPrizeCommandHandlerTest extends TestCase
     private RaffleApplicationContext $context;
     private DrawPrizeCommandHandler $handler;
     private RaffleEventStoreRepository $repository;
-
     private TransactionBoundarySpy $transactionBoundary;
+    private DomainEventBusSpy $domainEventBus;
 
     protected function setUp(): void
     {
@@ -36,6 +39,7 @@ final class DrawPrizeCommandHandlerTest extends TestCase
             new AggregateEventsBusSpy(),
         );
         $this->transactionBoundary = new TransactionBoundarySpy();
+        $this->domainEventBus = new DomainEventBusSpy();
 
         $this->context = new RaffleApplicationContext(
             $this->repository,
@@ -44,11 +48,12 @@ final class DrawPrizeCommandHandlerTest extends TestCase
         $this->handler = new DrawPrizeCommandHandler(
             $this->transactionBoundary,
             $this->repository,
+            $this->domainEventBus,
         );
     }
 
     #[Test]
-    public function it_draws_a_prize_for_an_existing_raffle(): void
+    public function it_draws_a_prize_for_an_existing_raffle_and_publishes_a_raffle_drawn_and_ended_domain_events(): void
     {
         // Arrange
         ClockProvider::set(new MockClock('2025-01-01 00:00:00'));
@@ -91,6 +96,10 @@ final class DrawPrizeCommandHandlerTest extends TestCase
         $raffle = $this->repository->get($command->id);
         self::assertSame($command->drawn->toArray(), $raffle->drawn?->toArray());
         self::assertNotNull($raffle->winner);
+
+        self::assertCount(2, $this->domainEventBus->getEvents());
+        self::assertInstanceOf(RaffleDrawnV1Event::class, $this->domainEventBus->getEvents()[0]);
+        self::assertInstanceOf(RaffleEndedV1Event::class, $this->domainEventBus->getEvents()[1]);
     }
 
     #[Test]
