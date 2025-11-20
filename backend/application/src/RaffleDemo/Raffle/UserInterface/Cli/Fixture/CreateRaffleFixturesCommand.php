@@ -33,7 +33,7 @@ final readonly class CreateRaffleFixturesCommand
     public function __construct(
         private CommandBusInterface $commandBus,
     ) {
-        $this->actionedBy = 'fixture-'.rand(1, 99999);
+        $this->actionedBy = sprintf('fixture-%d@example.com', rand(1, 99999));
     }
 
     public function __invoke(
@@ -208,7 +208,7 @@ final readonly class CreateRaffleFixturesCommand
         return AllocateTicketToParticipantCommand::create(
             id: $id,
             ticketAllocatedQuantity: $quantity,
-            ticketAllocatedTo: 'participant-'.rand(1, 99999),
+            ticketAllocatedTo: sprintf('participant-%d@example.com', rand(1, 99999)),
             ticketAllocatedAt: Clock::fromTimestamp(rand($startedAt->getTimestamp() + 1, $closeAt->getTimestamp())),
         );
     }
