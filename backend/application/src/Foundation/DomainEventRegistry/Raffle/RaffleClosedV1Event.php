@@ -45,8 +45,8 @@ final readonly class RaffleClosedV1Event implements DomainEventInterface
         string $closedBy,
         DateTimeInterface $drawAt,
         int $totalTickets,
-        int $ticketAmount,
         int $numberOfTicketsAllocated,
+        int $ticketAmount,
         string $ticketCurrency,
     ): self {
         return new self(
