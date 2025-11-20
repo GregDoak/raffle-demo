@@ -7,6 +7,7 @@ namespace App\Tests\Unit\RaffleDemo\Raffle\Application\Command\AllocateTicketToP
 use App\Foundation\Clock\Clock;
 use App\Foundation\Clock\ClockProvider;
 use App\Foundation\Clock\MockClock;
+use App\Foundation\DomainEventRegistry\Raffle\TicketAllocatedToParticipantV1Event;
 use App\Framework\Domain\Exception\AggregateNotFoundException;
 use App\RaffleDemo\Raffle\Application\Command\AllocateTicketToParticipant\AllocateTicketToParticipantCommand;
 use App\RaffleDemo\Raffle\Application\Command\AllocateTicketToParticipant\AllocateTicketToParticipantCommandHandler;
@@ -14,6 +15,7 @@ use App\RaffleDemo\Raffle\Domain\Exception\InvalidTicketAllocationException;
 use App\RaffleDemo\Raffle\Domain\Model\RaffleAggregateId;
 use App\RaffleDemo\Raffle\Domain\Repository\RaffleEventStoreRepository;
 use App\Tests\Context\RaffleDemo\Raffle\Application\Command\RaffleApplicationContext;
+use App\Tests\Double\Framework\Domain\Event\DomainEventBusSpy;
 use App\Tests\Double\Framework\Domain\Model\Event\AggregateEventsBusSpy;
 use App\Tests\Double\Framework\Domain\Repository\InMemoryEventStore;
 use App\Tests\Double\Framework\Domain\Repository\TransactionBoundarySpy;
@@ -27,6 +29,7 @@ final class AllocateTicketToParticipantCommandHandlerTest extends TestCase
     private AllocateTicketToParticipantCommandHandler $handler;
     private RaffleEventStoreRepository $repository;
     private TransactionBoundarySpy $transactionBoundary;
+    private DomainEventBusSpy $domainEventBus;
 
     protected function setUp(): void
     {
@@ -35,6 +38,7 @@ final class AllocateTicketToParticipantCommandHandlerTest extends TestCase
             new AggregateEventsBusSpy(),
         );
         $this->transactionBoundary = new TransactionBoundarySpy();
+        $this->domainEventBus = new DomainEventBusSpy();
 
         $this->context = new RaffleApplicationContext(
             $this->repository,
@@ -43,11 +47,12 @@ final class AllocateTicketToParticipantCommandHandlerTest extends TestCase
         $this->handler = new AllocateTicketToParticipantCommandHandler(
             $this->transactionBoundary,
             $this->repository,
+            $this->domainEventBus,
         );
     }
 
     #[Test]
-    public function it_allocates_a_ticket_to_a_participant_for_an_existing_raffle(): void
+    public function it_allocates_a_ticket_to_a_participant_for_an_existing_raffle_and_publishes_an_allocated_domain_event(): void
     {
         // Arrange
         ClockProvider::set(new MockClock('2025-01-01 00:00:00'));
@@ -75,6 +80,9 @@ final class AllocateTicketToParticipantCommandHandlerTest extends TestCase
 
         $raffle = $this->repository->get($command->id);
         self::assertTrue($raffle->ticketAllocations->has($command->ticketAllocation));
+
+        self::assertCount(1, $this->domainEventBus->getEvents());
+        self::assertInstanceOf(TicketAllocatedToParticipantV1Event::class, $this->domainEventBus->getEvents()[0]);
     }
 
     #[Test]

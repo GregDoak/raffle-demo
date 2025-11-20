@@ -71,6 +71,7 @@ final readonly class RaffleApplicationContext
         $handler = new AllocateTicketToParticipantCommandHandler(
             $this->transactionBoundary,
             $this->repository,
+            $this->domainEventBus,
         );
 
         $handler->__invoke($command);

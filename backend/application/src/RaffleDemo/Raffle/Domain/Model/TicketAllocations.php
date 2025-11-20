@@ -45,6 +45,11 @@ final class TicketAllocations
         $this->numberOfTicketsAllocated += $ticketAllocation->quantity;
     }
 
+    public function getByHash(string $hash): ?TicketAllocation
+    {
+        return $this->ticketAllocations[$hash] ?? null;
+    }
+
     public function drawTicketAllocationFromTicketNumber(int $ticketNumber): TicketAllocation
     {
         if (array_key_exists($ticketNumber, $this->tickets) === false) {

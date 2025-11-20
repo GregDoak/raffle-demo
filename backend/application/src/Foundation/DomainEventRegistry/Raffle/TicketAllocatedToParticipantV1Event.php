@@ -28,7 +28,7 @@ final readonly class TicketAllocatedToParticipantV1Event implements DomainEventI
         public DateTimeInterface $closeAt,
         public DateTimeInterface $drawAt,
         public int $totalTickets,
-        public int $totalTicketsRemaining,
+        public int $numberOfTicketsAllocated,
         public int $ticketAmount,
         public string $ticketCurrency,
     ) {
@@ -47,7 +47,7 @@ final readonly class TicketAllocatedToParticipantV1Event implements DomainEventI
         DateTimeInterface $closeAt,
         DateTimeInterface $drawAt,
         int $totalTickets,
-        int $totalTicketsRemaining,
+        int $numberOfTicketsAllocated,
         int $ticketAmount,
         string $ticketCurrency,
     ): self {
@@ -66,7 +66,7 @@ final readonly class TicketAllocatedToParticipantV1Event implements DomainEventI
             closeAt: $closeAt,
             drawAt: $drawAt,
             totalTickets: $totalTickets,
-            totalTicketsRemaining: $totalTicketsRemaining,
+            numberOfTicketsAllocated: $numberOfTicketsAllocated,
             ticketAmount: $ticketAmount,
             ticketCurrency: $ticketCurrency,
         );
@@ -85,7 +85,7 @@ final readonly class TicketAllocatedToParticipantV1Event implements DomainEventI
      *     closeAt: string,
      *     drawAt: string,
      *     totalTickets: int,
-     *     totalTicketsRemaining: int,
+     *     numberOfTicketsAllocated: int,
      *     ticketAmount: int,
      *     ticketCurrency: string
      * } $payload
@@ -107,7 +107,7 @@ final readonly class TicketAllocatedToParticipantV1Event implements DomainEventI
             closeAt: Clock::fromString($payload['closeAt']),
             drawAt: Clock::fromString($payload['drawAt']),
             totalTickets: $payload['totalTickets'],
-            totalTicketsRemaining: $payload['totalTicketsRemaining'],
+            numberOfTicketsAllocated: $payload['numberOfTicketsAllocated'],
             ticketAmount: $payload['ticketAmount'],
             ticketCurrency: $payload['ticketCurrency'],
         );
@@ -145,7 +145,7 @@ final readonly class TicketAllocatedToParticipantV1Event implements DomainEventI
             'closeAt' => $this->closeAt->format(DATE_ATOM),
             'drawAt' => $this->drawAt->format(DATE_ATOM),
             'totalTickets' => $this->totalTickets,
-            'totalTicketsRemaining' => $this->totalTicketsRemaining,
+            'numberOfTicketsAllocated' => $this->numberOfTicketsAllocated,
             'ticketAmount' => $this->ticketAmount,
             'ticketCurrency' => $this->ticketCurrency,
         ];
