@@ -72,7 +72,7 @@ const Omit = [
 
 export const RaffleList = () => (
   <List actions={<Actions />} empty={false} exporter={false} filters={Filters}>
-    <DatagridConfigurable omit={Omit}>
+    <DatagridConfigurable bulkActionButtons={false} omit={Omit}>
       <TextField source="id" sortable={false} />
       <TextField source="name" />
       <TextField source="prize" />
