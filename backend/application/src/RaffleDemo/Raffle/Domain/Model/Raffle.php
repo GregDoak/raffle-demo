@@ -34,7 +34,7 @@ use App\RaffleDemo\Raffle\Domain\ValueObject\Winner;
 
 final class Raffle extends AbstractAggregate
 {
-    public const string AGGREGATE_NAME = 'account';
+    public const string AGGREGATE_NAME = 'raffle';
 
     private RaffleAggregateId $id;
 
