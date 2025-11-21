@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\RaffleDemo\Raffle\Domain\ValueObject;
+namespace App\Tests\Unit\RaffleDemo\Raffle\Domain\ValueObject;
 
 use App\RaffleDemo\Raffle\Domain\Exception\InvalidTotalTicketsException;
 use App\RaffleDemo\Raffle\Domain\ValueObject\TotalTickets;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\RaffleDemo\Raffle\Domain\Model\Event;
+namespace App\Tests\Unit\RaffleDemo\Raffle\Domain\Model\Event;
 
 use App\Foundation\Clock\Clock;
 use App\Foundation\Clock\ClockProvider;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\RaffleDemo\Raffle\Domain\Model;
+namespace App\Tests\URaffleDemo\Raffle\Domain\Model;
 
 use App\Foundation\Clock\Clock;
 use App\Framework\Domain\Exception\AggregateEventNotHandledException;
