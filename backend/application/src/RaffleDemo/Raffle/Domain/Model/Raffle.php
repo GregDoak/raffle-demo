@@ -38,26 +38,26 @@ final class Raffle extends AbstractAggregate
 
     private RaffleAggregateId $id;
 
-    public Name $name;
-    public Prize $prize;
-    public StartAt $startAt;
+    public private(set) Name $name;
+    public private(set) Prize $prize;
+    public private(set) StartAt $startAt;
 
-    public CloseAt $closeAt;
-    public DrawAt $drawAt;
+    public private(set) CloseAt $closeAt;
+    public private(set) DrawAt $drawAt;
 
-    public TotalTickets $totalTickets;
+    public private(set) TotalTickets $totalTickets;
 
-    public TicketPrice $ticketPrice;
-    public Created $created;
+    public private(set) TicketPrice $ticketPrice;
+    public private(set) Created $created;
 
-    public TicketAllocations $ticketAllocations;
+    public private(set) TicketAllocations $ticketAllocations;
 
-    public ?Started $started = null;
-    public ?Closed $closed = null;
-    public ?Drawn $drawn = null;
-    public ?Winner $winner = null;
+    public private(set) ?Started $started = null;
+    public private(set) ?Closed $closed = null;
+    public private(set) ?Drawn $drawn = null;
+    public private(set) ?Winner $winner = null;
 
-    public ?Ended $ended = null;
+    public private(set) ?Ended $ended = null;
 
     public function __construct()
     {
