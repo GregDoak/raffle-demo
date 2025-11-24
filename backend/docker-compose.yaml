@@ -25,6 +25,7 @@ services:
         environment:
             HANDLER: public/index.php
             DOCUMENT_ROOT: public
+            APP_NAME: app
             CORS_ALLOW_ORIGIN: ${BASE_ADMIN_URL}
         user: 1000:1000
     php-consumer:
@@ -37,7 +38,10 @@ services:
             - php
         volumes:
             - ./application:/var/task
+            - ./application/var/log:/tmp/log
             - ./docker/php/conf.d:/opt/bref/etc/php/conf.d
+        environment:
+            APP_NAME: consumer
         command: ["bin/console", "messenger:consume", "scheduler_default", "--time-limit=300"]
     php-domain-event-subscriber:
         scale: ${BACKEND_DOMAIN_SUBSCRIBER_SCALE}
@@ -49,7 +53,10 @@ services:
             - php
         volumes:
             - ./application:/var/task
+            - ./application/var/log:/tmp/log
             - ./docker/php/conf.d:/opt/bref/etc/php/conf.d
+        environment:
+            APP_NAME: subscriber
         command: ["bin/console", "messenger:consume", "domain_event_subscriber", "--time-limit=300"]
 
 volumes:
