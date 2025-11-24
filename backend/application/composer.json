@@ -4,7 +4,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "bref/bref": ">=2.4.15",
@@ -30,14 +30,14 @@
     },
     "require-dev": {
         "deptrac/deptrac": "^4.2.1",
-        "friendsofphp/php-cs-fixer": "^3.89.2",
+        "friendsofphp/php-cs-fixer": "^3.90.0",
         "infection/infection": "^0.30.3",
         "j13k/yaml-lint": "^1.1.7",
         "kubawerlos/php-cs-fixer-custom-fixers": "^3.35.1",
         "phpstan/phpstan": "^2.1.32",
         "phpstan/phpstan-strict-rules": "^2.0.7",
         "phpstan/phpstan-symfony": "^2.0.8",
-        "phpunit/phpunit": "^12.4.3",
+        "phpunit/phpunit": "^12.4.4",
         "roave/security-advisories": "dev-latest",
         "symfony/browser-kit": "7.3.*",
         "symfony/phpunit-bridge": "^7.3.4"
