@@ -38,7 +38,7 @@ lint: ## Enforces the code standards checks using preconfigured rules
 
 .PHONY: lint/fix
 lint/fix: ## Fixes all linter errors
-	@PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix -v
+	@PHP_CS_FIXER_FUTURE_MODE=1 vendor/bin/php-cs-fixer fix -v
 
 .PHONY: static
 static: static/deptrac static/stan ## Runs all static analysis tools
