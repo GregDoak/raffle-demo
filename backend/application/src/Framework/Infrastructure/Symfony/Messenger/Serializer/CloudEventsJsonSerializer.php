@@ -15,26 +15,20 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\BusNameStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 
-use function is_array;
-use function is_int;
-use function is_string;
-
 final readonly class CloudEventsJsonSerializer implements DomainEventSerializerInterface
 {
-    /** @param mixed[] $encodedEnvelope */
     public function decode(array $encodedEnvelope): Envelope
     {
-        $headers = is_array($encodedEnvelope['headers']) ? $encodedEnvelope['headers'] : [];
-        $decodedBody = (array) JsonSerializer::deserialize(is_string($encodedEnvelope['body']) ? $encodedEnvelope['body'] : '{}');
+        $headers = $encodedEnvelope['headers'] ?? [];
+        $decodedBody = (array) JsonSerializer::deserialize($encodedEnvelope['body']);
         $cloudEvent = new Denormalizer()->denormalize($decodedBody);
-        $retryCount = (is_int($headers['retry_count']) ? $headers['retry_count'] : 0) + 1;
+        $retryCount = (int) ($headers['retry_count'] ?? '0') + 1;
 
         $domainEvent = DomainEventFactory::fromCloudEvent($cloudEvent);
 
         return new Envelope($domainEvent, [new TransportMessageIdStamp($domainEvent->getEventId()), new BusNameStamp('domain_event.bus'), new RetryStamp($retryCount)]);
     }
 
-    /** @return array{body: string, headers: array{type: string, retry_count: int}} */
     public function encode(Envelope $envelope): array
     {
         /** @var DomainEventInterface $event */
@@ -52,7 +46,7 @@ final readonly class CloudEventsJsonSerializer implements DomainEventSerializerI
 
         return [
             'body' => JsonSerializer::serialize(new Normalizer()->normalize($cloudEvent, rawData: false)),
-            'headers' => ['type' => $event->getEventType(), 'retry_count' => $retryCount],
+            'headers' => ['type' => $event->getEventType(), 'retry_count' => (string) $retryCount],
         ];
     }
 }

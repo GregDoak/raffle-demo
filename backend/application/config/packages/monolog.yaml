@@ -16,7 +16,7 @@ when@dev:
             stream_log:
                 type: stream
                 path: php://stderr
-                level: info
+                level: error
                 channels: ["!event"]
                 formatter: 'Bref\Monolog\CloudWatchFormatter'
             console:

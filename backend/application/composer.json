@@ -10,38 +10,38 @@
         "bref/bref": ">=2.4.15",
         "bref/symfony-bridge": ">=1.1",
         "cloudevents/sdk-php": "^1.2",
-        "doctrine/dbal": "^4.3.4",
+        "doctrine/dbal": "^4.4.0",
         "doctrine/doctrine-migrations-bundle": ">=3.7.0",
         "dragonmantank/cron-expression": "^3.6",
         "nelmio/cors-bundle": "^2.6",
         "opis/json-schema": "^2.6.0",
-        "symfony/console": "7.3.*",
-        "symfony/doctrine-messenger": "7.3.*",
+        "symfony/console": "7.4.*",
+        "symfony/doctrine-messenger": "7.4.*",
         "symfony/dotenv": "7.3.*",
-        "symfony/expression-language": "7.3.*",
+        "symfony/expression-language": "7.4.*",
         "symfony/flex": "^2.10.0",
-        "symfony/framework-bundle": "7.3.*",
-        "symfony/messenger": "7.3.*",
-        "symfony/monolog-bundle": "^3.10",
-        "symfony/runtime": "7.3.*",
-        "symfony/scheduler": "7.3.*",
-        "symfony/security-bundle": "7.3.*",
-        "symfony/uid": "7.3.*",
-        "symfony/yaml": "7.3.*"
+        "symfony/framework-bundle": "7.4.*",
+        "symfony/messenger": "7.4.*",
+        "symfony/monolog-bundle": "^3.11",
+        "symfony/runtime": "7.4.*",
+        "symfony/scheduler": "7.4.*",
+        "symfony/security-bundle": "7.4.*",
+        "symfony/uid": "7.4.*",
+        "symfony/yaml": "7.4.*"
     },
     "require-dev": {
         "deptrac/deptrac": "^4.2.1",
-        "friendsofphp/php-cs-fixer": "^3.90.0",
+        "friendsofphp/php-cs-fixer": "^3.91.0",
         "infection/infection": "^0.30.3",
         "j13k/yaml-lint": "^1.1.7",
         "kubawerlos/php-cs-fixer-custom-fixers": "^3.35.1",
         "phpstan/phpstan": "^2.1.32",
         "phpstan/phpstan-strict-rules": "^2.0.7",
-        "phpstan/phpstan-symfony": "^2.0.8",
+        "phpstan/phpstan-symfony": "^2.0.9",
         "phpunit/phpunit": "^12.4.4",
         "roave/security-advisories": "dev-latest",
-        "symfony/browser-kit": "7.3.*",
-        "symfony/phpunit-bridge": "^7.3.4"
+        "symfony/browser-kit": "7.4.*",
+        "symfony/phpunit-bridge": "^7.4.0"
     },
     "config": {
         "allow-plugins": {
@@ -91,7 +91,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "7.3.*"
+            "require": "7.4.*"
         }
     }
 }

@@ -31,7 +31,7 @@ final readonly class AllocateTicketToParticipantInputResolver implements ValueRe
         }
 
         $input = JsonSerializer::deserialize($request->getContent());
-        $input = array_merge((array) $input, ['id' => $request->get('id', '')]);
+        $input = array_merge((array) $input, ['id' => $request->attributes->get('id', '')]);
         $result = $this->validator->validate($input);
 
         if ($result->isValid() === false && $result->error() instanceof ValidationError) {
