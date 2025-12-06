@@ -1,0 +1,64 @@
+services:
+    postgres:
+        image: postgres:16-alpine
+        ports:
+            - ${HOST_STORE_DATABASE_PORT}:5432
+        volumes:
+            - postgres:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: password
+    php:
+        restart: unless-stopped
+        depends_on:
+            -   postgres
+        build:
+            context: ./docker
+            dockerfile: ./php/php.Dockerfile
+        ports:
+            - ${HOST_STORE_PORT}:8000
+        volumes:
+            - ./application:/var/task
+            - ./application/var/cache:/tmp/cache
+            - ./application/var/log:/tmp/log
+            - ./docker/php/conf.d:/opt/bref/etc/php/conf.d
+        environment:
+            HANDLER: public/index.php
+            DOCUMENT_ROOT: public
+            APP_NAME: app
+            HOST_STORE_PORT: ${HOST_STORE_PORT:-8000}
+        user: ${DOCKER_USER:-1000:1000}
+    nodejs:
+        restart: unless-stopped
+        depends_on:
+            - postgres
+        image: node:22-alpine
+        working_dir: /home/nodejs
+        entrypoint: [ "/bin/sh","-c" ]
+        command:
+            - |
+                yarn install
+                yarn watch
+        volumes:
+            - ./application:/home/nodejs
+        user: ${DOCKER_USER:-1000:1000}
+    php-consumer:
+        scale: ${STORE_CONSUMER_SCALE}
+        restart: unless-stopped
+        build:
+            context: ./docker
+            dockerfile: ./php/php.Dockerfile
+        depends_on:
+            - php
+        volumes:
+            - ./application:/var/task
+            - ./application/var/log:/tmp/log
+            - ./docker/php/conf.d:/opt/bref/etc/php/conf.d
+        environment:
+            APP_NAME: consumer
+            HOST_STORE_PORT: ${HOST_STORE_PORT:-8000}
+        command: ["bin/console", "messenger:consume", "main", "--time-limit=300"]
+
+volumes:
+    postgres:
+        driver: local

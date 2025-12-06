@@ -1,0 +1,55 @@
+sylius_fixtures:
+    suites:
+        raffle_demo: # Used by the `sylius:fixtures:load` command
+            listeners:
+                orm_purger: ~
+                images_purger: ~
+                logger: ~
+            fixtures:
+                locale:
+                    options:
+                        locales:
+                            - 'en_GB'
+                currency:
+                    options:
+                        currencies: ['GBP']
+                geographical:
+                    options:
+                        countries:
+                            - 'GB'
+                        zones:
+                            GB:
+                                name: 'United Kingdom'
+                                countries:
+                                    - 'GB'
+                channel:
+                    options:
+                        custom:
+                            raffle_demo_web_store_gb:
+                                name: "Raffle Demo Store"
+                                code: "RAFFLE_DEMO_WEB_STORE_GB"
+                                hostname: "127.0.0.1"
+                                locales:
+                                    - "en_GB"
+                                base_currency: "GBP"
+                                currencies:
+                                    - "GBP"
+                                enabled: true
+                                shop_billing_data:
+                                    company: "Example"
+                                    tax_id: "GB999999999"
+                                    country_code: "GB"
+                                    street: "1 Main Street"
+                                    city: "London"
+                                    postcode: "SW1A 1AA"
+                admin_user:
+                    options:
+                        custom:
+                            admin_gb:
+                                email: admin.gb@example.com
+                                username: admin
+                                password: password
+                                locale_code: en_GB
+                                first_name: admin
+                                last_name: admin
+                                avatar: '@SyliusCoreBundle/Resources/fixtures/adminAvatars/john.webp'

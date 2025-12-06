@@ -10,21 +10,22 @@ endif
 can-release: ## Runs all checks required for release
 	@cd backend && ${MAKE} can-release
 	@cd frontend && ${MAKE} can-release
+	@cd store && ${MAKE} can-release
 
 .PHONY: destroy
 destroy: stop ## Destroys the development environment of the full stack
-	${MAKE} -j2 backend/destroy frontend/destroy
+	@${MAKE} -j3 backend/destroy frontend/destroy store/destroy
 
 .PHONY: restart
 restart: stop start ## Restarts the development environment of the full stack
 
 .PHONY: start
-start: ## Starts the development environment of the full stack
-	${MAKE} -j2 backend/start frontend/start
+start: stop ## Starts the development environment of the full stack
+	@${MAKE} -j3 backend/start frontend/start store/start
 
 .PHONY: stop
 stop: ## Stops the development environment of the full stack
-	${MAKE} -j2 backend/stop frontend/stop
+	@${MAKE} -j3 backend/stop frontend/stop store/stop
 
 .PHONY: backend/shell
 backend/shell: ## Shell into the default backend service
@@ -57,6 +58,22 @@ frontend/start: ## Starts the development environment of the frontend service
 .PHONY: frontend/stop
 frontend/stop: ## Stops the development environment of the frontend service
 	@cd frontend && ${MAKE} stop
+
+.PHONY: store/destroy
+store/destroy: ## Destroys the development environment of the store service
+	@cd store && ${MAKE} destroy
+
+.PHONY: store/shell
+store/shell: ## Shell into the default store service
+	@cd store && ${MAKE} shell
+
+.PHONY: store/start
+store/start: ## Starts the development environment of the store service
+	@cd store && ${MAKE} start
+
+.PHONY: store/stop
+store/stop: ## Stops the development environment of the store service
+	@cd store && ${MAKE} stop
 
 records = 1
 state = "all"
