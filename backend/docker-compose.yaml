@@ -1,22 +1,11 @@
 services:
-    postgres:
-        image: postgres:16-alpine
-        ports:
-            - ${HOST_DATABASE_PORT}:5432
-        volumes:
-            - postgres:/var/lib/postgresql/data
-        environment:
-            POSTGRES_USER: user
-            POSTGRES_PASSWORD: password
     php:
         restart: unless-stopped
-        depends_on:
-            - postgres
         build:
             context: ./docker
             dockerfile: ./php/php.Dockerfile
         ports:
-            - ${HOST_BACKEND_PORT}:8000
+            - ${HOST_BACKEND_PORT:-8000}:8000
         volumes:
             - ./application:/var/task
             - ./application/var/cache:/tmp/cache
@@ -27,7 +16,10 @@ services:
             DOCUMENT_ROOT: public
             APP_NAME: app
             CORS_ALLOW_ORIGIN: ${BASE_ADMIN_URL}
-        user: 1000:1000
+        user: ${DOCKER_USER:-1000:1000}
+        networks:
+            - backend
+            - shared
     php-consumer:
         scale: ${BACKEND_CONSUMER_SCALE}
         restart: unless-stopped
@@ -43,6 +35,9 @@ services:
         environment:
             APP_NAME: consumer
         command: ["bin/console", "messenger:consume", "scheduler_default", "--time-limit=300"]
+        networks:
+            - backend
+            - shared
     php-domain-event-subscriber:
         scale: ${BACKEND_DOMAIN_SUBSCRIBER_SCALE}
         restart: unless-stopped
@@ -58,7 +53,14 @@ services:
         environment:
             APP_NAME: subscriber
         command: ["bin/console", "messenger:consume", "domain_event_subscriber", "--time-limit=300"]
+        networks:
+            - backend
+            - shared
 
-volumes:
-    postgres:
-        driver: local
+networks:
+    backend:
+        name: backend
+        external: false
+    shared:
+        name: shared
+        external: true

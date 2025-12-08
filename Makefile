@@ -14,18 +14,18 @@ can-release: ## Runs all checks required for release
 
 .PHONY: destroy
 destroy: stop ## Destroys the development environment of the full stack
-	@${MAKE} -j3 backend/destroy frontend/destroy store/destroy
+	@${MAKE} -j4 shared/destroy backend/destroy frontend/destroy store/destroy
 
 .PHONY: restart
 restart: stop start ## Restarts the development environment of the full stack
 
 .PHONY: start
 start: stop ## Starts the development environment of the full stack
-	@${MAKE} -j3 backend/start frontend/start store/start
+	@${MAKE} -j4 shared/start backend/start-alone frontend/start store/start-alone
 
 .PHONY: stop
 stop: ## Stops the development environment of the full stack
-	@${MAKE} -j3 backend/stop frontend/stop store/stop
+	@${MAKE} -j4 shared/stop backend/stop frontend/stop store/stop
 
 .PHONY: backend/shell
 backend/shell: ## Shell into the default backend service
@@ -36,7 +36,11 @@ backend/destroy: ## Destroys the development environment of the backend service
 	@cd backend && ${MAKE} destroy
 
 .PHONY: backend/start
-backend/start: ## Starts the development environment of the backend service
+backend/start: ## Starts the development environment of the backend service with shared services
+	@${MAKE} -j2 shared/start backend/start-alone
+
+.PHONY: backend/start-alone
+backend/start-alone: ## Starts the development environment of the backend service as stand alone
 	@cd backend && ${MAKE} start
 
 .PHONY: backend/stop
@@ -59,6 +63,18 @@ frontend/start: ## Starts the development environment of the frontend service
 frontend/stop: ## Stops the development environment of the frontend service
 	@cd frontend && ${MAKE} stop
 
+.PHONY: shared/destroy
+shared/destroy: ## Destroys the development environment of the shared service
+	@cd shared && ${MAKE} destroy
+
+.PHONY: shared/start
+shared/start: ## Starts the development environment of the shared service
+	@cd shared && ${MAKE} start
+
+.PHONY: shared/stop
+shared/stop: ## Stops the development environment of the shared service
+	@cd shared && ${MAKE} stop
+
 .PHONY: store/destroy
 store/destroy: ## Destroys the development environment of the store service
 	@cd store && ${MAKE} destroy
@@ -68,7 +84,11 @@ store/shell: ## Shell into the default store service
 	@cd store && ${MAKE} shell
 
 .PHONY: store/start
-store/start: ## Starts the development environment of the store service
+store/start: ## Starts the development environment of the store service with shared services
+	@${MAKE} -j2 shared/start store/start-alone
+
+.PHONY: store/start-alone
+store/start-alone: ## Starts the development environment of the store service as stand alone
 	@cd store && ${MAKE} start
 
 .PHONY: store/stop

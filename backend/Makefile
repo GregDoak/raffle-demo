@@ -15,9 +15,9 @@ restart: stop start ## Restarts the development environment
 
 .PHONY: build
 build: ## Build the local development environment
-	@${DOCKER_COMPOSE} run -it --rm php composer install --no-interaction
-	@${DOCKER_COMPOSE} run -it --rm php bin/console doctrine:database:create --if-not-exists
-	@${DOCKER_COMPOSE} run -it --rm php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --all-or-nothing
+	@${DOCKER_COMPOSE} run -T --rm php composer install --no-interaction
+	@${DOCKER_COMPOSE} run -T --rm php bin/console doctrine:database:create --if-not-exists
+	@${DOCKER_COMPOSE} run -T --rm php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --all-or-nothing
 
 .PHONY: start
 start: build ## Starts the development environment

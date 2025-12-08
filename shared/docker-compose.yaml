@@ -1,0 +1,21 @@
+services:
+    postgres:
+        image: postgres:16-alpine
+        ports:
+            - ${HOST_DATABASE_PORT:-5432}:5432
+        volumes:
+            - postgres:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: ${DATABASE_USER:-user}
+            POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-password}
+        networks:
+            - shared
+
+networks:
+    shared:
+        name: shared
+        external: false
+
+volumes:
+    postgres:
+        driver: local
