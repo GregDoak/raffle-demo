@@ -1,3 +1,6 @@
+parameters:
+    app.name: '%env(APP_NAME)%'
+    
 monolog:
     channels:
         - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
@@ -13,9 +16,9 @@ when@prod:
                 buffer_size: 50 # How many messages should be saved? Prevent memory leaks
             nested:
                 type: stream
-                path: "%kernel.logs_dir%/%kernel.environment%.log"
-                level: debug
-                formatter: monolog.formatter.json
+                path: php://stderr
+                level: info
+                formatter: 'Bref\Monolog\CloudWatchFormatter'
             console:
                 type: console
                 process_psr_3_messages: false
@@ -23,25 +26,23 @@ when@prod:
             deprecation:
                 type: stream
                 channels: [deprecation]
-                path: "%kernel.logs_dir%/%kernel.environment%.log"
+                path: php://stderr
                 formatter: monolog.formatter.json
 
 when@dev:
     monolog:
         handlers:
-            main:
+            file_log:
                 type: stream
-                path: "%kernel.logs_dir%/%kernel.environment%.log"
+                path: "%kernel.logs_dir%/%kernel.environment%/%app.name%.log"
                 level: debug
                 channels: ["!event"]
-            # uncomment to get logging in your browser
-            # you may have to allow bigger header sizes in your Web server configuration
-            #firephp:
-            #    type: firephp
-            #    level: info
-            #chromephp:
-            #    type: chromephp
-            #    level: info
+            stream_log:
+                type: stream
+                path: php://stderr
+                level: error
+                channels: ["!event"]
+                formatter: 'Bref\Monolog\CloudWatchFormatter'
             console:
                 type: console
                 process_psr_3_messages: false
@@ -61,3 +62,6 @@ when@test: &monolog_test
                 level: debug
 
 when@test_cached: *monolog_test
+
+services:
+    Bref\Monolog\CloudWatchFormatter: ~
