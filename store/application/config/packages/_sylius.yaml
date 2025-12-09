@@ -279,3 +279,7 @@ sylius_twig_hooks:
         'sylius_shop.base#javascripts':
             app_javascripts:
                 template: 'shop/javascripts.html.twig'
+
+        sylius_shop.base.header.content.logo:
+            content:
+                template: 'shop/header/content/logo/content/logo.html.twig'
