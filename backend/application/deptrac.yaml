@@ -73,6 +73,8 @@ deptrac:
                         - symfony/framework-bundle
                         - symfony/http-foundation
                         - symfony/http-kernel
+                        - symfony/mailer
+                        - symfony/mime
                         - symfony/messenger
                         - symfony/routing
                         - symfony/scheduler

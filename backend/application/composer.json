@@ -21,6 +21,7 @@
         "symfony/expression-language": "7.4.*",
         "symfony/flex": "^2.10.0",
         "symfony/framework-bundle": "7.4.*",
+        "symfony/mailer": "7.4.*",
         "symfony/messenger": "7.4.*",
         "symfony/monolog-bundle": "^3.11",
         "symfony/runtime": "7.4.*",

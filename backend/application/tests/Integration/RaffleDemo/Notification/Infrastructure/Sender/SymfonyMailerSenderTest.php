@@ -2,25 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\RaffleDemo\Notification\Infrastructure\Sender;
+namespace App\Tests\Integration\RaffleDemo\Notification\Infrastructure\Sender;
 
 use App\RaffleDemo\Notification\Domain\ValueObject\Channel;
-use App\RaffleDemo\Notification\Infrastructure\Sender\LoggerEmailSender;
+use App\RaffleDemo\Notification\Infrastructure\Sender\SymfonyMailerSender;
 use App\Tests\Context\RaffleDemo\Notification\Application\Command\SendNotification\Notification\StubNotification;
-use App\Tests\Double\Framework\Infrastructure\Logger\InMemoryLogger;
+use App\Tests\Integration\AbstractIntegrationTestCase;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
 
-final class LoggerEmailSenderTest extends TestCase
+final class SymfonyMailerSenderTest extends AbstractIntegrationTestCase
 {
-    private InMemoryLogger $logger;
-    private LoggerEmailSender $sender;
+    private SymfonyMailerSender $sender;
 
     protected function setUp(): void
     {
-        $this->logger = new InMemoryLogger();
+        parent::setUp();
 
-        $this->sender = new LoggerEmailSender($this->logger);
+        $this->sender = self::getContainer()->get(SymfonyMailerSender::class);
     }
 
     #[Test]
@@ -50,8 +48,6 @@ final class LoggerEmailSenderTest extends TestCase
         $this->sender->send($notification);
 
         // Assert
-        $logs = $this->logger->getLogsForLevel('notice');
-        self::assertCount(1, $logs);
-        self::assertStringContainsString('Sending notification', $logs[0]['message']);
+        self::assertEmailCount(1);
     }
 }
