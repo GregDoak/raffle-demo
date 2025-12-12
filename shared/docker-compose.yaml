@@ -18,6 +18,14 @@ services:
             POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-password}
         networks:
             - shared
+    sqs:
+        image: softwaremill/elasticmq-native
+        ports:
+            - ${HOST_SQS_PORT:-9325}:9325
+        volumes:
+            - ./elasticmq/elasticmq.conf:/opt/elasticmq.conf
+        networks:
+            - shared
 
 networks:
     shared:
