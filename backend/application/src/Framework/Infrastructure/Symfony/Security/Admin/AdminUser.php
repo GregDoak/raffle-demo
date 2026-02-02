@@ -26,7 +26,6 @@ final readonly class AdminUser implements UserInterface
 
     public function eraseCredentials(): void
     {
-        return;
     }
 
     public function getUserIdentifier(): string
