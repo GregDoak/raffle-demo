@@ -13,7 +13,7 @@ framework:
                     - 'send_domain_event_to_publisher_middleware'
         transports:
             sync: 'sync://'
-            domain_event_failed: 'doctrine://default?queue_name=domain_event_failed&auto_setup=false'
+            domain_event_failed: '%env(DOMAIN_EVENT_DQL_TRANSPORT_DSN)%'
             domain_event_outbox: 'doctrine://default?queue_name=domain_event_outbox&check_delayed_interval=1000&auto_setup=false'
 
             domain_event_publisher:
